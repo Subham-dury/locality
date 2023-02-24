@@ -1,8 +1,4 @@
 /* NAVBAR STYLES */
-.navbar {
-  padding: 0 !important;
-}
-
 /* Logo */
 .navbar-brand img {
   height: 50px;
@@ -12,7 +8,7 @@
 /* Links */
 .nav-link {
   color: var(--text3) !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   font-size: 1.2rem !important;
   text-decoration: none;
 }
@@ -46,9 +42,17 @@
 }
 
 .button-primary:hover,
-.button-ptimary:active {
+.button-primary:active {
   background-color: var(--secondary3);
-  color: var(--text4);
+}
+
+.button-light {
+  background-color: var(--secondary1);
+  color: var(--text1);
+}
+
+.button-light:hover, .button-light:active {
+  background-color: var(--secondary5);
 }
 
 @media (min-width: 768px) {
@@ -112,10 +116,57 @@
 
 /* hero section*/
 .hero {
-  min-height: 95vh;
-  background: linear-gradient(#8fa9f175, #080c1ac4), url("./assests/bg1.jpg");
+  min-height: 90vh;
+  background: linear-gradient(#8fa9f185, #0a0f22c4), url("./assests/hero-day.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   color: var(--text4);
+}
+
+.link-button {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-button:hover {
+  color: inherit;
+}
+
+/* 
+About us  */
+.about .info h2{
+  color: var(--text1) ;
+  margin-bottom: 2rem ;
+  font-weight: 600;
+}
+
+.about .info p{
+  font-weight: 500 ;
+  color: var(--text3);
+  line-height: 2rem;
+  font-size: 18px;
+}
+
+.about .img-holder {
+  overflow: hidden;
+  margin-right: -4rem;
+}
+
+@media (max-width: 992px) and (min-width: 768px){
+  .about img{
+    margin-right: -5em;
+  }
+}
+
+@media(max-width: 768px) {
+  .about {
+    text-align: center;
+  }
+
+  .about img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
 }
