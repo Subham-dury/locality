@@ -8,7 +8,7 @@ const Login = () => {
   const handleLogin = (event) => {
     event.preventDefault();
     sessionStorage.setItem("isLoggedIn", "true")
-    navigate("/");
+    navigate(-1);
   }
 
   return (

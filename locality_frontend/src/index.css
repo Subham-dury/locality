@@ -1,9 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap");
 
-body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    background-color: black;
-    color: aliceblue;
+:root {
+  --main1: #1347f5;
+  --main2: #080c1a;
+  --secondary1: #f2f5ff;
+  --secondary2: #8fa9f1;
+  --secondary3: #19307c;
+  --secondary4: #2a48aa;
+  --text1: #080c1a;
+  --text2: #09206b;
+  --text3: #585c66;
+  --text4: #f9fafd;
 }
+
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+

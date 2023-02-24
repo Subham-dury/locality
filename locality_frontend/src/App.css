@@ -1,4 +1,121 @@
+/* NAVBAR STYLES */
+.navbar {
+  padding: 0 !important;
+}
+
+/* Logo */
 .navbar-brand img {
-    height: 50px;
+  height: 50px;
+  width: auto;
+}
+
+/* Links */
+.nav-link {
+  color: var(--text3) !important;
+  font-weight: 500 !important;
+  font-size: 1.2rem !important;
+  text-decoration: none;
+}
+.nav-link:hover,
+.active {
+  color: var(--text2) !important;
+}
+
+/* Login / Logout button container */
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  flex-wrap: wrap;
+  margin: 10px 0 10px auto;
+}
+
+.button {
+  width: 8em;
+  height: 4ex;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button-primary {
+  background-color: var(--secondary4);
+  color: var(--text4);
+}
+
+.button-primary:hover,
+.button-ptimary:active {
+  background-color: var(--secondary3);
+  color: var(--text4);
+}
+
+@media (min-width: 768px) {
+  .dropdown .dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 0.5s ease all;
+  }
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0px);
+    transition: 0.5s ease all;
+    box-shadow: 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .navbar-brand img {
+    height: 30px;
     width: auto;
+  }
+  .btn-container .button {
+    width: 6em;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-brand img {
+    height: 30px;
+    width: auto;
+  }
+
+  .dropdown .dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    transform: translateY(-30px);
+    transition: 0.5s ease all;
+  }
+
+  .dropdown:hover .dropdown-menu,
+  .dropdown:active .dropdown-menu {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    height: 100px;
+    transform: translateY(0px);
+    transition: 0.5s ease all;
+  }
+
+  .btn-container .button {
+    width: 15em;
+    height: 4ex;
+  }
+}
+
+/* hero section*/
+.hero {
+  min-height: 95vh;
+  background: linear-gradient(#8fa9f175, #080c1ac4), url("./assests/bg1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--text4);
 }

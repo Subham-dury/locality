@@ -1,36 +1,36 @@
 import { useEffect, useState } from "react";
-import {  Link , useNavigate, useLocation} from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assests/logo.png";
 
 const Navbar = () => {
-
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     //console.log(location)
-    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") ? true : false)
-  }, [location])
+    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
+  }, [location]);
 
   const handleLogin = () => {
-    navigate("/login")
-  }
+    navigate("/login");
+  };
 
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate(location.pathname)
-  }
+    navigate(location.pathname);
+  };
+
 
   return (
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">
+    <nav className={`navbar navbar-expand-md bg-light`}>
+      <div className="container">
+        <a className="navbar-brand" href="#">
           <img src={logo} alt="locality" />
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNavDropdown"
@@ -38,48 +38,77 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ms-auto text-center">
-            <li class="nav-item mx-3">
-              <Link class="nav-link" aria-current="page" to="/">
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
+            <li className="nav-item mx-lg-3">
+              <NavLink
+                className="nav-link"
+                activeClassName="active"
+                aria-current="page"
+                to="/"
+              >
                 Home
-              </Link>
+              </NavLink>
             </li>
-            <li class="nav-item mx-3">
-              <Link class="nav-link" to="/reviews">
+            <li className="nav-item mx-lg-3">
+              <NavLink
+                to="/reviews"
+                className="nav-link"
+                activeClassName="active"
+              >
                 Reviews
-              </Link>
+              </NavLink>
             </li>
-            <li class="nav-item mx-3">
-              <Link class="nav-link" to="/reports">
+            <li className="nav-item mx-lg-3">
+              <NavLink
+                className="nav-link"
+                activeClassName="active"
+                to="/reports"
+              >
                 Reports
-              </Link>
+              </NavLink>
             </li>
+
             {isLoggedIn && (
-              <li class="nav-item mx-3">
-                <Link class="nav-link" to="/user-reviews">
-                  Your Reviews
+              <li className="nav-item dropdown mx-lg-3">
+                <Link
+                  className="nav-link"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  User
                 </Link>
-              </li>
-            )}
-            {isLoggedIn && (
-              <li class="nav-item mx-3">
-                <Link class="nav-link" to="/user-reports">
-                  Your Reports
-                </Link>
+                <ul
+                  className="dropdown-menu text-center shadow"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <li className="nav-item mx-3">
+                    <Link className="nav-link" to="/user-reviews">
+                      Reviews
+                    </Link>
+                  </li>
+                  <li className="nav-item mx-3">
+                    <Link className="nav-link" to="/user-reports">
+                      Reports
+                    </Link>
+                  </li>
+                </ul>
               </li>
             )}
           </ul>
-          <div class="d-grid ms-auto gap-2 col-md-2">
+          <div className="btn-container">
             {!isLoggedIn && (
-              <button class="btn btn-primary me-md-2" type="button" onClick={handleLogin}>
+              <button className="button button-primary" type="button" onClick={handleLogin}>
                 login
               </button>
             )}
             {isLoggedIn && (
-              <button class="btn btn-primary me-md-2" type="button" onClick={handleLogout}>
+              <button className="button button-primary" type="button" onClick={handleLogout}>
                 logout
               </button>
             )}

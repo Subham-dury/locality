@@ -39,8 +39,22 @@ const RouteList = () => {
           </Protected>
         }
       />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/login"
+        element={
+          <Protected isSignedIn={!isSignedIn}>
+            <Login/>
+          </Protected>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <Protected isSignedIn={!isSignedIn}>
+            <Signup />
+          </Protected>
+        }
+      />
     </Routes>
   );
 };
