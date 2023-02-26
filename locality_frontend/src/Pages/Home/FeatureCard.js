@@ -4,16 +4,16 @@ const FeatureCard = () => {
   return (
     <div class="card m-3">
       <div class="row g-0">
-        <div class="col-md-5">
+        <div class="col-lg-5">
           <div className="card-img">
             <img
               src={require(`../../assests/review-holder-${1}.jpg`)}
-              class="rounded-start img-fluid"
+              class="img-fluid rounded"
               alt="locality image"
             />
           </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-lg-7">
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
             <p class="card-text">

@@ -173,17 +173,13 @@ About us  */
   }
 }
 
-/* Featured Reviews */
-
-.featuredreviews h3{
-  color: var(--text5);
-}
+/* Featured cards */
 
 .card {
-  background-color: var(--secondary2);
-  box-shadow: 10px 10px 26px -13px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
   border: none !important;
   overflow: hidden;
+  margin: 0 10px !important;
 }
 
 .card-body > p {
@@ -195,23 +191,75 @@ About us  */
   -webkit-box-orient: vertical !important;
 }
 
-.carousal-control {
-  background-color: var(--text5) !important;
-  border-radius: 50%;
-}
-
 @media (min-width: 992px) and (max-width: 1400px) {
   .card {
-    max-width: 800px !important;
+    width: 800px !important;
     height: 250px !important;
+  }
+}
 
+@media (max-width: 992px) and (min-width: 768px) {
+  .card {
+    height: 500px !important;
+    width: 500px !important;
+  }
+
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  .card-body {
+    text-align: center !important;
+  }
+
+  .card-body > p {
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
   }
 }
 
 @media (max-width: 768px) {
+  .card {
+    height: 400px !important;
+    width: 400px !important;
+  }
+
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
+  }
+
   .card-body > p {
     -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
   }
 }
 
+/* Featured Reviews */
 
+.featuredreviews {
+  background-image: linear-gradient(to bottom, #ffffffce, #e4e6f4, #92acf185);
+}
+
+.featuredreviews h3 {
+  color: var(--text5);
+}
+
+.carousel-control {
+  background-color: var(--text3);
+  color: var(--text4);
+  border-radius: 10px;
+}
+
+.carousel-control:hover {
+  background-color: var(--text1);
+}
