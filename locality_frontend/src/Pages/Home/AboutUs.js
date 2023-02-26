@@ -3,7 +3,7 @@ import about from "../../assests/about.png";
 
 const AboutUs = () => {
   return (
-    <section className="about py-5" id="about">
+    <section className="about pt-4" id="about">
       <div className="container">
         <div className="row align-items-center justify-content-around">
           <div className="col-lg-4 info" >
@@ -17,8 +17,8 @@ const AboutUs = () => {
               The only people who actually know are the people who live there.
             </p>
             <p>
-              HomeViews collects verified resident reviews for new build homes
-              across the UK, so you can make an informed decision.
+              locality collects reviews and reports for neighbourhood
+              across the country, so you can make an informed decision.
             </p>
           </div>
           <div className="col-lg-8 img-holder">
