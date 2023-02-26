@@ -1,5 +1,5 @@
 import React from "react";
-import reviews from "../../Data/FeaturedReviews";
+import { reviews } from "../../Data/FeaturedReviews";
 import FeatureCard from "./FeatureCard";
 
 const FeaturedReviews = () => {
@@ -12,6 +12,20 @@ const FeaturedReviews = () => {
           class="carousel slide"
           data-bs-ride="carousel"
         >
+          <div class="carousel-inner justify-content-center">
+            {reviews.map((review) => {
+              return (
+                <div
+                  class={`carousel-item ${review.id == 1 ? "active" : ""}`}
+                  key={review.id}
+                >
+                  <div className="d-flex justify-content-center">
+                    <FeatureCard review={review} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           <button
             class="carousel-control-prev "
             type="button"
@@ -24,24 +38,6 @@ const FeaturedReviews = () => {
             ></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <div class="carousel-inner justify-content-center">
-            <div class="carousel-item active">
-              <div className="d-flex justify-content-center">
-                <FeatureCard />
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div className="d-flex justify-content-center">
-                <FeatureCard />
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div className="d-flex justify-content-center">
-                <FeatureCard />
-              </div>
-            </div>
-          </div>
-
           <button
             class="carousel-control-next"
             type="button"

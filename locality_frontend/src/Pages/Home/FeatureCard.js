@@ -1,13 +1,13 @@
 import React from "react";
 
-const FeatureCard = () => {
+const FeatureCard = ({ review }) => {
   return (
     <div class="card m-3">
       <div class="row g-0">
         <div class="col-lg-5">
           <div className="card-img">
             <img
-              src={require(`../../assests/review-holder-${1}.jpg`)}
+              src={require(`../../assests/review-holder-${review.img}.jpg`)}
               class="img-fluid rounded"
               alt="locality image"
             />
@@ -15,23 +15,11 @@ const FeatureCard = () => {
         </div>
         <div class="col-lg-7">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
-              ullam rerum, nobis vero aliquid aspernatur itaque ea quia dolorum
-              alias. Sunt aliquid tenetur pariatur nisi dolorum, labore magnam
-              blanditiis sit error quibusdam nihil officiis facere et modi
-              expedita, id earum qui sint laudantium voluptas. Quam delectus
-              minima mollitia accusantium vero!
-            </p>
-            <p class="card-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
-              ullam rerum, nobis vero aliquid aspernatur itaque ea quia dolorum
-              alias. Sunt aliquid tenetur pariatur nisi dolorum, labore magnam
-              blanditiis sit error quibusdam nihil officiis facere et modi
-              expedita, id earum qui sint laudantium voluptas. Quam delectus
-              minima mollitia accusantium vero!
-            </p>
+            <h5>{review.locality}</h5>
+            <p>Review by {review.author}</p>
+
+            <small class="text-muted">{review.date}</small>
+            <p class="card-text my-2">{review.text}</p>
           </div>
         </div>
       </div>

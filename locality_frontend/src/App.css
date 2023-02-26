@@ -191,10 +191,22 @@ About us  */
   -webkit-box-orient: vertical !important;
 }
 
+.card-body h5{
+  color: var(--text1);
+  font-weight: 600;
+  letter-spacing: 0.2rem;
+}
+
+.card-body > p {
+  color: var(--text3);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
 @media (min-width: 992px) and (max-width: 1400px) {
   .card {
     width: 800px !important;
-    height: 250px !important;
+    height: 200px !important;
   }
 }
 
@@ -235,6 +247,10 @@ About us  */
     object-fit: cover;
     object-position: center;
     aspect-ratio: 16 / 9;
+  }
+
+  .card-body {
+    text-align: center !important;
   }
 
   .card-body > p {
