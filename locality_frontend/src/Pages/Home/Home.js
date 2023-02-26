@@ -1,5 +1,6 @@
 import React from "react";
 import AboutUs from "./AboutUs";
+import FeaturedReports from "./FeaturedReports";
 import FeaturedReviews from "./FeaturedReviews";
 import Hero from "./Hero";
 
@@ -9,6 +10,7 @@ const Home = () => {
       <Hero/>
       <AboutUs/>
       <FeaturedReviews />
+      {/* <FeaturedReports /> */}
     </>
   );
 };

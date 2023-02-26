@@ -1,21 +1,12 @@
-import React from "react";
+import React from 'react'
 import { reviews } from "../../Data/FeaturedReviews";
 import FeatureCard from "./FeatureCard";
 
-const FeaturedReviews = () => {
+const FeaturedReports = () => {
   return (
-    <section className="featuredreviews py-5" id="featuredreviews">
+    <section className="fearturedreports py-5" id="featuredreviews">
       <div className="container">
-        <div className="row heading align-items-center justify-content-evenly">
-          <div className="col-6 col-md-8">
-            <h3>Featured reviews</h3>
-          </div>
-          <div className="col-4 d-flex justify-content-end justify-content-xs-left">
-            <button class="button button-primary" type="button">
-              Learn more
-            </button>
-          </div>
-        </div>
+        <h3>Featured Reviews </h3>
         <div
           id="carouselExampleControls"
           class="carousel slide"
@@ -62,7 +53,7 @@ const FeaturedReviews = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default FeaturedReviews;
+export default FeaturedReports

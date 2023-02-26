@@ -263,7 +263,7 @@ About us  */
 /* Featured Reviews */
 
 .featuredreviews {
-  background-image: linear-gradient(to bottom, #ffffffce, #e4e6f4, #92acf185);
+  background: linear-gradient(to bottom, #ffffffce, #e4e6f4, #92acf185);
 }
 
 .featuredreviews h3 {
@@ -278,4 +278,22 @@ About us  */
 
 .carousel-control:hover {
   background-color: var(--text1);
+}
+
+@media(max-width: 768px){
+
+  .heading h3 {
+    font-size: 1.2rem;
+    margin: 0 !important;
+  }
+
+  .heading .button {
+    width: auto;
+    font-size: 0.8rem;
+  }
+}
+
+/* feadtured-reports */
+.fearturedreports {
+  background: linear-gradient(to top, #ffffffce, #e4e6f4, #92acf185);
 }
