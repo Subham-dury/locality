@@ -22,13 +22,12 @@ const Navbar = () => {
     navigate(location.pathname);
   };
 
-
   return (
     <nav className={`navbar navbar-expand-md bg-light`}>
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           <img src={logo} alt="locality" />
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -103,12 +102,20 @@ const Navbar = () => {
           </ul>
           <div className="btn-container">
             {!isLoggedIn && (
-              <button className="button button-primary" type="button" onClick={handleLogin}>
+              <button
+                className="button button-primary"
+                type="button"
+                onClick={handleLogin}
+              >
                 login
               </button>
             )}
             {isLoggedIn && (
-              <button className="button button-primary" type="button" onClick={handleLogout}>
+              <button
+                className="button button-primary"
+                type="button"
+                onClick={handleLogout}
+              >
                 logout
               </button>
             )}

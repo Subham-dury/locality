@@ -12,7 +12,7 @@ const Hero = () => {
               locality is here to assist you.
             </h5>
             <div>
-              <button class="button button-primary mx-3" type="button">
+              <button className="button button-primary mx-3" type="button">
                 Learn more
               </button>
               <a href="#about">

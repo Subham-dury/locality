@@ -1,25 +1,25 @@
 import React from "react";
 
-const FeatureCard = ({ review }) => {
+const FeatureCard = ({ item }) => {
   return (
-    <div class="card m-3">
-      <div class="row g-0">
-        <div class="col-lg-5">
+    <div className="card my-3">
+      <div className="row g-0">
+        <div className="col-lg-5">
           <div className="card-img">
             <img
-              src={require(`../../assests/review-holder-${review.img}.jpg`)}
-              class="img-fluid rounded"
-              alt="locality image"
+              src={require(`../../assests/card-holder-${item.img}.jpg`)}
+              className="img-fluid rounded"
+              alt="locality"
             />
           </div>
         </div>
-        <div class="col-lg-7">
-          <div class="card-body">
-            <h5>{review.locality}</h5>
-            <p>Review by {review.author}</p>
+        <div className="col-lg-7">
+          <div className="card-body">
+            <h5>{item.locality}</h5>
+            <p>Posted by {item.author}</p>
 
-            <small class="text-muted">{review.date}</small>
-            <p class="card-text my-2">{review.text}</p>
+            <small className="text-muted">{item.date}</small>
+            <p className="card-text my-2">{item.text}</p>
           </div>
         </div>
       </div>

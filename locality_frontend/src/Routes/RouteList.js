@@ -19,42 +19,44 @@ const RouteList = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route path="*" element={<Navigate to="/" />} />
-      <Route path="/reviews" element={<Review />} />
-      <Route path="/reports" element={<Report />} />
-      <Route
-        path="/user-reviews"
-        element={
-          <Protected isSignedIn={isSignedIn}>
-            <UserReview />
-          </Protected>
-        }
-      />
-      <Route
-        path="/user-reports"
-        element={
-          <Protected isSignedIn={isSignedIn}>
-            <UserReport />
-          </Protected>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <Protected isSignedIn={!isSignedIn}>
-            <Login/>
-          </Protected>
-        }
-      />
-      <Route
-        path="/signup"
-        element={
-          <Protected isSignedIn={!isSignedIn}>
-            <Signup />
-          </Protected>
-        }
-      />
+      <Route path="/" >
+        <Route index element={<Home />} />
+        <Route path="reviews" element={<Review />} />
+        <Route path="reports" element={<Report />} />
+        <Route
+          path="user-reviews"
+          element={
+            <Protected isSignedIn={isSignedIn}>
+              <UserReview />
+            </Protected>
+          }
+        />
+        <Route
+          path="user-reports"
+          element={
+            <Protected isSignedIn={isSignedIn}>
+              <UserReport />
+            </Protected>
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <Protected isSignedIn={!isSignedIn}>
+              <Login />
+            </Protected>
+          }
+        />
+        <Route
+          path="signup"
+          element={
+            <Protected isSignedIn={!isSignedIn}>
+              <Signup />
+            </Protected>
+          }
+        />
+      </Route>
     </Routes>
   );
 };
