@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [previousPath, SetPreviousPath] = useState('')
+
+  useEffect(() => {
+    SetPreviousPath(location?.state?.previousPath ? location.state.previousPath : '/')
+  })
 
   const handleSignUp = (event) => {
     event.preventDefault();
     localStorage.setItem("isLoggedIn", "true");
-    navigate(location.state.previousPath);
+    navigate(previousPath);
   };
 
   return (
@@ -55,7 +60,7 @@ const Signup = () => {
                   Already a member ,{" "}
                   <Link
                     to="/login"
-                    state={{ previousUrl: location.state.previousPath }}
+                    state={{ previousUrl: previousPath }}
                   >
                     Log in
                   </Link>
