@@ -2,7 +2,7 @@ import React from "react";
 
 const FeatureCard = ({ item }) => {
   return (
-    <div className="card my-3">
+    <div className="card my-3 featurecard">
       <div className="row g-0">
         <div className="col-lg-5">
           <div className="card-img">

@@ -1,0 +1,40 @@
+.half,
+.half .container > .row {
+  max-height: 100vh;
+  min-height: 500px;
+}
+
+.bg {
+  background: url('../../assests/hero-night.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: none;
+}
+
+@media (max-width: 992px) {
+  .half .bg {
+    height: 200px;
+  }
+}
+
+.half .contents,
+.half .bg {
+  width: 50%;
+}
+
+.half .contents {
+  background: var(--secondary5);
+}
+
+@media (max-width: 992px) {
+  .half .contents,
+  .half .bg {
+    width: 100%;
+  }
+}
+
+.form-group .button {
+  width: 100%;
+}
+
+
