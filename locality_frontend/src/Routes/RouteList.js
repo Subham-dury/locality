@@ -14,7 +14,8 @@ const RouteList = () => {
   const location = useLocation();
 
   useEffect(() => {
-    setIsSignedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
+    
+    setIsSignedIn(localStorage.getItem("isLoggedIn") ? true : false);
   }, [location]);
 
   return (
@@ -44,7 +45,7 @@ const RouteList = () => {
           path="login"
           element={
             <Protected isSignedIn={!isSignedIn}>
-              <Login />
+              <Login/>
             </Protected>
           }
         />

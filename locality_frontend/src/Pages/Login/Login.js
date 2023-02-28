@@ -1,14 +1,15 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./loginsignup.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = (event) => {
     event.preventDefault();
-    sessionStorage.setItem("isLoggedIn", "true");
-    navigate(-1);
+    localStorage.setItem("isLoggedIn", "true");
+    navigate(location.state.previousUrl);
   };
 
   return (
@@ -23,7 +24,7 @@ const Login = () => {
                   Login to <strong>locality</strong>
                 </h3>
 
-                <form onSubmit={""}>
+                <form onSubmit={handleLogin}>
                   <div class="form-group my-4">
                     <label htmlFor="username">Username</label>
                     <input
@@ -46,15 +47,20 @@ const Login = () => {
                     <input
                       type="submit"
                       value="Log In"
-                      class="button button-primary "
+                      class="button button-primary"
                     />
                   </div>
                 </form>
                 <hr />
 
                 <h6 className="text-center">
-                  Become a member , {" "}
-                  <Link to="/signup">Sign up</Link>
+                  Become a member ,{" "}
+                  <Link
+                    to="/signup"
+                    state={{ previousPath: location.state.previousUrl }}
+                  >
+                    Sign up
+                  </Link>
                 </h6>
               </div>
             </div>

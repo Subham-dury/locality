@@ -10,15 +10,19 @@ const Navbar = () => {
 
   useEffect(() => {
     //console.log(location)
-    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") ? true : false);
   }, [location]);
 
   const handleLogin = () => {
-    navigate("/login");
+    navigate("/login", {
+      state : {
+        previousUrl: location.pathname,
+      }
+    });
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate(location.pathname);
   };
 
