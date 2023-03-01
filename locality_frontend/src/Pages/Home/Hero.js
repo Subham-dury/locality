@@ -1,6 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate()
+
+  const direct = () => {
+    navigate("/login", {
+      state : {
+        previousUrl: '/reviews',
+      }
+    });
+  }
+
   return (
     <section className="hero d-flex align-items-center text-center">
       <div className="container">
@@ -12,8 +23,8 @@ const Hero = () => {
               locality is here to assist you.
             </h5>
             <div>
-              <button className="button button-primary mx-3" type="button">
-                Learn more
+              <button className="button button-primary mx-3" type="button" onClick={direct}>
+                Get started
               </button>
               <a href="#about">
                 <button className="button button-light mx-3">About us</button>

@@ -15,11 +15,14 @@ const FeatureCard = ({ item }) => {
         </div>
         <div className="col-lg-7">
           <div className="card-body">
-            <h5>{item.locality}</h5>
-            <p>Posted by {item.author}</p>
-
-            <small className="text-muted">{item.date}</small>
-            <p className="card-text my-2">{item.text}</p>
+            <h6>Posted by {item.author} </h6>
+            <p>Place : {item.locality}</p>
+            {item.dateOfEvent && (
+              <span className="card-text me-2 text-muted">Event date : {item.dateOfEvent}</span>
+            )}
+            {item.type && <span className="card-text ms-2 text-muted">About : {item.type}</span>}
+            <p className="card-text mb-4">{item.text}</p>
+            <small className="text-muted">Posted on {item.date}</small>
           </div>
         </div>
       </div>

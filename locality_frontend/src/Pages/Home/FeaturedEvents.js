@@ -1,8 +1,17 @@
 import React from "react";
-import { reports } from "../../Data/FeaturedReports";
+import { useNavigate } from "react-router-dom";
+import  {events} from '../../Data/FeaturedEvents'
 import FeatureCard from "./FeatureCard";
 
-const FeaturedReports = () => {
+
+const FeaturedEvents = () => {
+
+  const navigate = useNavigate();
+
+  const direct = () => {
+    navigate("/events");
+  }
+
   return (
     <section
       className="featured-data featuredreports py-5"
@@ -11,11 +20,11 @@ const FeaturedReports = () => {
       <div className="container">
         <div className="row heading align-items-center justify-content-evenly">
           <div className="col-6 col-md-8">
-            <h3>Featured reports</h3>
+            <h3>Featured events</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
-            <button className="button button-primary" type="button">
-              All reports
+            <button className="button button-primary" type="button" onClick={direct}>
+              All events
             </button>
           </div>
         </div>
@@ -25,14 +34,14 @@ const FeaturedReports = () => {
           data-bs-ride="carousel"
         >
           <div className="carousel-inner justify-content-center p-4">
-            {reports.map((report) => {
+            {events.map((event) => {
               return (
                 <div
-                  className={`carousel-item ${report.id === 1 ? "active" : ""}`}
-                  key={report.id}
+                  className={`carousel-item ${event.id === 1 ? "active" : ""}`}
+                  key={event.id}
                 >
                   <div className="d-flex justify-content-center">
-                    <FeatureCard item={report} />
+                    <FeatureCard item={event} />
                   </div>
                 </div>
               );
@@ -68,4 +77,4 @@ const FeaturedReports = () => {
   );
 };
 
-export default FeaturedReports;
+export default FeaturedEvents;

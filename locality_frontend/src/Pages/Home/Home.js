@@ -1,6 +1,7 @@
 import React from "react";
 import AboutUs from "./AboutUs";
-import FeaturedReports from "./FeaturedReports";
+import FeaturedEvents from "./FeaturedEvents";
+
 import FeaturedReviews from "./FeaturedReviews";
 import Hero from "./Hero";
 import './Home.css';
@@ -12,7 +13,7 @@ const Home = () => {
       <Hero />
       <AboutUs />
       <FeaturedReviews />
-      <FeaturedReports />
+      <FeaturedEvents/>
       <Newsletter />
     </>
   );

@@ -29,13 +29,22 @@ const Signup = () => {
                 </h3>
 
                 <form onSubmit={handleSignUp}>
-                  <div class="form-group my-4">
+                <div class="form-group my-4">
                     <label htmlFor="username">Username</label>
                     <input
                       type="text"
                       class="form-control mt-2"
-                      placeholder="your-email@gmail.com"
+                      placeholder="Abc123.."
                       id="username"
+                    />
+                  </div>
+                  <div class="form-group my-4">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="text"
+                      class="form-control mt-2"
+                      placeholder="your-email@gmail.com"
+                      id="eamil"
                     />
                   </div>
                   <div class="form-group my-4">

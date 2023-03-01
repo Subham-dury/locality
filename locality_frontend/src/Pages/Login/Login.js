@@ -31,7 +31,7 @@ const Login = () => {
 
                 <form onSubmit={handleLogin}>
                   <div class="form-group my-4">
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="username">Email</label>
                     <input
                       type="text"
                       class="form-control mt-2"

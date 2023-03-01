@@ -2,191 +2,192 @@
 
 /* hero section*/
 .hero {
-    min-height: 90vh;
-    background: linear-gradient(#8fa9f185, #0a0f22c4),
-      url("../../assests/hero-day.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: var(--text4);
-  }
-  
-  .link-button {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  .link-button:hover {
-    color: inherit;
-  }
-  
-  /* 
+  min-height: 90vh;
+  background: linear-gradient(#8fa9f185, #0a0f22c4),
+    url("../../assests/hero-day.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--text4);
+}
+
+.link-button {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-button:hover {
+  color: inherit;
+}
+
+/* 
   About us  */
-  .about .info h2 {
-    color: var(--text1);
-    margin-bottom: 2rem;
-    font-weight: 600;
+.about .info h2 {
+  color: var(--text1);
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.about .info p {
+  font-weight: 500;
+  color: var(--text3);
+  line-height: 2rem;
+  font-size: 18px;
+}
+
+.about .img-holder {
+  overflow: hidden;
+  margin-right: -4rem;
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+  .about img {
+    margin-right: -5em;
   }
-  
-  .about .info p {
-    font-weight: 500;
-    color: var(--text3);
-    line-height: 2rem;
-    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .about {
+    text-align: center;
   }
-  
-  .about .img-holder {
-    overflow: hidden;
-    margin-right: -4rem;
+
+  .about img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
   }
-  
-  @media (max-width: 992px) and (min-width: 768px) {
-    .about img {
-      margin-right: -5em;
-    }
+}
+
+/* Featured cards */
+
+.featurecard.card {
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border: none !important;
+  overflow: hidden;
+  margin: 0 10px !important;
+  background: var(--main2);
+  color: var(--secondary5);
+  position: relative;
+}
+
+.featurecard .card-body > p {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.featurecard .card-body h6 {
+  color: var(--text4);
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+}
+
+.featurecard .card-body small {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+@media (min-width: 992px) and (max-width: 1400px) {
+  .card {
+    width: 800px !important;
+    height: 200px !important;
   }
-  
-  @media (max-width: 768px) {
-    .about {
-      text-align: center;
-    }
-  
-    .about img {
-      max-width: 100%;
-      height: auto;
-      vertical-align: middle;
-    }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+  .card {
+    height: 500px !important;
+    width: 500px !important;
   }
-  
-  /* Featured cards */
-  
-  .featurecard.card {
-    box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
-    border: none !important;
-    overflow: hidden;
-    margin: 0 10px !important;
-    background: var(--main2);
+
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
   }
-  
+
+  .featurecard .card-body {
+    text-align: center !important;
+  }
+
   .featurecard .card-body > p {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
-    line-clamp: 3 !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
-    color: var(--secondary5);
-    margin-bottom: 5px;
-    font-weight: 500;
   }
-  
-  .featurecard .card-body h5{
-    color: var(--text4);
-    font-weight: 600;
-    letter-spacing: 0.2rem;
-  }
-  
-  @media (min-width: 992px) and (max-width: 1400px) {
-    .card {
-      width: 800px !important;
-      height: 200px !important;
-    }
-  }
-  
-  @media (max-width: 992px) and (min-width: 768px) {
-    .card {
-      height: 500px !important;
-      width: 500px !important;
-    }
-  
-    .card-img > img {
-      display: block;
-      width: 100%;
-      object-fit: cover;
-      object-position: center;
-      aspect-ratio: 16 / 9;
-    }
-  
-    .featurecard .card-body {
-      text-align: center !important;
-      background: var(--text-1) !important;
-    }
-  
-    .featurecard .card-body > p {
-      -webkit-line-clamp: 2 !important;
-      line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .card {
-      height: 400px !important;
-      width: 400px !important;
-    }
-  
-    .card-img > img {
-      display: block;
-      width: 100%;
-      object-fit: cover;
-      object-position: center;
-      aspect-ratio: 16 / 9;
-    }
-  
-    .featurecard .card-body {
-      text-align: center !important;
-    }
-  
-    .featurecard .card-body > p {
-      -webkit-line-clamp: 2 !important;
-      line-clamp: 2 !important;
-      -webkit-box-orient: vertical !important;
-    }
-  }
-  
-  /* Featured Reviews */
-  
+}
 
-  .featured-data h3 {
-    color: var(--text1);
+@media (max-width: 768px) {
+  .card {
+    height: 450px !important;
+    width: 450px !important;
   }
-  
-  .carousel-control {
-    background-color: var(--text3);
-    color: var(--text4);
-    border-radius: 10px;
-  }
-  
-  .carousel-control:hover {
-    background-color: var(--text1);
-  }
-  
-  @media(max-width: 768px){
-  
-    .heading h3 {
-      font-size: 1.2rem;
-      margin: 0 !important;
-    }
-  
-    .heading .button {
-      width: auto;
-      font-size: 0.8rem;
-    }
-  }
-  
 
-.newsletter-section{
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  .featurecard .card-body {
+    text-align: center !important;
+  }
+
+  .featurecard .card-body > p {
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+}
+
+/* Featured Reviews */
+
+.featured-data h3 {
+  color: var(--text1);
+}
+
+.carousel-control {
+  background-color: var(--text3);
+  color: var(--text4);
+  border-radius: 10px;
+}
+
+.carousel-control:hover {
+  background-color: var(--text1);
+}
+
+@media (max-width: 768px) {
+  .heading h3 {
+    font-size: 1.2rem;
+    margin: 0 !important;
+  }
+
+  .heading .button {
+    width: auto;
+    font-size: 0.8rem;
+  }
+}
+
+.newsletter-section {
   background: var(--secondary5);
   text-align: center;
   color: var(--text1);
-} 
+}
 
 .newsletter-section .button {
   padding: auto;
 }
 
-@media (min-width: 768px){
-  .news-input{
+@media (min-width: 768px) {
+  .news-input {
     width: 50%;
   }
 }

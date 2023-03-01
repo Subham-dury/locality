@@ -68,9 +68,9 @@ const Navbar = () => {
               <NavLink
                 className="nav-link"
                 activeClassName="active"
-                to="/reports"
+                to="/events"
               >
-                Reports
+                Events
               </NavLink>
             </li>
 

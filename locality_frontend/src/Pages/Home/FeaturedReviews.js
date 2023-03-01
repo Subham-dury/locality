@@ -1,8 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { reviews } from "../../Data/FeaturedReviews";
 import FeatureCard from "./FeatureCard";
 
 const FeaturedReviews = () => {
+
+  const navigate = useNavigate();
+
+  const direct = () => {
+    navigate("/reviews");
+  }
+
   return (
     <section className="featured-data featuredreviews py-5" id="featuredreviews">
       <div className="container">
@@ -11,7 +19,7 @@ const FeaturedReviews = () => {
             <h3>Featured reviews</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
-            <button className="button button-primary" type="button">
+            <button className="button button-primary" type="button" onClick={direct}>
               All reviews
             </button>
           </div>
