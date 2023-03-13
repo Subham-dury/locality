@@ -2,7 +2,7 @@
 
 /* hero section*/
 .hero {
-  min-height: 90vh;
+  min-height: 90dvh;
   background: linear-gradient(#8fa9f185, #0a0f22c4),
     url("../../assests/hero-day.jpg");
   background-position: center;
@@ -10,6 +10,17 @@
   background-size: cover;
   color: var(--text4);
 }
+
+.hero h1 {
+  font-size: min(1.7rem, 8vw);
+}
+
+.hero p {
+  font-size: min(1.5rem, 5vw);
+  word-spacing: min(0.3rem, 5px);
+
+}
+
 
 .link-button {
   text-decoration: none;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import Event from "../Pages/Event/Event";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Signup from "../Pages/Login/Signup";
-import Report from "../Pages/Report/Report";
 import Review from "../Pages/Review/Review";
 import UserReport from "../Pages/User/UserReports/UserReport";
 import UserReview from "../Pages/User/UserReviews/UserReview";
@@ -15,7 +15,7 @@ const RouteList = () => {
 
   useEffect(() => {
     
-    setIsSignedIn(localStorage.getItem("isLoggedIn") ? true : false);
+    setIsSignedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
   }, [location]);
 
   return (
@@ -24,7 +24,7 @@ const RouteList = () => {
       <Route path="/" >
         <Route index element={<Home />} />
         <Route path="reviews" element={<Review />} />
-        <Route path="events" element={<Report />} />
+        <Route path="events" element={<Event/>} />
         <Route
           path="user-reviews"
           element={

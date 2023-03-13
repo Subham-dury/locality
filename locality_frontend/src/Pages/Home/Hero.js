@@ -18,16 +18,15 @@ const Hero = () => {
         <div className="row">
           <div className="col-12">
             <h1>Find Your Next Perfect Place To Live</h1>
-            <h5 className="mt-3 mb-4 lh-md">
-              Moving to a new neighbourhood not sure if it's safe, not to worry
-              locality is here to assist you.
-            </h5>
+            <p className="mt-3 mb-4 lh-md">
+              Not sure about your new loaclity, <strong>locality</strong> is here to help.
+            </p>
             <div>
-              <button className="button button-primary mx-3" type="button" onClick={direct}>
+              <button className="button button-primary mx-3 my-2" type="button" onClick={direct}>
                 Get started
               </button>
               <a href="#about">
-                <button className="button button-light mx-3">About us</button>
+                <button className="button button-light mx-3 my-2">About us</button>
               </a>
             </div>
           </div>

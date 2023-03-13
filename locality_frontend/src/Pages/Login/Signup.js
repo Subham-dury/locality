@@ -8,19 +8,19 @@ const Signup = () => {
 
   useEffect(() => {
     SetPreviousPath(location?.state?.previousPath ? location.state.previousPath : '/')
-  })
+  },[])
 
   const handleSignUp = (event) => {
     event.preventDefault();
-    localStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("isLoggedIn", "true");
     navigate(previousPath);
   };
 
   return (
     <section className="p-5 mb-5">
       <div class="d-lg-flex half shadow-lg">
-        <div class="bg order-1 order-md-2"></div>
-        <div class="contents order-2 order-md-1">
+        <div class="bg order-2 order-md-1"></div>
+        <div class="contents order-1 order-md-2">
           <div class="container">
             <div class="row align-items-center justify-content-center">
               <div class="col-md-7">

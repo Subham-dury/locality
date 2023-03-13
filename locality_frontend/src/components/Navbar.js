@@ -10,7 +10,7 @@ const Navbar = () => {
 
   useEffect(() => {
     //console.log(location)
-    setIsLoggedIn(localStorage.getItem("isLoggedIn") ? true : false);
+    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
   }, [location]);
 
   const handleLogin = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate(location.pathname);
   };
 

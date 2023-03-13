@@ -14,7 +14,7 @@
   --text1: #0b1841;
 }
 
-body {
+body, html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;

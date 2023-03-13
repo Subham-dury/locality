@@ -9,11 +9,11 @@ const Login = () => {
 
   useEffect(() => {
     setPreviousUrl(location?.state?.previousUrl ? location.state.previousUrl : '/')
-  })
+  },[])
 
   const handleLogin = (event) => {
     event.preventDefault();
-    localStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("isLoggedIn", "true");
     navigate(previousUrl);
   };
 
