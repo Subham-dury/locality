@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import  {events} from '../../Data/FeaturedEvents'
-import FeatureCard from "./FeatureCard";
+import DetailsCard from "../../components/DetailsCard";
 
-
-const FeaturedEvents = () => {
+const RecentEvents = () => {
 
   const navigate = useNavigate();
 
@@ -20,7 +19,7 @@ const FeaturedEvents = () => {
       <div className="container">
         <div className="row heading align-items-center justify-content-evenly">
           <div className="col-6 col-md-8">
-            <h3>Featured events</h3>
+            <h3>Recent events</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
             <button className="button button-primary" type="button" onClick={direct}>
@@ -41,7 +40,7 @@ const FeaturedEvents = () => {
                   key={event.id}
                 >
                   <div className="d-flex justify-content-center">
-                    <FeatureCard item={event} />
+                    <DetailsCard item={event} />
                   </div>
                 </div>
               );
@@ -77,4 +76,4 @@ const FeaturedEvents = () => {
   );
 };
 
-export default FeaturedEvents;
+export default RecentEvents;

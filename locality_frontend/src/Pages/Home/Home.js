@@ -1,19 +1,18 @@
 import React from "react";
 import AboutUs from "./AboutUs";
-import FeaturedEvents from "./FeaturedEvents";
-
-import FeaturedReviews from "./FeaturedReviews";
 import Hero from "./Hero";
-import './Home.css';
+import RecentReviews from "./RecentReviews";
+import RecentEvents from "./RecentEvents";
 import Newsletter from "./Newsletter";
+import './Home.css';
 
 const Home = () => {
   return (
     <>
       <Hero />
       <AboutUs />
-      <FeaturedReviews />
-      <FeaturedEvents/>
+      <RecentReviews/>
+      <RecentEvents/>
       <Newsletter />
     </>
   );

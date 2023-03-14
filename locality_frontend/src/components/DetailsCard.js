@@ -1,14 +1,14 @@
 import React from "react";
 
-const FeatureCard = ({ item }) => {
+const DetailsCard = ({ item }) => {
   return (
     <div className="card my-3 featurecard">
       <div className="row g-0">
         <div className="col-lg-5">
           <div className="card-img">
             <img
-              src={require(`../../assests/card-holder-${item.img}.jpg`)}
-              className="img-fluid rounded"
+              src={require(`../assests/card-holder-${item.img}.jpg`)}
+              className="img-fluid rounded-start"
               alt="locality"
             />
           </div>
@@ -30,4 +30,4 @@ const FeatureCard = ({ item }) => {
   );
 };
 
-export default FeatureCard;
+export default DetailsCard;

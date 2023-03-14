@@ -1,0 +1,139 @@
+.selectlocality {
+  height: 60px;
+  width: 60dvw;
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border-radius: 9px;
+  background: var(--secondary1);
+  color: var(--text1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .selectlocality {
+    height: fit-content;
+    width: 60dvw;
+    padding: 10px 15px;
+  }
+}
+
+.localitydesc {
+  margin: max(3rem, 20px) 0;
+}
+
+@media only screen and (max-width: 992px) {
+  .localitydesc {
+    text-align: center;
+  }
+
+  .localitydesc img {
+    transform: scale(0.8, 0.8);
+  }
+}
+
+.filterbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border-radius: 9px;
+  background: var(--secondary1);
+  color: var(--text1);
+  height: 80px;
+}
+
+.filterbuttons {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 60%;
+}
+
+.filterbuttons button {
+  width: 30%;
+  margin: 0 10px;
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+  .filterbar div:first-child {
+    width: 35%;
+  }
+
+  .filterbar h3 {
+    font-size: 1.3rem;
+  }
+
+  .filterbuttons {
+    width: 65%;
+    justify-content: flex-end;
+  }
+
+  .filterbuttons button {
+    width: 35%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .filterbar {
+    padding: 1rem 0;
+    height: fit-content;
+  }
+
+  .filterbar div:first-child {
+    width: 100%;
+  }
+
+  .filterbar h3 {
+    font-size: 1.3rem;
+  }
+
+  .filterbuttons {
+    width: 100%;
+    justify-content: space-evenly;
+    margin-top: 10px;
+  }
+
+  .filterbuttons button {
+    width: 35%;
+    margin: 0;
+    padding: auto;
+    height: 50px;
+  }
+}
+
+.reviews-container {
+  height: 70dvh;
+  overflow-y: scroll;
+  scrollbar-width: auto;
+  scrollbar-color: #02071c #ffffff;
+  scrollbar-gutter: 40px;
+}
+
+
+
+/* Chrome, Edge, and Safari */
+.reviews-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.reviews-container::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.reviews-container::-webkit-scrollbar-thumb {
+  background-color: #02071c;
+  border-radius: 5px;
+  border: 3px solid #ffffff;
+}
+
+@media only screen and (max-width: 768px) {
+  .reviews-container::-webkit-scrollbar {
+    width: 16px;
+  }
+}

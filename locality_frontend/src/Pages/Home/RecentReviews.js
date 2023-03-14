@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { reviews } from "../../Data/FeaturedReviews";
-import FeatureCard from "./FeatureCard";
+import DetailsCard from "../../components/DetailsCard";
 
-const FeaturedReviews = () => {
+const RecentReviews = () => {
 
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const FeaturedReviews = () => {
       <div className="container">
         <div className="row heading align-items-center justify-content-evenly">
           <div className="col-6 col-md-8">
-            <h3>Featured reviews</h3>
+            <h3>Recent reviews</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
             <button className="button button-primary" type="button" onClick={direct}>
@@ -37,7 +37,7 @@ const FeaturedReviews = () => {
                   key={review.id}
                 >
                   <div className="d-flex justify-content-center">
-                    <FeatureCard item={review} />
+                    <DetailsCard item={review} />
                   </div>
                 </div>
               );
@@ -73,4 +73,4 @@ const FeaturedReviews = () => {
   );
 };
 
-export default FeaturedReviews;
+export default RecentReviews;
