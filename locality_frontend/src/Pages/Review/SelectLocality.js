@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 
-function SelectLocality() {
+function SelectLocality({ localitylist, setlocality }) {
+  const [selectedOption, setSelectedOption] = useState(0);
+
+  const setOption = (e) => {
+    setSelectedOption(e.target.value);
+    setlocality(e.target.value);
+  };
+
   return (
     <div className="selectlocality">
       <div>
-        <h3>Select locality</h3>
+        <h3>Select locality </h3>
       </div>
       <div>
-        <select class="form-select" aria-label="Default select example">
-          <option selected>--- Select locality ---</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+        <select
+          className="form-select"
+          value={selectedOption}
+          onChange={setOption}
+        >
+          <option value={0} selected disabled hidden>
+            please select
+          </option>
+          {localitylist.map((locality) => {
+            return (
+              <option key={locality.id} value={locality.id}>
+                {locality.name}
+              </option>
+            );
+          })}
         </select>
       </div>
     </div>

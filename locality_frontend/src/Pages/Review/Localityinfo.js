@@ -1,21 +1,19 @@
 import React from "react";
 
-function Localityinfo() {
+function Localityinfo({ localityitem }) {
   return (
     <>
       <div className="col-lg-7">
-        <h3>locality-A</h3>
-        <p className="text-mute">17k zcouookn roadclknbinisdclklk</p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam at
-          ipsa minus veniam soluta libero, voluptate deleniti provident fugiat
-          consequatur.
-        </p>
+        <h3>{localityitem.name}</h3>
+        <p className="text-mute">{localityitem.city}</p>
+        <p>{localityitem.about}</p>
       </div>
-      <div className=" col-lg-5 text-center">
+      <div className=" col-lg-5 text-center imgholder">
         <img
-          src={require(`../../assests/card-holder-3.jpg`)}
-          alt="locality-a"
+          src={require(`../../assests/card-holder-${
+            localityitem.img ? localityitem.img : 1
+          }.jpg`)}
+          alt={localityitem.name}
           className="img-fluid"
         />
       </div>

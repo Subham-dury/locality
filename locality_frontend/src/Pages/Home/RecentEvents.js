@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import  {events} from '../../Data/FeaturedEvents'
+import  {events} from '../../Data/RecentEvents'
 import DetailsCard from "../../components/DetailsCard";
 
 const RecentEvents = () => {

@@ -12,6 +12,7 @@ const AboutUs = () => {
               Choosing a new home is one of the biggest decisions of our lives.
               But before that comes the decision of choosing the perfect
               locality. What is it really like to live there?
+              
             </p>
             <p>
               The only people who actually know are the people who live there.
@@ -20,6 +21,7 @@ const AboutUs = () => {
               locality collects reviews and reports for neighbourhood
               across the country, so you can make an informed decision.
             </p>
+            
           </div>
           <div className="col-lg-8 img-holder">
             <img src={about} alt="About us"/>

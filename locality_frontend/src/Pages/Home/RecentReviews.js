@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { reviews } from "../../Data/FeaturedReviews";
+import { reviews } from "../../Data/RecentReviews";
 import DetailsCard from "../../components/DetailsCard";
 
 const RecentReviews = () => {

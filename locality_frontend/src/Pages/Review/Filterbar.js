@@ -1,10 +1,10 @@
 import React from "react";
 
-function Filterbar() {
+function Filterbar({name}) {
   return (
     <div className="filterbar text-center">
       <div>
-        <h3>Reviews for locality a</h3>
+        <h3>Reviews for {name}</h3>
       </div>
       <div className="filterbuttons">
         <button className="button button-primary">sort</button>
