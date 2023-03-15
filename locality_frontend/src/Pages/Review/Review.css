@@ -1,24 +1,4 @@
-.selectlocality {
-  height: 60px;
-  width: 60dvw;
-  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
-  border-radius: 9px;
-  background: var(--secondary5);
-  color: var(--text1);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-evenly;
-  text-align: center;
-}
 
-@media (max-width: 768px) {
-  .selectlocality {
-    height: fit-content;
-    width: 60dvw;
-    padding: 10px 15px;
-  }
-}
 
 .localitydesc {
   overflow: hidden;

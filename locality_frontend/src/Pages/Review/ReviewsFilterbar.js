@@ -4,7 +4,7 @@ function Filterbar({name}) {
   return (
     <div className="filterbar text-center">
       <div>
-        <h3>Reviews for {name}</h3>
+        <h3>{name}</h3>
       </div>
       <div className="filterbuttons">
         <button className="button button-primary">sort</button>

@@ -221,6 +221,39 @@
   }
 }
 
+/* locality selector */
+.selectlocality {
+  height: 60px;
+  width: 60vw !important;
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border-radius: 9px;
+  background: var(--secondary5);
+  color: var(--text1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .selectlocality {
+    height: fit-content;
+    width: 80vw !important;
+    padding: 10px 15px;
+  }
+}
+
+/* No locality data card */
+.nolocalitydata{
+  height: 40dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
 
 /* footer */
 .footer {

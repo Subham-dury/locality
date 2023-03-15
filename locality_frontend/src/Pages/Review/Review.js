@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import SelectLocality from "./SelectLocality";
-import Localityinfo from "./Localityinfo";
-import Filterbar from "./Filterbar";
+import SelectLocality from "../../components/SelectLocality";
+import Localityinfo from "../../components/Localityinfo";
+import Filterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
 import { localitylist } from "../../Data/LocalityList";
 import { reviews } from "../../Data/RecentReviews";
 import "./Review.css";
+import NoLocality from "../../components/NoLocality";
 
 const Review = () => {
   const [localityitem, setLocalityitem] = useState({});
-
-  useEffect(() => {
-      setLocalityitem(localitylist.filter(locality => locality.id === 1)[0])
-  }, [])
+  const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
 
   const setOption = (option) => {
-    setLocalityitem(localitylist.filter(locality => locality.id == option)[0])
+    setLocalityitem(
+      localitylist.filter((locality) => locality.id == option)[0]
+    );
+    setIsLocalityListLoaded(true);
   };
 
   return (
@@ -24,11 +25,20 @@ const Review = () => {
         <div className="row my-4 justify-content-center">
           <SelectLocality localitylist={localitylist} setlocality={setOption} />
         </div>
-        <div className="row localitydesc my-4">
-          <Localityinfo localityitem={localityitem}/>
-        </div>
+        {isLocalityListLoaded && (
+          <div className="row localitydesc my-4">
+            <Localityinfo localityitem={localityitem} />
+          </div>
+        )}
+        {!isLocalityListLoaded && <NoLocality />}
         <div className="row my-3 mx-1">
-          <Filterbar name={localityitem.name}/>
+          <Filterbar
+            name={
+              isLocalityListLoaded
+                ? `reviews for ${localityitem.name}`
+                : `All reviews`
+            }
+          />
         </div>
         <div className="row my-3">
           <Reviewscontainer reviews={reviews} />

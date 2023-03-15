@@ -10,7 +10,7 @@ function Localityinfo({ localityitem }) {
       </div>
       <div className=" col-lg-5 text-center imgholder">
         <img
-          src={require(`../../assests/card-holder-${
+          src={require(`../assests/card-holder-${
             localityitem.img ? localityitem.img : 1
           }.jpg`)}
           alt={localityitem.name}
