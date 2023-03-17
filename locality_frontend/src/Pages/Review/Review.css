@@ -32,6 +32,7 @@
   background: var(--secondary5);
   color: var(--text1);
   height: 80px;
+  width: 80dvw !important;
 }
 
 .filterbuttons {

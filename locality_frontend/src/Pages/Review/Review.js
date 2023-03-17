@@ -13,10 +13,14 @@ const Review = () => {
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
 
   const setOption = (option) => {
-    setLocalityitem(
-      localitylist.filter((locality) => locality.id == option)[0]
-    );
-    setIsLocalityListLoaded(true);
+    if (option != "0") {
+      setLocalityitem(
+        localitylist.filter((locality) => locality.id == option)[0]
+      );
+      setIsLocalityListLoaded(true);
+    } else {
+      setIsLocalityListLoaded(false);
+    }
   };
 
   return (

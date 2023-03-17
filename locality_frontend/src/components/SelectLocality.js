@@ -19,8 +19,8 @@ function SelectLocality({ localitylist, setlocality }) {
           value={selectedOption}
           onChange={setOption}
         >
-          <option value={0} selected disabled hidden>
-            please select
+          <option value={0} selected >
+            All
           </option>
           {localitylist.map((locality) => {
             return (

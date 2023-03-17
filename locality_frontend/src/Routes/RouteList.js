@@ -14,7 +14,6 @@ const RouteList = () => {
   const location = useLocation();
 
   useEffect(() => {
-    
     setIsSignedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
   }, [location]);
 

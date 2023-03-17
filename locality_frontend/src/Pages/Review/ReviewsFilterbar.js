@@ -1,14 +1,23 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { useLocation } from "react-router-dom";
 
 function Filterbar({name}) {
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsSignedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
+  }, [location]);
+
   return (
-    <div className="filterbar text-center">
+    <div className="filterbar text-center mx-auto">
       <div>
-        <h3>{name}</h3>
+        <h3 className="ms-md-4">{name}</h3>
       </div>
       <div className="filterbuttons">
         <button className="button button-primary">sort</button>
-        <button className="button button-dark">Add new review</button>
+        {isSignedIn && <button className="button button-dark">Add new review</button>}
       </div>
       <div></div>
     </div>

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
 
 function NoLocality() {
   return (
-    <div className="nolocalitydata">No locality data available. Please select from the list.</div>
-  )
+    <div className="nolocalitydata">
+      locality not selected, showing all reviews. Please select the locality
+      above.
+    </div>
+  );
 }
 
-export default NoLocality
+export default NoLocality;
