@@ -2,6 +2,8 @@ import React from "react";
 import DetailsCard from "../../components/DetailsCard";
 
 function Reviewscontainer({reviews}) {
+
+
   return (
     <div className="reviews-container">
       {reviews.map((review) => {

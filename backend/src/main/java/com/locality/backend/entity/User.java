@@ -12,11 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,10 +31,12 @@ public class User {
 	private Long userId;
 	
 	@NotNull
-    @Length(min = 6, max = 32, message = "username must have between 6 and 32 characters")
+    @Length(min = 5, max = 10, message = "Username must have between 5 and 10 characters")
+	@Column(unique = true)
 	private String username;
 	
-	@Email(message = "Invalid email !!!")
+	@Email(message = "Invalid email")
+	@Column(unique = true)
 	private String email;
 	
 	@NotBlank(message = "Password cannot be empty")

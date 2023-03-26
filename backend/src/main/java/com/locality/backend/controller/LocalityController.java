@@ -15,27 +15,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.locality.backend.entity.Locality;
 import com.locality.backend.entity.User;
 import com.locality.backend.response.SuccessResponse;
-import com.locality.backend.service.UserService;
+import com.locality.backend.service.LocalityService;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-
+@RequestMapping("/locality")
+public class LocalityController {
+	
 	@Autowired
-	private UserService userService;
+	private LocalityService localityService;
 
 	@PostMapping("/")
-	public ResponseEntity<SuccessResponse> saveUser(@RequestBody User user){
+	public ResponseEntity<SuccessResponse> saveLocality(@RequestBody Locality locality){
 		
 		
 		return new ResponseEntity<SuccessResponse>(SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.CREATED.value())
 				.status(HttpStatus.CREATED)
-				.message("User created successfully")
-				.data(Map.of("user", userService.saveUser(user)))
+				.message("Locality created successfully")
+				.data(Map.of("locality", localityService.saveLocality(locality)))
 				.build(),
 				HttpStatus.CREATED);
 			
@@ -43,81 +44,68 @@ public class UserController {
 	
 	
 	@GetMapping("/")
-	public ResponseEntity<SuccessResponse> findUser(@RequestBody User user){
+	public ResponseEntity<SuccessResponse> findLocality(@RequestBody Locality locality){
 		
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("User found successfully")
-				.data(Map.of("user", userService.getUser(user)))
+				.message("Locality found successfully")
+				.data(Map.of("locality", localityService.getLocality(locality)))
 				.build());
 	}
 
 	
-	@GetMapping("/{username}")
-	public ResponseEntity<SuccessResponse> findUserByUsername(@PathVariable String username){
+	@GetMapping("/{name}")
+	public ResponseEntity<SuccessResponse> findLocalityByName(@PathVariable String name){
 		
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("Found user successfully with username "+username)
-				.data(Map.of("user", userService.getUserByUsername(username)))
+				.message("Found locality successfully with name "+ name)
+				.data(Map.of("locality", localityService.getLocalityByName(name)))
 				.build());
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<SuccessResponse> findAllUser(){
+	public ResponseEntity<SuccessResponse> findAllLocality(){
 		
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("Found all users successfully")
-				.data(Map.of("Users", userService.getAllUser()))
-				.build());
-	}
-	
-	@GetMapping("/all/{role}")
-	public ResponseEntity<SuccessResponse> findAllUserByRole(@PathVariable String role){
-		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all users successfully with role "+role)
-				.data(Map.of("Users", userService.getUserByRole(role)))
+				.message("Found all localities successfully")
+				.data(Map.of("Users", localityService.getAllLocality()))
 				.build());
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<SuccessResponse> updateUser(@RequestBody User user, @PathVariable String id){
+	public ResponseEntity<SuccessResponse> updateLocality(@RequestBody Locality locality, 
+				@PathVariable String id){
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("User updated successfully")
-				.data(Map.of("user", userService.updateUser(user, Long.parseLong(id))))
+				.message("Locality updated successfully")
+				.data(Map.of("locality", localityService.updateLocality(locality, Long.parseLong(id))))
 				.build());
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccessResponse> deleteUser(@PathVariable String id){
+	public ResponseEntity<SuccessResponse> deleteLocality(@PathVariable String id){
 		
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("User deleted successfully")
-				.data(Map.of("deleted", userService.deleteUser(Long.parseLong(id))))
+				.message("Locality deleted successfully")
+				.data(Map.of("deleted", localityService.deleteLocality(Long.parseLong(id))))
 				.build());
 	}
-
 }
