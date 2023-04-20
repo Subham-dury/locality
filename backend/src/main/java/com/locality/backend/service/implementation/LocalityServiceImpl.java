@@ -29,7 +29,7 @@ public class LocalityServiceImpl implements LocalityService {
 		boolean doesLocalityExist = this.doesLocalityExist(locality.getName()) != null;
 
 		if (doesLocalityExist) {
-			log.info("Locality with above name of ", locality.getName(), " exists");
+			log.info("Locality with name of ", locality.getName(), " exists");
 			throw new EntityAlreadyExistException("Locality needs to be unique");
 		}
 
@@ -53,16 +53,16 @@ public class LocalityServiceImpl implements LocalityService {
 	}
 
 	@Override
-	public Locality getLocalityByName(String name) {
+	public Locality getLocalityById(Long id) {
 
-		Locality searchedLocality = this.doesLocalityExist(name);
+		Optional<Locality> searchedLocality = localityRepository.findById(id);
 
-		if (searchedLocality == null) {
+		if (searchedLocality.isEmpty()) {
 			log.info("Locality not found");
 			throw new EntityNotFoundException("Locality not found");
 		}
 
-		return searchedLocality;
+		return searchedLocality.get();
 	}
 
 	@Override
@@ -92,16 +92,20 @@ public class LocalityServiceImpl implements LocalityService {
 
 		Locality updatedLocality = doesLocalityExist.get();
 		
-		updatedLocality.setName(locality.getName() == null
+		updatedLocality.setName(locality.getName() == null || locality.getName().startsWith(" ")
+				|| locality.getName().endsWith(" ")
 				? updatedLocality.getName() : locality.getName());
 		
-		updatedLocality.setCity(locality.getCity() == null
+		updatedLocality.setCity(locality.getCity() == null || locality.getCity().startsWith(" ")
+				|| locality.getCity().endsWith(" ")
 				? updatedLocality.getCity() : locality.getCity());
 		
-		updatedLocality.setState(locality.getState() == null
+		updatedLocality.setState(locality.getState() == null || locality.getState().startsWith(" ")
+				|| locality.getState().endsWith(" ")
 				? updatedLocality.getState() : locality.getState());
 		
-		updatedLocality.setAbout(locality.getAbout() == null
+		updatedLocality.setAbout(locality.getAbout() == null || locality.getAbout().startsWith(" ")
+				|| locality.getAbout().endsWith(" ")
 				? updatedLocality.getAbout() : locality.getAbout());
 
 		return updatedLocality;
@@ -126,5 +130,5 @@ public class LocalityServiceImpl implements LocalityService {
 	public Locality doesLocalityExist(String name) {
 		return this.localityRepository.findByName(name);
 	}
-
+	
 }

@@ -10,11 +10,9 @@ public interface UserService {
 	
 	public User getUser(User user);
 		
-	public User getUserByUsername(String username);
+	public User getUserById(Long id);
 	
 	public List<User> getAllUser();
-	
-	public List<User> getUserByRole(String role);
 	
 	public User updateUser(User user, Long id);
 	

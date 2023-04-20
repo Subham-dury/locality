@@ -10,7 +10,7 @@ public interface LocalityService {
 	
 	public Locality getLocality(Locality locality);
 	
-	public Locality getLocalityByName(String name);
+	public Locality getLocalityById(Long id);
 	
 	public List<Locality> getAllLocality();
 	

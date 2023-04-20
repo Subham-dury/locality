@@ -1,5 +1,7 @@
 package com.locality.backend.service.implementation;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,8 @@ import com.locality.backend.repository.UserRepository;
 import com.locality.backend.service.UserService;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -30,6 +34,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User saveUser(User user) {
+		
+		if(user.getPassword().contains(" ")) {
+			throw new IllegalArgumentException("password cannot have space");
+		}
 
 		boolean doesUserNameExist = this.doesUserExistByName(user.getUsername()) != null;
 		boolean doesUserEmailExist = this.doesUserExistByEmail(user.getEmail()) != null;
@@ -56,26 +64,29 @@ public class UserServiceImpl implements UserService {
 		
 		User searchedUser = this.doesUserExistByName(user.getUsername());
 		
-		if(searchedUser == null || !searchedUser.getPassword().equals(user.getPassword())) {
+		if(searchedUser == null) {
 			log.info("User not found");
 			throw new EntityNotFoundException("User not found");
 		}
-
+		else if(!searchedUser.getPassword().equals(user.getPassword())) {
+			log.info("Incorrect password");
+			throw new EntityNotFoundException("Incorrect password");
+		}
 		return searchedUser;
  
 	}
 	
 	@Override
-	public User getUserByUsername(String username) {
+	public User getUserById(Long id) {
 		
-		User searchedUser = this.doesUserExistByName(username);
+		Optional<User> searchedUser = userRepository.findById(id);
 		
-		if(searchedUser == null) {
+		if(searchedUser.isEmpty()) {
 			log.info("User not found");
 			throw new EntityNotFoundException("User not found");
 		}
 		
-		return searchedUser;
+		return searchedUser.get();
 	}
 
 	@Override
@@ -96,23 +107,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<User> getUserByRole(String role) {
-		
-		
-		List<User> allUsers = this.userRepository.findByRole(role);
-		
-		allUsers.forEach(user -> System.out.println(user.getUsername()));
-		
-		if(allUsers.isEmpty()) {
-			log.info("User not found");
-			throw new EntityNotFoundException("User not found");
-		}
-		
-		return allUsers;
-
-	}
-	
-	@Override
 	public User updateUser(User user, Long id) {
 		Optional<User> doesUserExist = this.userRepository.findById(id);
 
@@ -122,14 +116,16 @@ public class UserServiceImpl implements UserService {
 		}
 
 		User updatedUser = doesUserExist.get();
-		updatedUser.setUsername(user.getUsername() == null
-				? updatedUser.getUsername() : user.getUsername());
 		
-		updatedUser.setEmail(user.getEmail() == null
-				? updatedUser.getEmail() : user.getEmail());
+		if(user.getUsername() != null && (user.getUsername().startsWith(" ") || user.getUsername().endsWith(" ")))
+			throw new IllegalArgumentException("Username cannot start or end with space");
+		updatedUser.setUsername(user.getUsername() == null ? updatedUser.getUsername() : user.getUsername());
+
+		updatedUser.setEmail(user.getEmail() == null ? updatedUser.getEmail() : user.getEmail());
 		
-		updatedUser.setPassword(user.getPassword() == null
-				? updatedUser.getPassword() : user.getPassword());
+		if(user.getPassword() != null && user.getPassword().contains(" "))
+			throw new IllegalArgumentException("Password cannot contain space");
+		updatedUser.setPassword(user.getPassword() == null ? updatedUser.getPassword() : user.getPassword());
 		
 		return (this.userRepository.save(updatedUser));
 	}

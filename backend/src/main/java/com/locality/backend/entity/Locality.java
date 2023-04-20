@@ -1,14 +1,23 @@
 package com.locality.backend.entity;
 
-import org.hibernate.validator.constraints.Length;
+import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,9 +39,11 @@ public class Locality {
 	private String name;
 	
 	@NotNull(message = "City cannot be null")
+	@NotEmpty(message = "City cannot be empty")
 	private String city;
 	
 	@NotNull(message = "State cannot be null")
+	@NotEmpty(message = "State cannot be empty")
 	private String state;
 	
 	@NotNull
@@ -41,7 +52,15 @@ public class Locality {
 	private int img;
 	
 	@NotNull
-	@Length(min = 10, max = 255, message = "about must be precise.")
+	@Length(min = 10, max = 255, message = "About must be precise.")
 	private String about;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "locality", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Review> review;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "locality", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Event> event;
 
 }

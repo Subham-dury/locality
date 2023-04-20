@@ -56,16 +56,16 @@ public class UserController {
 	}
 
 	
-	@GetMapping("/{username}")
-	public ResponseEntity<SuccessResponse> findUserByUsername(@PathVariable String username){
+	@GetMapping("/{id}")
+	public ResponseEntity<SuccessResponse> findUserByUsername(@PathVariable String id){
 		
 		return ResponseEntity.ok(
 				SuccessResponse.builder()
 				.timeStamp(LocalDateTime.now())
 				.statusCode(HttpStatus.OK.value())
 				.status(HttpStatus.OK)
-				.message("Found user successfully with username "+username)
-				.data(Map.of("user", userService.getUserByUsername(username)))
+				.message("Found user successfully")
+				.data(Map.of("user", userService.getUserById(Long.parseLong(id))))
 				.build());
 	}
 	
@@ -79,19 +79,6 @@ public class UserController {
 				.status(HttpStatus.OK)
 				.message("Found all users successfully")
 				.data(Map.of("Users", userService.getAllUser()))
-				.build());
-	}
-	
-	@GetMapping("/all/{role}")
-	public ResponseEntity<SuccessResponse> findAllUserByRole(@PathVariable String role){
-		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all users successfully with role "+role)
-				.data(Map.of("Users", userService.getUserByRole(role)))
 				.build());
 	}
 	

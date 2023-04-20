@@ -16,7 +16,6 @@ import com.locality.backend.response.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 
@@ -34,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 			
 			return new ResponseEntity<ExceptionResponse>(ExceptionResponse.builder().
 					timeStamp(LocalDateTime.now())
-					.data(Map.of("messages", messages))
+					.data(Map.of("messages", messages.get(0)))
 					.status(HttpStatus.BAD_REQUEST)
 					.statusCode(HttpStatus.BAD_REQUEST.value())
 					.typeOfError("Invalid arguments").build(),
@@ -83,7 +82,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		try {
 			return new ResponseEntity<ExceptionResponse>(ExceptionResponse.builder().
 					timeStamp(LocalDateTime.now())
-					.data(Map.of("messages", "Entity not found"))
+					.data(Map.of("messages", ex.getMessage()))
 					.status(HttpStatus.BAD_REQUEST)
 					.statusCode(HttpStatus.BAD_REQUEST.value())
 					.typeOfError("Invalid arguments").build(),
