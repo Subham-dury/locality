@@ -1,6 +1,6 @@
 package com.locality.backend.controller;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.locality.backend.entity.Event;
-import com.locality.backend.entity.Review;
-import com.locality.backend.response.SuccessResponse;
 import com.locality.backend.service.EventService;
 
 @RestController
@@ -30,97 +28,54 @@ public class EventController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<SuccessResponse> saveEvent(@RequestBody Event event, @RequestParam Long userId,
-				@RequestParam Long localityId){
+	public ResponseEntity<Event> saveEvent(@RequestBody Event event, @RequestParam Long userId,
+				@RequestParam Long localityId, @RequestParam Long typeId){
 		
 		
-		return new ResponseEntity<SuccessResponse>(SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.CREATED.value())
-				.status(HttpStatus.CREATED)
-				.message("Event created successfully")
-				.data(Map.of("event", eventService.saveEvent(event, userId, localityId)))
-				.build(),
+		return new ResponseEntity<Event>(this.eventService.saveEvent(event, userId, localityId, typeId),
 				HttpStatus.CREATED);
 			
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<SuccessResponse> findAllEvents(){
+	public ResponseEntity<List<Event>> findAllEvents(){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all events successfully")
-				.data(Map.of("events", eventService.getAllEvent()))
-				.build());
+		return new ResponseEntity<List<Event>>(this.eventService.getAllEvent(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/recent")
-	public ResponseEntity<SuccessResponse> findRecentEvent(){
+	public ResponseEntity<List<Event>> findRecentEvent(){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all events successfully")
-				.data(Map.of("events", eventService.getRecentEvent()))
-				.build());
+		return new ResponseEntity<List<Event>>(this.eventService.getRecentEvent(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/byuser/{userId}")
-	public ResponseEntity<SuccessResponse> findEventByUserid(@PathVariable String userId){
+	public ResponseEntity<List<Event>> findEventByUserid(@PathVariable String userId){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all events successfully")
-				.data(Map.of("events", eventService.getAllEventByUser(Long.parseLong(userId))))
-				.build());
+		return ResponseEntity.ok(this.eventService.getAllEventByUser(Long.parseLong(userId)));
 	}
 	
 	@GetMapping("/bylocality/{localityId}")
-	public ResponseEntity<SuccessResponse> findReviewByLocalityid(@PathVariable String localityId){
+	public ResponseEntity<List<Event>> findReviewByLocalityid(@PathVariable String localityId){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all events successfully")
-				.data(Map.of("events", eventService.getAllEventByLocality(Long.parseLong(localityId))))
-				.build());
+		return ResponseEntity.ok(this.eventService.getAllEventByLocality(Long.parseLong(localityId)));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<SuccessResponse> updateReview(@RequestBody Event event, 
+	public ResponseEntity<Event> updateReview(@RequestBody Event event, 
 				@PathVariable String id){
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Event updated successfully")
-				.data(Map.of("event", eventService.updateEvent(event, Long.parseLong(id))))
-				.build());
+		return new ResponseEntity<Event>(this.eventService.updateEvent(event, Long.parseLong(id)),
+				HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccessResponse> deleteReview(@PathVariable String id){
+	public ResponseEntity<?> deleteReview(@PathVariable String id){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Event deleted successfully")
-				.data(Map.of("deleted", eventService.deleteEvent(Long.parseLong(id))))
-				.build());
+		boolean deleteReview = this.eventService.deleteEvent(Long.parseLong(id));
+		if(deleteReview) {
+			return ResponseEntity.ok(Map.of("message", "Event deleted successfully"));
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 }

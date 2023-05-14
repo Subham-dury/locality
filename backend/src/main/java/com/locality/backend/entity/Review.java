@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class Review {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long reviewId;
 	
 	@Column(nullable = false)
 	private LocalDate date;
@@ -39,7 +40,7 @@ public class Review {
 	@Max(value = 4)
 	private int img;
 	
-	@NotNull
+	@NotBlank(message="Review cannot be empty")
 	@Length(min = 10, max = 255, message = "Review must be precise.")
 	private String content;
 	

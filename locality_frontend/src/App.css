@@ -187,9 +187,11 @@
     line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
   }
+
   .featurecard .card-body small {
     position: relative !important;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -208,18 +210,20 @@
 
   .featurecard .card-body {
     text-align: center !important;
+    margin: auto;
+    align-self: center;
   }
 
   .featurecard .card-body > p {
-    -webkit-line-clamp: 2 !important;
-    line-clamp: 2 !important;
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
     -webkit-box-orient: vertical !important;
   }
 
-  .featurecard .card-body small {
-    position: relative !important;
-  }
+
+
 }
+
 
 /* locality selector */
 .selectlocality {

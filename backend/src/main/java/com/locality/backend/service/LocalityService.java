@@ -7,17 +7,15 @@ import com.locality.backend.entity.Locality;
 public interface LocalityService {
 
 	public Locality saveLocality(Locality locality);
-	
-	public Locality getLocality(Locality locality);
-	
-	public Locality getLocalityById(Long id);
-	
+
+	public Locality getLocalityById(Long localityId);
+
 	public List<Locality> getAllLocality();
-	
-	public Locality updateLocality(Locality locality, Long id);
-	
-	public boolean deleteLocality(Long id);
-	
-	public Locality doesLocalityExist(String name);
+
+	public Locality updateLocality(Locality locality, Long localityId);
+
+	public boolean deleteLocality(Long localityId);
+
+	public Locality doesLocalityExist(String localityName);
 	
 }

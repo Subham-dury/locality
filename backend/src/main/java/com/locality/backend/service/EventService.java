@@ -7,7 +7,7 @@ import com.locality.backend.entity.Review;
 
 public interface EventService {
 	
-	public Event saveEvent(Event event, Long userId, Long localityId);
+	public Event saveEvent(Event event, Long userId, Long localityId, Long eventTypeId);
 	
 	public List<Event> getAllEvent();
 	
@@ -16,6 +16,8 @@ public interface EventService {
 	public List<Event> getAllEventByLocality(Long localityId);
 	
 	public List<Event> getAllEventByUser(Long userId);
+	
+	public List<Event> getAllEventByType(Long eventTypeId);
 	
 	public Event updateEvent(Event event, Long id);
 	

@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,7 +22,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	
-	@NotNull
+	@NotEmpty(message="Username cannot be empty")
     @Length(min = 5, max = 20, message = "Username must have between 5 and 20 characters.")
 	@Column(unique = true)
 	private String username;
@@ -46,7 +47,7 @@ public class User {
 	private String email;
 	
 	@NotBlank(message = "Password cannot be empty")
-	@NotEmpty(message = "Password cannot be empty")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@ManyToOne(fetch = FetchType.EAGER)

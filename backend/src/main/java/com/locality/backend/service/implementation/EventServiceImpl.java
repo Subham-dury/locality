@@ -8,15 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.locality.backend.entity.Event;
+import com.locality.backend.entity.EventType;
 import com.locality.backend.entity.Locality;
-import com.locality.backend.entity.Review;
 import com.locality.backend.entity.User;
-import com.locality.backend.exception.EntityNotFoundException;
+import com.locality.backend.exception.DataExistsException;
+import com.locality.backend.exception.DataNotFoundException;
 import com.locality.backend.repository.EventRepository;
 import com.locality.backend.service.EventService;
+import com.locality.backend.service.EventTypeService;
 import com.locality.backend.service.LocalityService;
 import com.locality.backend.service.UserService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,28 +38,51 @@ public class EventServiceImpl implements EventService {
 	@Autowired
 	private LocalityService localityService;
 	
+	@Autowired
+	private EventTypeService eventTypeService;
+	
 	@Override
-	public Event saveEvent(Event event, Long userId, Long localityId) {
+	public Event saveEvent(Event event, Long userId, Long localityId, Long eventTypeId) 
+			throws DataExistsException, DataNotFoundException{
 		
-	User user = userService.getUserById(userId);
-		
-		if(user == null) {
-			log.info("User not found");
-			throw new EntityNotFoundException("User not found");
+		if(this.eventRepository.findAll().isEmpty()) {
+			this.eventRepository.resetAutoIncrement();
 		}
 		
-		Locality locality = localityService.getLocalityById(localityId);
+		User user = this.userService.getUserById(userId);
+		
+		if(user == null) {
+			log.error("User not found");
+			throw new DataNotFoundException("User not found");
+		}
+		
+		Locality locality = this.localityService.getLocalityById(localityId);
 		
 		if(locality == null) {
-			log.info("Locality not found");
-			throw new EntityNotFoundException("Locality not found");
+			log.error("Locality not found");
+			throw new DataNotFoundException("Locality not found");
+		}
+		
+		EventType eventType = this.eventTypeService.getEventTypeById(eventTypeId);
+		
+		if(eventType == null) {
+			log.error("Event type not found");
+			throw new DataNotFoundException("Event type not found");
+		}
+		
+		if(!this.eventRepository.findByUserAndLocalityAndEventType(user, locality, eventType)
+				.isEmpty()) {
+			log.error("Duplicate data");
+			throw new DataExistsException("You have already reported an event for the locality and type.");
 		}
 		
 		log.info("Saving new event");
+		
 		event.setImg((int) (Math.random() * 4) + 1);
 		event.setPostDate(LocalDate.now());
 		event.setUser(user);
 		event.setLocality(locality);
+		event.setEventType(eventType);
 		return (this.eventRepository.save(event));
 		
 	}
@@ -65,8 +91,6 @@ public class EventServiceImpl implements EventService {
 	public List<Event> getAllEvent() {
 		
 		List<Event> events = this.eventRepository.findAll();
-		
-		events.forEach(event -> System.out.println(event.getContent()));
 		
 		if (events.isEmpty()) {
 			log.info("Events not found");
@@ -81,8 +105,6 @@ public class EventServiceImpl implements EventService {
 		
 		List<Event> events = this.eventRepository.findTop10ByOrderByPostDateDesc();
 		
-		events.forEach(event -> System.out.println(event.getContent()));		
-
 		if (events.isEmpty()) {
 			log.info("Events not found");
 			throw new EntityNotFoundException("Events not found");
@@ -94,7 +116,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<Event> getAllEventByLocality(Long localityId) {
 		
-		Locality locality = localityService.getLocalityById(localityId);
+		Locality locality = this.localityService.getLocalityById(localityId);
 		
 		List<Event> events = this.eventRepository.findByLocality(locality);
 		
@@ -111,12 +133,11 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public List<Event> getAllEventByUser(Long userId) {
 		
-		User user = userService.getUserById(userId);
+		User user = this.userService.getUserById(userId);
 		
 		List<Event> events = this.eventRepository.findByUser(user);
 		
-		events.forEach(event -> System.out.println(event.getContent()));		
-		
+
 		if (events.isEmpty()) {
 			log.info("Events not found");
 			throw new EntityNotFoundException("Events not found");
@@ -124,11 +145,29 @@ public class EventServiceImpl implements EventService {
 		
 		return events;
 	}
+	
+	@Override
+	public List<Event> getAllEventByType(Long eventTypeId) {
+		
+		EventType eventType = this.eventTypeService.getEventTypeById(eventTypeId);
+		
+		List<Event> events = this.eventRepository.findByEventType(eventType);
+		
+
+		if (events.isEmpty()) {
+			log.info("Events not found");
+			throw new EntityNotFoundException("Events not found");
+		}
+		
+		return events;
+		
+	}
+	
 
 	@Override
-	public Event updateEvent(Event event, Long id) {
+	public Event updateEvent(Event event, Long eventId) {
 		
-		Optional<Event> searchedEvent = eventRepository.findById(id);
+		Optional<Event> searchedEvent = this.eventRepository.findById(eventId);
 		
 		if(searchedEvent.isEmpty()) {
 			log.info("Events not found");
@@ -139,9 +178,6 @@ public class EventServiceImpl implements EventService {
 		
 		updatedEvent.setEventDate(event.getEventDate() == null ?
 				updatedEvent.getEventDate() : event.getEventDate());
-		
-		updatedEvent.setTypeOfEvent(event.getTypeOfEvent() == null ?
-				updatedEvent.getTypeOfEvent() : event.getTypeOfEvent());
 		
 		updatedEvent.setContent(event.getContent() == null ?
 				updatedEvent.getContent() : event.getContent());
@@ -162,5 +198,7 @@ public class EventServiceImpl implements EventService {
 		eventRepository.deleteById(id);
 		return true;
 	}
+
+	
 
 }

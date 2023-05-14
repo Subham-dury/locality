@@ -70,7 +70,7 @@
 }
 
 
-/* Featured Reviews */
+/* Featured Reviews And Events */
 
 .featured-data h3 {
   color: var(--text1);
@@ -97,6 +97,15 @@
     font-size: 0.8rem;
   }
 }
+
+@media (max-width: 600px){
+  .carousel button {
+    display: none;
+  }
+}
+
+
+/* Newsletter */
 
 .newsletter-section {
   background: var(--secondary5);

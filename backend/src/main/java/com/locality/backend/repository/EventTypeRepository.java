@@ -5,15 +5,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.locality.backend.entity.Role;
+import com.locality.backend.entity.EventType;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long>{
+public interface EventTypeRepository extends JpaRepository<EventType, Long> {
 
-	Role findByRolename(String rolename);
+	EventType findByTypeOfEvent(String eventTypeName);
 	
 	@Modifying
-	@Query(value = "ALTER TABLE roles AUTO_INCREMENT = 1;", nativeQuery = true)
+	@Query(value = "ALTER TABLE typeofevents AUTO_INCREMENT = 1;;", nativeQuery = true)
 	void resetAutoIncrement();
 
 }

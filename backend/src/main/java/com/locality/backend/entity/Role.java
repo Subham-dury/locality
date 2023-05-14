@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "buildRole")
@@ -25,10 +24,11 @@ public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long roleId;
 
 	@Column(nullable = false)
-	private String name;
+	private String rolename;
 
 	@OneToMany(mappedBy = "role")
 	@JsonIgnore

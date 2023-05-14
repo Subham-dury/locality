@@ -1,6 +1,5 @@
 package com.locality.backend.controller;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.locality.backend.entity.User;
-import com.locality.backend.response.SuccessResponse;
+import com.locality.backend.exception.DataExistsException;
+import com.locality.backend.exception.DataNotFoundException;
 import com.locality.backend.service.UserService;
 
 @RestController
@@ -27,84 +27,34 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/")
-	public ResponseEntity<SuccessResponse> saveUser(@RequestBody User user){
+	public ResponseEntity<User> saveUser(@RequestBody User user) throws DataExistsException{
 		
-		
-		return new ResponseEntity<SuccessResponse>(SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.CREATED.value())
-				.status(HttpStatus.CREATED)
-				.message("User created successfully")
-				.data(Map.of("user", userService.saveUser(user)))
-				.build(),
-				HttpStatus.CREATED);
+		return new ResponseEntity<User>(this.userService.saveUser(user), HttpStatus.CREATED);
 			
 	}
 	
 	
 	@GetMapping("/")
-	public ResponseEntity<SuccessResponse> findUser(@RequestBody User user){
+	public ResponseEntity<User> findUser(@RequestBody User user) throws DataNotFoundException{
+	
+		return ResponseEntity.ok(this.userService.getUser(user));
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("User found successfully")
-				.data(Map.of("user", userService.getUser(user)))
-				.build());
 	}
 
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<SuccessResponse> findUserByUsername(@PathVariable String id){
+	@PutMapping("/{userId}")
+	public ResponseEntity<User> updateUser(@RequestBody User user,
+			@PathVariable String userId) throws DataNotFoundException{
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found user successfully")
-				.data(Map.of("user", userService.getUserById(Long.parseLong(id))))
-				.build());
+		return ResponseEntity.ok(this.userService.updateUser(user, Long.parseLong(userId)));
 	}
 	
-	@GetMapping("/all")
-	public ResponseEntity<SuccessResponse> findAllUser(){
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> deleteUser(@PathVariable String userId) throws DataNotFoundException{
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all users successfully")
-				.data(Map.of("Users", userService.getAllUser()))
-				.build());
+		Boolean deleteUser = this.userService.deleteUser(Long.parseLong(userId));
+		if(deleteUser) {
+			return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+		}
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<SuccessResponse> updateUser(@RequestBody User user, @PathVariable String id){
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("User updated successfully")
-				.data(Map.of("user", userService.updateUser(user, Long.parseLong(id))))
-				.build());
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccessResponse> deleteUser(@PathVariable String id){
-		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("User deleted successfully")
-				.data(Map.of("deleted", userService.deleteUser(Long.parseLong(id))))
-				.build());
-	}
-
 }

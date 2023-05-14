@@ -1,6 +1,6 @@
 package com.locality.backend.controller;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.locality.backend.entity.Locality;
-import com.locality.backend.entity.User;
-import com.locality.backend.response.SuccessResponse;
 import com.locality.backend.service.LocalityService;
 
 @RestController
@@ -28,84 +26,43 @@ public class LocalityController {
 	private LocalityService localityService;
 
 	@PostMapping("/")
-	public ResponseEntity<SuccessResponse> saveLocality(@RequestBody Locality locality){
+	public ResponseEntity<Locality> saveLocality(@RequestBody Locality locality){
 		
-		
-		return new ResponseEntity<SuccessResponse>(SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.CREATED.value())
-				.status(HttpStatus.CREATED)
-				.message("Locality created successfully")
-				.data(Map.of("locality", localityService.saveLocality(locality)))
-				.build(),
+		return new ResponseEntity<Locality>(this.localityService.saveLocality(locality),
 				HttpStatus.CREATED);
 			
 	}
 	
-	
-	@GetMapping("/")
-	public ResponseEntity<SuccessResponse> findLocality(@RequestBody Locality locality){
+	@GetMapping("/{localityId}")
+	public ResponseEntity<Locality> findLocalityById(@PathVariable String localityId){
 		
 		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Locality found successfully")
-				.data(Map.of("locality", localityService.getLocality(locality)))
-				.build());
-	}
-
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<SuccessResponse> findLocalityById(@PathVariable String id){
-		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found locality successfully.")
-				.data(Map.of("locality", localityService.getLocalityById(Long.parseLong(id))))
-				.build());
+				this.localityService.getLocalityById(Long.parseLong(localityId)));
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<SuccessResponse> findAllLocality(){
+	public ResponseEntity<List<Locality>> findAllLocality(){
 		
 		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all localities successfully")
-				.data(Map.of("localities", localityService.getAllLocality()))
-				.build());
+				this.localityService.getAllLocality());
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<SuccessResponse> updateLocality(@RequestBody Locality locality, 
-				@PathVariable String id){
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Locality updated successfully")
-				.data(Map.of("locality", localityService.updateLocality(locality, Long.parseLong(id))))
-				.build());
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccessResponse> deleteLocality(@PathVariable String id){
+	@PutMapping("/{localityId}")
+	public ResponseEntity<Locality> updateLocality(@RequestBody Locality locality, 
+				@PathVariable String localityId){
 		
 		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Locality deleted successfully")
-				.data(Map.of("deleted", localityService.deleteLocality(Long.parseLong(id))))
-				.build());
+				this.localityService.updateLocality(locality, Long.parseLong(localityId)));
+	}
+	
+	@DeleteMapping("/{localityId}")
+	public ResponseEntity<?> deleteLocality(@PathVariable String localityId){
+		
+		boolean deleteLocality = this.localityService.
+				deleteLocality(Long.parseLong(localityId));
+		
+		if(deleteLocality) return ResponseEntity.ok(Map.of("message", "Locality deleted successfully"));
+		
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
 }

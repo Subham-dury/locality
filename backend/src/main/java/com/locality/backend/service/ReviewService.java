@@ -16,7 +16,7 @@ public interface ReviewService {
 	
 	public List<Review> getAllReviewByUser(Long userId);
 	
-	public Review updateReview(Review review, Long id);
+	public Review updateReview(Review review, Long reviewId);
 	
-	public boolean deleteReview(Long id);
+	public boolean deleteReview(Long localityId);
 }

@@ -3,7 +3,6 @@ package com.locality.backend.entity;
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,7 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,16 +33,14 @@ public class Locality {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long localityId;
 	
-	@NotNull
+	@NotBlank(message="Locality name cannot be empty")
 	@Length(min = 5, max = 15, message = "Name must have between 5 and 10 characters")
 	private String name;
 	
-	@NotNull(message = "City cannot be null")
-	@NotEmpty(message = "City cannot be empty")
+	@NotBlank(message = "City cannot be empty")
 	private String city;
 	
-	@NotNull(message = "State cannot be null")
-	@NotEmpty(message = "State cannot be empty")
+	@NotBlank(message = "State cannot be empty")
 	private String state;
 	
 	@NotNull
@@ -51,7 +48,7 @@ public class Locality {
 	@Max(value = 4)
 	private int img;
 	
-	@NotNull
+	@NotBlank(message="Locality description cannot be empty")
 	@Length(min = 10, max = 255, message = "About must be precise.")
 	private String about;
 	

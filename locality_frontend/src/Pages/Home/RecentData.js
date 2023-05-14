@@ -1,46 +1,42 @@
-import React from "react";
+import React from 'react'
 import { useNavigate } from "react-router-dom";
-import  {events} from '../../Data/RecentEvents'
 import DetailsCard from "../../components/DetailsCard";
 
-const RecentEvents = () => {
+function RecentData({data, title, buttonVal, redirect, dataTarget}) {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const direct = () => {
-    navigate("/events");
+    navigate({redirect});
   }
 
   return (
-    <section
-      className="featured-data featuredreports py-5"
-      id="featuredreports"
-    >
-      <div className="container">
+    <section className="featured-data featuredreviews py-5" id="featuredreviews">
+      <div className="container-xl">
         <div className="row heading align-items-center justify-content-evenly">
           <div className="col-6 col-md-8">
-            <h3>Recent events</h3>
+            <h3>{title}</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
             <button className="button button-primary" type="button" onClick={direct}>
-              All events
+              {buttonVal}
             </button>
           </div>
         </div>
         <div
-          id="reportscarousel"
-          className="carousel slide my-3"
+          id={dataTarget}
+          className="carousel slide "
           data-bs-ride="carousel"
         >
           <div className="carousel-inner justify-content-center p-4">
-            {events.map((event) => {
+            {data.map((d) => {
               return (
                 <div
-                  className={`carousel-item ${event.id === 1 ? "active" : ""}`}
-                  key={event.id}
+                  className={`carousel-item ${d.id === 1 ? "active" : ""}`}
+                  key={d.id}
                 >
                   <div className="d-flex justify-content-center">
-                    <DetailsCard item={event} />
+                    <DetailsCard item={d} />
                   </div>
                 </div>
               );
@@ -49,7 +45,7 @@ const RecentEvents = () => {
           <button
             className="carousel-control-prev "
             type="button"
-            data-bs-target="#reportscarousel"
+            data-bs-target = {`#${dataTarget}`}
             data-bs-slide="prev"
           >
             <span
@@ -61,7 +57,7 @@ const RecentEvents = () => {
           <button
             className="carousel-control-next"
             type="button"
-            data-bs-target="#reportscarousel"
+            data-bs-target={`#${dataTarget}`}
             data-bs-slide="next"
           >
             <span
@@ -73,7 +69,7 @@ const RecentEvents = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default RecentEvents;
+export default RecentData

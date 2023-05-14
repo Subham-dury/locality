@@ -1,6 +1,6 @@
 package com.locality.backend.controller;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.locality.backend.entity.Locality;
 import com.locality.backend.entity.Review;
-import com.locality.backend.response.SuccessResponse;
 import com.locality.backend.service.ReviewService;
 
 @RestController
@@ -30,97 +28,53 @@ public class ReviewController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<SuccessResponse> saveReview(@RequestBody Review review, @RequestParam Long userId,
+	public ResponseEntity<Review> saveReview(@RequestBody Review review, @RequestParam Long userId,
 				@RequestParam Long localityId){
 		
-		
-		return new ResponseEntity<SuccessResponse>(SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.CREATED.value())
-				.status(HttpStatus.CREATED)
-				.message("Review created successfully")
-				.data(Map.of("review", reviewService.saveReview(review, userId, localityId)))
-				.build(),
-				HttpStatus.CREATED);
+		return new ResponseEntity<Review>(this.reviewService.saveReview(review, userId, localityId)
+				,HttpStatus.CREATED);
 			
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<SuccessResponse> findAllReview(){
+	public ResponseEntity<List<Review>> findAllReview(){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all reviews successfully")
-				.data(Map.of("reviews", reviewService.getAllReview()))
-				.build());
+		return ResponseEntity.ok(this.reviewService.getAllReview());
 	}
 	
 	@GetMapping("/recent")
-	public ResponseEntity<SuccessResponse> findRecentReview(){
+	public ResponseEntity<List<Review>> findRecentReview(){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all reviews successfully")
-				.data(Map.of("reviews", reviewService.getRecentReview()))
-				.build());
+		return ResponseEntity.ok(this.reviewService.getRecentReview());
 	}
 	
 	@GetMapping("/byuser/{userId}")
-	public ResponseEntity<SuccessResponse> findReviewByUserid(@PathVariable String userId){
+	public ResponseEntity<List<Review>> findReviewByUserid(@PathVariable String userId){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all reviews successfully")
-				.data(Map.of("reviews", reviewService.getAllReviewByUser(Long.parseLong(userId))))
-				.build());
+		return ResponseEntity.ok(this.reviewService.getAllReviewByUser(Long.parseLong(userId)));
 	}
 	
 	@GetMapping("/bylocality/{localityId}")
-	public ResponseEntity<SuccessResponse> findReviewByLocalityid(@PathVariable String localityId){
+	public ResponseEntity<List<Review>> findReviewByLocalityid(@PathVariable String localityId){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Found all reviews successfully")
-				.data(Map.of("reviews", reviewService.getAllReviewByLocality(Long.parseLong(localityId))))
-				.build());
+		return ResponseEntity.ok(this.reviewService.getAllReviewByLocality(Long.parseLong(localityId)));
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<SuccessResponse> updateReview(@RequestBody Review review, 
-				@PathVariable String id){
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Review updated successfully")
-				.data(Map.of("review", reviewService.updateReview(review, Long.parseLong(id))))
-				.build());
+	@PutMapping("/{reviewId}")
+	public ResponseEntity<Review> updateReview(@RequestBody Review review, 
+				@PathVariable String reviewId){
+		
+		return ResponseEntity.ok(this.reviewService.updateReview(review, Long.parseLong(reviewId)));
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<SuccessResponse> deleteReview(@PathVariable String id){
+	@DeleteMapping("/{reviewId}")
+	public ResponseEntity<?> deleteReview(@PathVariable String reviewId){
 		
-		return ResponseEntity.ok(
-				SuccessResponse.builder()
-				.timeStamp(LocalDateTime.now())
-				.statusCode(HttpStatus.OK.value())
-				.status(HttpStatus.OK)
-				.message("Review deleted successfully")
-				.data(Map.of("deleted", reviewService.deleteReview(Long.parseLong(id))))
-				.build());
+		boolean deleteReview = this.reviewService.deleteReview(Long.parseLong(reviewId));
+		if(deleteReview) {
+			return ResponseEntity.ok(Map.of("message", "Review deleted successfully"));
+		}
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
 	
 	
