@@ -46,9 +46,7 @@ const Home = () => {
           dataTarget={"review"}
         />
       )}
-      {errorInEvent && <DataNotFoundCard message={errorInEvent.message}/>}
-      {/* {errorInEvent && <div>Error: {errorInEvent}</div>}
-      
+      {errorInEvent && <DataNotFoundCard message={errorInEvent.message}/>}      
       {!errorInEvent && recentEvent && (
         <RecentData
           data={recentEvent}
@@ -58,7 +56,7 @@ const Home = () => {
           redirect={"/events"}
           dataTarget={"event"}
         />
-      )} */}
+      )}
       <Newsletter />
     </>
   );

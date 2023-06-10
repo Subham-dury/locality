@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-function Filterbar({name}) {
-
+function Filterbar({ name }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const location = useLocation();
 
@@ -16,10 +15,10 @@ function Filterbar({name}) {
         <h3 className="ms-md-4">{name}</h3>
       </div>
       <div className="filterbuttons">
-        <button className="button button-primary">sort</button>
-        {isSignedIn && <button className="button button-dark">Add new review</button>}
+        {isSignedIn && (
+          <button className="button button-dark">Add new review</button>
+        )}
       </div>
-      <div></div>
     </div>
   );
 }

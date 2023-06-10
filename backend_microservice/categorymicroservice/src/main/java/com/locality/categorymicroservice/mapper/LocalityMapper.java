@@ -1,12 +1,14 @@
-package com.locality.categorymicroservice.Mapper;
+package com.locality.categorymicroservice.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.locality.categorymicroservice.entity.Locality;
 import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 import com.locality.categorymicroservice.payload.LocalityDto;
 
+@Component
 public class LocalityMapper {
 
 	@Autowired

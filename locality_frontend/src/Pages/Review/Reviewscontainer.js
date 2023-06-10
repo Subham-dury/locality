@@ -1,8 +1,8 @@
 import React from "react";
 import ReviewCard from "../../components/Cards/ReviewCard";
+import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
 
 function Reviewscontainer({reviews}) {
-
 
   return (
     <div className="reviews-container">

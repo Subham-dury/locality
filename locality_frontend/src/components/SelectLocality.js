@@ -24,7 +24,7 @@ function SelectLocality({ localitylist, setlocality }) {
           </option>
           {localitylist.map((locality) => {
             return (
-              <option key={locality.id} value={locality.id}>
+              <option key={locality.localityId} value={locality.localityId}>
                 {locality.name}
               </option>
             );

@@ -59,6 +59,8 @@ public class ReviewController {
 	@GetMapping("/bylocality/{localityId}")
 	public ResponseEntity<List<ReviewDto>> findReviewByLocality(@PathVariable(name="localityId") String localityId){
 		
+		
+		System.out.println("inside locality");
 		return ResponseEntity.ok(this.reviewService.getAllReviewByLocality(Long.parseLong(localityId)));
 	}
 	

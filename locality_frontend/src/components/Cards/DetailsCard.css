@@ -32,14 +32,14 @@
 }
 
 @media (min-width: 992px) and (max-width: 1400px) {
-  .card {
+  .featurecard.card {
     width: 800px !important;
     height: 200px !important;
   }
 }
 
 @media (max-width: 992px) and (min-width: 768px) {
-  .card {
+  .featurecard.card {
     height: 500px !important;
     width: 500px !important;
   }
@@ -68,7 +68,7 @@
 }
 
 @media (max-width: 768px) {
-  .card {
+  .featurecard.card {
     height: 450px !important;
     width: 450px !important;
   }
@@ -99,15 +99,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40dvh; /* Set the height of the section */
+  height: 40vh; /* Set the height of the section */
+  margin: 20px 0;
 }
 
 .custom-card {
   border: none;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  width: 80dvw;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 20px;
+  border-radius: 5px;
 }

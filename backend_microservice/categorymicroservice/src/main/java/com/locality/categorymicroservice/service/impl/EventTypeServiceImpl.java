@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.locality.categorymicroservice.Mapper.EventTypeMapper;
 import com.locality.categorymicroservice.entity.EventType;
 import com.locality.categorymicroservice.exception.NotAuthorizedException;
 import com.locality.categorymicroservice.exception.ResourceExistsException;
 import com.locality.categorymicroservice.exception.ResourceNotFoundException;
+import com.locality.categorymicroservice.mapper.EventTypeMapper;
 import com.locality.categorymicroservice.payload.EventTypeDto;
 import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 import com.locality.categorymicroservice.repository.EventTypeRepository;

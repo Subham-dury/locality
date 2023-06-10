@@ -1,27 +1,53 @@
 import React, { useState, useEffect } from "react";
 import SelectLocality from "../../components/SelectLocality";
-import Localityinfo from "../../components/Localityinfo";
+import Localityinfo from "../../components/Cards/LocalityInfoCard";
 import Filterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
-import LocalityNotFound from "../../components/LocalityNotFound";
+import LocalityNotFound from "../../components/Cards/LocalityNotFoundCard";
 import { localitylist } from "../../Data/LocalityList";
-import { reviews } from "../../Data/ReviewsList";
+import { getAllReview, getReviewByLocality } from "../../Service/ReviewService";
 import "./Review.css";
+import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
 
 const Review = () => {
   const [localityitem, setLocalityitem] = useState({});
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
 
+  const [reviews, setReviews] = useState([]);
+  const [errorInReview, setErrorInReview] = useState(null);
+
   const setOption = (option) => {
     if (option != "0") {
       setLocalityitem(
-        localitylist.filter((locality) => locality.id == option)[0]
+        localitylist.filter((locality) => locality.localityId == option)[0]
       );
       setIsLocalityListLoaded(true);
+      updateReviews(option)
     } else {
       setIsLocalityListLoaded(false);
     }
   };
+
+  useEffect(() => {
+    getAllReview()
+      .then((data) => setReviews(data))
+      .catch((error) => setErrorInReview(error.message));
+  }, []);
+
+  const updateReviews = (option) => {
+    getReviewByLocality(option)
+
+    .then(data => {
+      setReviews(data)
+      setErrorInReview(null)
+    })
+    .catch(error => {
+      setReviews([])
+      setErrorInReview(error.message);
+    });;
+  }
+
+
 
   return (
     <section className="reviev">
@@ -45,7 +71,8 @@ const Review = () => {
           />
         </div>
         <div className="row my-3">
-          <Reviewscontainer reviews={reviews} />
+          {!errorInReview && <Reviewscontainer reviews={reviews}/>}
+          {errorInReview && <DataNotFoundCard message={errorInReview}/>}
         </div>
       </div>
     </section>
