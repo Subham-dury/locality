@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.locality.backend.entity.EventType;
+import com.locality.backend.payload.EventTypeDto;
 import com.locality.backend.service.EventTypeService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/type")
@@ -26,9 +29,9 @@ public class EventTypeController {
 	private EventTypeService eventTypeService;
 
 	@PostMapping("/")
-	public ResponseEntity<EventType> saveLocality(@RequestBody EventType eventType){
+	public ResponseEntity<EventTypeDto> saveLocality(@Valid @RequestBody EventTypeDto eventType){
 		
-		return new ResponseEntity<EventType>(this.eventTypeService.saveEventType(eventType),
+		return new ResponseEntity<EventTypeDto>(this.eventTypeService.saveEventType(eventType),
 				HttpStatus.CREATED);
 			
 	}
@@ -41,14 +44,14 @@ public class EventTypeController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<EventType>> findAllLocality(){
+	public ResponseEntity<List<EventTypeDto>> findAllLocality(){
 		
 		return ResponseEntity.ok(
 				this.eventTypeService.getAllEventType());
 	}
 	
 	@PutMapping("/{eventTypeId}")
-	public ResponseEntity<EventType> updateLocality(@RequestBody EventType eventType, 
+	public ResponseEntity<EventTypeDto> updateLocality(@RequestBody EventTypeDto eventType, 
 				@PathVariable String eventTypeId){
 		
 		return ResponseEntity.ok(

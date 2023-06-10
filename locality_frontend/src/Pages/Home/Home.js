@@ -1,48 +1,64 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import AboutUs from "./AboutUs";
 import Hero from "./Hero";
 import Newsletter from "./Newsletter";
-import { events } from "../../Data/RecentEvents";
-import { reviews } from "../../Data/RecentReviews";
-
-import "./Home.css";
 import RecentData from "./RecentData";
+import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
+import {
+  getRecentReview,
+  getRecentEvent,
+} from "../../Service/RecentReviewEventsService";
+import "./Home.css";
 
 const Home = () => {
-
-  const[recentReview, setRecentReview] = useState([]);
-  const[recentEvent, setRecentEvent] = useState(null);
-
+  const [recentReview, setRecentReview] = useState([]);
+  const [recentEvent, setRecentEvent] = useState([]);
+  const [errorInReview, setErrorInReview] = useState(null);
+  const [errorInEvent, setErrorInEvent] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:8080/review/recent");
-      const data = await response.json();
-      console.log(data)
+    getRecentReview()
+      .then((data) => setRecentReview(data))
+      .catch((error) => setErrorInReview(error));
 
-    };
-    fetchData();
+      getRecentEvent()
+      .then((data) => setRecentEvent(data))
+      .catch((error) => setErrorInEvent(error));
   }, []);
-
 
   return (
     <>
       <Hero />
       <AboutUs />
-      <RecentData
-        data={reviews}
-        title={"Recent Reviews"}
-        buttonVal={"All reviews"}
-        redirect={"/reviews"}
-        dataTarget={"review"}
-      />
-      <RecentData
-        data={events}
-        title={"Recent Events"}
-        buttonVal={"All events"}
-        redirect={"/events"}
-        dataTarget={"event"}
-      />
+
+      {!recentReview && !recentEvent && <div>Loading...</div>}
+
+
+     {errorInReview && <DataNotFoundCard message={errorInReview.message}/>}
+
+      {!errorInReview && recentReview && (
+        <RecentData
+          data={recentReview}
+          isReview={true}
+          title={"Recent Reviews"}
+          buttonVal={"All reviews"}
+          redirect={"/reviews"}
+          dataTarget={"review"}
+        />
+      )}
+      {errorInEvent && <DataNotFoundCard message={errorInEvent.message}/>}
+      {/* {errorInEvent && <div>Error: {errorInEvent}</div>}
+      
+      {!errorInEvent && recentEvent && (
+        <RecentData
+          data={recentEvent}
+          isReview={false}
+          title={"Recent Events"}
+          buttonVal={"All events"}
+          redirect={"/events"}
+          dataTarget={"event"}
+        />
+      )} */}
       <Newsletter />
     </>
   );

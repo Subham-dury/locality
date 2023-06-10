@@ -3,10 +3,10 @@ import SelectLocality from "../../components/SelectLocality";
 import Localityinfo from "../../components/Localityinfo";
 import Filterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
+import LocalityNotFound from "../../components/LocalityNotFound";
 import { localitylist } from "../../Data/LocalityList";
-import { reviews } from "../../Data/RecentReviews";
+import { reviews } from "../../Data/ReviewsList";
 import "./Review.css";
-import NoLocality from "../../components/NoLocality";
 
 const Review = () => {
   const [localityitem, setLocalityitem] = useState({});
@@ -34,7 +34,7 @@ const Review = () => {
             <Localityinfo localityitem={localityitem} />
           </div>
         )}
-        {!isLocalityListLoaded && <NoLocality />}
+        {!isLocalityListLoaded && <LocalityNotFound />}
         <div className="row my-3 mx-1">
           <Filterbar
             name={

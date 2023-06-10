@@ -1,0 +1,113 @@
+/* Featured cards */
+
+.featurecard.card {
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border: none !important;
+  overflow: hidden;
+  margin: 0 10px !important;
+  background: var(--main2);
+  color: var(--secondary5);
+  position: relative;
+}
+
+.featurecard .card-body > p {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.featurecard .card-body h6 {
+  color: var(--text4);
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+}
+
+.featurecard .card-body small {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+@media (min-width: 992px) and (max-width: 1400px) {
+  .card {
+    width: 800px !important;
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+  .card {
+    height: 500px !important;
+    width: 500px !important;
+  }
+
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  .featurecard .card-body {
+    text-align: center !important;
+  }
+
+  .featurecard .card-body > p {
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  .featurecard .card-body small {
+    position: relative !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    height: 450px !important;
+    width: 450px !important;
+  }
+
+  .card-img > img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 16 / 9;
+  }
+
+  .featurecard .card-body {
+    text-align: center !important;
+    margin: auto;
+    align-self: center;
+  }
+
+  .featurecard .card-body > p {
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+  }
+}
+
+/* No locality data card */
+.custom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40dvh; /* Set the height of the section */
+}
+
+.custom-card {
+  border: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

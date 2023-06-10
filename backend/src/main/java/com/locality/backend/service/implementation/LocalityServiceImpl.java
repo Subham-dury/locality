@@ -2,13 +2,16 @@ package com.locality.backend.service.implementation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.locality.backend.entity.Locality;
-import com.locality.backend.exception.DataExistsException;
-import com.locality.backend.exception.DataNotFoundException;
+import com.locality.backend.exception.ResourceExistsException;
+import com.locality.backend.exception.ResourceNotFoundException;
+import com.locality.backend.payload.LocalityDto;
 import com.locality.backend.repository.LocalityRepository;
 import com.locality.backend.service.LocalityService;
 
@@ -22,93 +25,102 @@ public class LocalityServiceImpl implements LocalityService {
 	
 	@Autowired
 	LocalityRepository localityRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
-	public Locality saveLocality(Locality locality) throws DataExistsException{
+	public LocalityDto saveLocality(LocalityDto localityDto) throws ResourceExistsException{
 		
 		if(this.localityRepository.findAll().isEmpty()) {
 			this.localityRepository.resetAutoIncrement();
 		}
 
-		boolean doesLocalityExist = this.doesLocalityExist(locality.getName()) != null;
+		boolean doesLocalityExist = this.doesLocalityExist(localityDto.getName()) != null;
 
 		if (doesLocalityExist) {
-			log.error("Locality with name of ", locality.getName(), " exists");
-			throw new DataExistsException("Locality needs to be unique");
+			log.error("Locality with name of "+localityDto.getName()+" exists");
+			throw new ResourceExistsException("Locality with name of "+localityDto.getName()+" exists");
 		}
 
 		log.info("Saving new locality");
-		locality.setImg((int) (Math.random() * 4) + 1);
-		return (this.localityRepository.save(locality));
+		localityDto.setImg((int) (Math.random() * 4) + 1);
+		Locality savedLocality = this.localityRepository.save(this.dtoToLocality(localityDto));
+		return this.localityToDto(savedLocality);
 
 	}
 
 	@Override
-	public Locality getLocalityById(Long localityId) throws DataNotFoundException{
+	public Locality getLocalityById(Long localityId) throws ResourceNotFoundException{
 
 		Optional<Locality> searchedLocality = localityRepository.findById(localityId);
 
 		if (searchedLocality.isEmpty()) {
-			log.error("Locality not found");
-			throw new DataNotFoundException("Locality not found");
+			log.error("Locality not found for id "+localityId);
+			throw new ResourceNotFoundException("Locality not found for id "+localityId);
 		}
 
 		return searchedLocality.get();
 	}
 
 	@Override
-	public List<Locality> getAllLocality() throws DataNotFoundException{
+	public List<LocalityDto> getAllLocality() throws ResourceNotFoundException{
 
 		List<Locality> allLocalities = this.localityRepository.findAll();
 
 		if (allLocalities.isEmpty()) {
 			log.error("Locality not found");
-			throw new DataNotFoundException("Locality not found");
+			throw new ResourceNotFoundException("Locality not found");
 		}
+		
+		List<LocalityDto> allLocalityDtos = allLocalities.stream()
+				.map(locality -> this.localityToDto(locality)).collect(Collectors.toList());
 
-		return allLocalities;
+		return allLocalityDtos;
 	}
 
 	@Override
-	public Locality updateLocality(Locality locality, Long localityId) throws DataNotFoundException{
+	public LocalityDto updateLocality(LocalityDto localityDto, Long localityId)
+			throws ResourceNotFoundException, IllegalArgumentException{
+		
+		if(localityDto == null) {
+			throw new IllegalArgumentException("No locality body for update");
+		}
+		
+		Optional<Locality> doesLocalityExist = this.localityRepository.findById(localityId);
+
+		if (doesLocalityExist.isEmpty()) {
+			log.error("Locality not found for id "+localityId);
+			throw new ResourceNotFoundException("Locality not found for id "+localityId);
+		}
+
+		Locality toUpdatedLocality = doesLocalityExist.get();
+		
+		toUpdatedLocality.setName(localityDto.getName() == null || localityDto.getName().trim().isEmpty()
+				? toUpdatedLocality.getName() : localityDto.getName().trim());
+		
+		toUpdatedLocality.setCity(localityDto.getCity() == null || localityDto.getCity().trim().isEmpty()
+				? toUpdatedLocality.getCity() : localityDto.getCity().trim());
+		
+		toUpdatedLocality.setState(localityDto.getState() == null || localityDto.getState().trim().isEmpty()
+				? toUpdatedLocality.getState() : localityDto.getState().trim());
+		
+		toUpdatedLocality.setAbout(localityDto.getAbout() == null || localityDto.getAbout().trim().isEmpty()
+				? toUpdatedLocality.getAbout() : localityDto.getAbout().trim());
+
+		Locality updatedLocality = this.localityRepository.save(toUpdatedLocality);
+		return this.localityToDto(updatedLocality);
+
+	}
+
+	@Override
+	public boolean deleteLocality(Long localityId) throws ResourceNotFoundException{
 
 		Optional<Locality> doesLocalityExist = this.localityRepository.findById(localityId);
 
 		if (doesLocalityExist.isEmpty()) {
 			log.error("Locality not found");
-			throw new DataNotFoundException("Locality not found");
-		}
-
-		Locality updatedLocality = doesLocalityExist.get();
-		
-		updatedLocality.setName(locality.getName() == null || locality.getName().startsWith(" ")
-				|| locality.getName().endsWith(" ")
-				? updatedLocality.getName() : locality.getName());
-		
-		updatedLocality.setCity(locality.getCity() == null || locality.getCity().startsWith(" ")
-				|| locality.getCity().endsWith(" ")
-				? updatedLocality.getCity() : locality.getCity());
-		
-		updatedLocality.setState(locality.getState() == null || locality.getState().startsWith(" ")
-				|| locality.getState().endsWith(" ")
-				? updatedLocality.getState() : locality.getState());
-		
-		updatedLocality.setAbout(locality.getAbout() == null || locality.getAbout().startsWith(" ")
-				|| locality.getAbout().endsWith(" ")
-				? updatedLocality.getAbout() : locality.getAbout());
-
-		return this.localityRepository.save(updatedLocality);
-
-	}
-
-	@Override
-	public boolean deleteLocality(Long localityId) throws DataNotFoundException{
-
-		Optional<Locality> doesLocalityExist = this.localityRepository.findById(localityId);
-
-		if (doesLocalityExist.isEmpty()) {
-			log.error("Locality not found");
-			throw new DataNotFoundException("Locality not found");
+			throw new ResourceNotFoundException("Locality not found");
 		}
 
 		this.localityRepository.deleteById(localityId);
@@ -118,6 +130,17 @@ public class LocalityServiceImpl implements LocalityService {
 	@Override
 	public Locality doesLocalityExist(String localityName) {
 		return this.localityRepository.findByName(localityName);
+	}
+
+
+	@Override
+	public LocalityDto localityToDto(Locality locality) {
+		return this.modelMapper.map(locality, LocalityDto.class);
+	}
+
+	@Override
+	public Locality dtoToLocality(LocalityDto localityDto) {
+		return this.modelMapper.map(localityDto, Locality.class);
 	}
 	
 }

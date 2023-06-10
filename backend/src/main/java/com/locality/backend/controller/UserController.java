@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.locality.backend.entity.User;
-import com.locality.backend.exception.DataExistsException;
-import com.locality.backend.exception.DataNotFoundException;
+import com.locality.backend.payload.UserDto;
 import com.locality.backend.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -27,32 +27,31 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/")
-	public ResponseEntity<User> saveUser(@RequestBody User user) throws DataExistsException{
-		
-		return new ResponseEntity<User>(this.userService.saveUser(user), HttpStatus.CREATED);
-			
+	public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
+
+		return new ResponseEntity<UserDto>(this.userService.saveUser(userDto), HttpStatus.CREATED);
+
 	}
-	
-	
+
 	@GetMapping("/")
-	public ResponseEntity<User> findUser(@RequestBody User user) throws DataNotFoundException{
-	
+	public ResponseEntity<UserDto> getUser(@RequestBody UserDto user) {
+
 		return ResponseEntity.ok(this.userService.getUser(user));
-		
+
 	}
 
 	@PutMapping("/{userId}")
-	public ResponseEntity<User> updateUser(@RequestBody User user,
-			@PathVariable String userId) throws DataNotFoundException{
-		
+	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto user,
+			@PathVariable String userId) {
+
 		return ResponseEntity.ok(this.userService.updateUser(user, Long.parseLong(userId)));
 	}
-	
+
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> deleteUser(@PathVariable String userId) throws DataNotFoundException{
-		
+	public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+
 		Boolean deleteUser = this.userService.deleteUser(Long.parseLong(userId));
-		if(deleteUser) {
+		if (deleteUser) {
 			return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
 		}
 		return (ResponseEntity<?>) ResponseEntity.badRequest();

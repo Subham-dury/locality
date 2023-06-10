@@ -3,25 +3,32 @@ package com.locality.backend.service;
 import java.util.List;
 
 import com.locality.backend.entity.Event;
-import com.locality.backend.entity.Review;
+import com.locality.backend.exception.ResourceExistsException;
+import com.locality.backend.exception.ResourceNotFoundException;
+import com.locality.backend.payload.EventDto;
 
 public interface EventService {
-	
-	public Event saveEvent(Event event, Long userId, Long localityId, Long eventTypeId);
-	
-	public List<Event> getAllEvent();
-	
-	public List<Event> getRecentEvent();
-	
-	public List<Event> getAllEventByLocality(Long localityId);
-	
-	public List<Event> getAllEventByUser(Long userId);
-	
-	public List<Event> getAllEventByType(Long eventTypeId);
-	
-	public Event updateEvent(Event event, Long id);
-	
-	public boolean deleteEvent(Long id);
 
-	
+	public EventDto saveEvent(EventDto EventDto, Long userId, Long localityId, Long eventTypeId)
+			throws ResourceExistsException, ResourceNotFoundException;
+
+	public List<EventDto> getAllEvent() throws ResourceNotFoundException;
+
+	public List<EventDto> getRecentEvent() throws ResourceNotFoundException;
+
+	public List<EventDto> getAllEventByLocality(Long localityId) throws ResourceNotFoundException;
+
+	public List<EventDto> getAllEventByUser(Long userId) throws ResourceNotFoundException;
+
+	public List<EventDto> getAllEventByType(Long eventTypeId) throws ResourceNotFoundException;
+
+	public EventDto updateEvent(EventDto EventDto, Long eventId)
+			throws IllegalArgumentException, ResourceNotFoundException;
+
+	public boolean deleteEvent(Long eventId) throws ResourceNotFoundException;
+
+	public EventDto eventToDto(Event event);
+
+	public Event dtoToEvent(EventDto eventDto);
+
 }

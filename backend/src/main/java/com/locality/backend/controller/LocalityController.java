@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.locality.backend.entity.Locality;
+import com.locality.backend.payload.LocalityDto;
 import com.locality.backend.service.LocalityService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/locality")
@@ -26,33 +28,26 @@ public class LocalityController {
 	private LocalityService localityService;
 
 	@PostMapping("/")
-	public ResponseEntity<Locality> saveLocality(@RequestBody Locality locality){
+	public ResponseEntity<LocalityDto> saveLocality(@Valid @RequestBody LocalityDto localityDto){
 		
-		return new ResponseEntity<Locality>(this.localityService.saveLocality(locality),
+		return new ResponseEntity<LocalityDto>(this.localityService.saveLocality(localityDto),
 				HttpStatus.CREATED);
 			
 	}
 	
-	@GetMapping("/{localityId}")
-	public ResponseEntity<Locality> findLocalityById(@PathVariable String localityId){
-		
-		return ResponseEntity.ok(
-				this.localityService.getLocalityById(Long.parseLong(localityId)));
-	}
-	
 	@GetMapping("/all")
-	public ResponseEntity<List<Locality>> findAllLocality(){
+	public ResponseEntity<List<LocalityDto>> findAllLocality(){
 		
 		return ResponseEntity.ok(
 				this.localityService.getAllLocality());
 	}
 	
 	@PutMapping("/{localityId}")
-	public ResponseEntity<Locality> updateLocality(@RequestBody Locality locality, 
+	public ResponseEntity<LocalityDto> updateLocality(@RequestBody LocalityDto localityDto, 
 				@PathVariable String localityId){
 		
 		return ResponseEntity.ok(
-				this.localityService.updateLocality(locality, Long.parseLong(localityId)));
+				this.localityService.updateLocality(localityDto, Long.parseLong(localityId)));
 	}
 	
 	@DeleteMapping("/{localityId}")

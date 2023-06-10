@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.locality.backend.entity.Event;
+import com.locality.backend.payload.EventDto;
 import com.locality.backend.service.EventService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/event")
@@ -28,43 +30,49 @@ public class EventController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<Event> saveEvent(@RequestBody Event event, @RequestParam Long userId,
+	public ResponseEntity<EventDto> saveEvent(@Valid @RequestBody EventDto eventDto, @RequestParam Long userId,
 				@RequestParam Long localityId, @RequestParam Long typeId){
 		
-		
-		return new ResponseEntity<Event>(this.eventService.saveEvent(event, userId, localityId, typeId),
+		System.out.println(eventDto);
+		return new ResponseEntity<EventDto>(this.eventService.saveEvent(eventDto, userId, localityId, typeId),
 				HttpStatus.CREATED);
 			
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<Event>> findAllEvents(){
+	public ResponseEntity<List<EventDto>> findAllEvents(){
 		
-		return new ResponseEntity<List<Event>>(this.eventService.getAllEvent(), HttpStatus.OK);
+		return new ResponseEntity<List<EventDto>>(this.eventService.getAllEvent(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/recent")
-	public ResponseEntity<List<Event>> findRecentEvent(){
+	public ResponseEntity<List<EventDto>> findRecentEvent(){
 		
-		return new ResponseEntity<List<Event>>(this.eventService.getRecentEvent(), HttpStatus.OK);
+		return new ResponseEntity<List<EventDto>>(this.eventService.getRecentEvent(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/byuser/{userId}")
-	public ResponseEntity<List<Event>> findEventByUserid(@PathVariable String userId){
+	public ResponseEntity<List<EventDto>> findEventByUserid(@PathVariable String userId){
 		
 		return ResponseEntity.ok(this.eventService.getAllEventByUser(Long.parseLong(userId)));
 	}
 	
 	@GetMapping("/bylocality/{localityId}")
-	public ResponseEntity<List<Event>> findReviewByLocalityid(@PathVariable String localityId){
+	public ResponseEntity<List<EventDto>> findReviewByLocalityid(@PathVariable String localityId){
 		
 		return ResponseEntity.ok(this.eventService.getAllEventByLocality(Long.parseLong(localityId)));
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<Event> updateReview(@RequestBody Event event, 
-				@PathVariable String id){
-		return new ResponseEntity<Event>(this.eventService.updateEvent(event, Long.parseLong(id)),
+	@GetMapping("/bytype/{typeId}")
+	public ResponseEntity<List<EventDto>> findReviewByTypeid(@PathVariable String typeId){
+		
+		return ResponseEntity.ok(this.eventService.getAllEventByType(Long.parseLong(typeId)));
+	}
+	
+	@PutMapping("/{eventId}")
+	public ResponseEntity<EventDto> updateReview(@RequestBody EventDto event, 
+				@PathVariable String eventId){
+		return new ResponseEntity<EventDto>(this.eventService.updateEvent(event, Long.parseLong(eventId)),
 				HttpStatus.OK);
 	}
 	

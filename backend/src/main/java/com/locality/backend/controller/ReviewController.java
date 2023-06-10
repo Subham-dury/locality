@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.locality.backend.entity.Review;
+import com.locality.backend.payload.ReviewDto;
 import com.locality.backend.service.ReviewService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/review")
@@ -28,40 +30,40 @@ public class ReviewController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<Review> saveReview(@RequestBody Review review, @RequestParam Long userId,
+	public ResponseEntity<ReviewDto> saveReview(@Valid @RequestBody ReviewDto review, @RequestParam Long userId,
 				@RequestParam Long localityId){
 		
-		return new ResponseEntity<Review>(this.reviewService.saveReview(review, userId, localityId)
+		return new ResponseEntity<ReviewDto>(this.reviewService.saveReview(review, userId, localityId)
 				,HttpStatus.CREATED);
 			
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<Review>> findAllReview(){
+	public ResponseEntity<List<ReviewDto>> findAllReview(){
 		
 		return ResponseEntity.ok(this.reviewService.getAllReview());
 	}
 	
 	@GetMapping("/recent")
-	public ResponseEntity<List<Review>> findRecentReview(){
+	public ResponseEntity<List<ReviewDto>> findRecentReview(){
 		
 		return ResponseEntity.ok(this.reviewService.getRecentReview());
 	}
 	
 	@GetMapping("/byuser/{userId}")
-	public ResponseEntity<List<Review>> findReviewByUserid(@PathVariable String userId){
+	public ResponseEntity<List<ReviewDto>> findReviewByUserid(@PathVariable String userId){
 		
 		return ResponseEntity.ok(this.reviewService.getAllReviewByUser(Long.parseLong(userId)));
 	}
 	
 	@GetMapping("/bylocality/{localityId}")
-	public ResponseEntity<List<Review>> findReviewByLocalityid(@PathVariable String localityId){
+	public ResponseEntity<List<ReviewDto>> findReviewByLocalityid(@PathVariable String localityId){
 		
 		return ResponseEntity.ok(this.reviewService.getAllReviewByLocality(Long.parseLong(localityId)));
 	}
 	
 	@PutMapping("/{reviewId}")
-	public ResponseEntity<Review> updateReview(@RequestBody Review review, 
+	public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto review, 
 				@PathVariable String reviewId){
 		
 		return ResponseEntity.ok(this.reviewService.updateReview(review, Long.parseLong(reviewId)));

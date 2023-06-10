@@ -1,67 +1,112 @@
 package com.locality.backend.exception;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
-@Slf4j
 public class GlobalExceptionHandler {
+
 		
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException ex,
-			HttpServletRequest request) {
+			 WebRequest webRequest) {
 		
 		
 		try {
 			List<String> messages = ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage)
 					.collect(Collectors.toList());
-			
-			return new ResponseEntity<>(Map.of("error", messages.get(0)),
+
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(messages.get(0)).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-			
-			return new ResponseEntity<>(Map.of("error", ex.getMessage()),
+
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(e.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@ExceptionHandler(DataExistsException.class)
-	public ResponseEntity<?> handleDataExistsException(DataExistsException ex) {
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	protected ResponseEntity<FailureResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			WebRequest webRequest) {
+		
 		
 		try {
-			return new ResponseEntity<>(Map.of("messages", ex.getMessage()),
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(ex.getBindingResult().getAllErrors().get(0).getDefaultMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.BAD_REQUEST);
-		} catch (Exception e) {
+		}
+		catch(Exception e) {
 			
-			return new ResponseEntity<>(Map.of("messages", ex.getMessage()),
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(e.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	@ExceptionHandler(DataNotFoundException.class)
-	public ResponseEntity<?> handleDataNotFoundException(DataNotFoundException ex){
+	@ExceptionHandler(ResourceExistsException.class)
+	public ResponseEntity<FailureResponse> handleDataExistsException(ResourceExistsException ex,
+			WebRequest webRequest){
 		
 		try {
-			return new ResponseEntity<>(Map.of("messages", ex.getMessage()),
+			
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(ex.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
+					HttpStatus.BAD_REQUEST);
+					
+			
+		} catch (Exception e) {
+			
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(e.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<?> handleDataNotFoundException(ResourceNotFoundException ex,
+			WebRequest webRequest){
+		
+		try {
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(ex.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.NOT_FOUND);
+			
 		} catch (Exception e) {
 			
-			return new ResponseEntity<>(Map.of("messages", ex.getMessage()),
+			return new ResponseEntity<FailureResponse>(FailureResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(e.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}
-	
 	
 }

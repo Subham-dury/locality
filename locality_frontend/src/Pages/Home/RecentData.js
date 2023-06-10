@@ -1,13 +1,14 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import DetailsCard from "../../components/DetailsCard";
+import ReviewCard from '../../components/Cards/ReviewCard';
+import EventCard from '../../components/Cards/EventCard';
 
-function RecentData({data, title, buttonVal, redirect, dataTarget}) {
+function RecentData({data, isReview, title, buttonVal, redirect, dataTarget}) {
 
     const navigate = useNavigate();
 
   const direct = () => {
-    navigate({redirect});
+    navigate(redirect);
   }
 
   return (
@@ -29,14 +30,26 @@ function RecentData({data, title, buttonVal, redirect, dataTarget}) {
           data-bs-ride="carousel"
         >
           <div className="carousel-inner justify-content-center p-4">
-            {data.map((d) => {
+            {isReview && data.map((d) => {
               return (
                 <div
-                  className={`carousel-item ${d.id === 1 ? "active" : ""}`}
-                  key={d.id}
+                  className={`carousel-item ${d.reviewId === 1 ? "active" : ""}`}
+                  key={d.reviewId}
                 >
                   <div className="d-flex justify-content-center">
-                    <DetailsCard item={d} />
+                    <ReviewCard item={d} />
+                  </div>
+                </div>
+              );
+            })}
+            {!isReview && data.map((d) => {
+              return (
+                <div
+                  className={`carousel-item ${d.eventId === 1 ? "active" : ""}`}
+                  key={d.reviewId}
+                >
+                  <div className="d-flex justify-content-center">
+                    <EventCard item={d} />
                   </div>
                 </div>
               );
@@ -72,4 +85,4 @@ function RecentData({data, title, buttonVal, redirect, dataTarget}) {
   )
 }
 
-export default RecentData
+export default RecentData;

@@ -1,13 +1,15 @@
 package com.locality.backend.service.implementation;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.locality.backend.entity.Role;
 import com.locality.backend.entity.User;
-import com.locality.backend.exception.DataExistsException;
-import com.locality.backend.exception.DataNotFoundException;
+import com.locality.backend.exception.ResourceExistsException;
+import com.locality.backend.exception.ResourceNotFoundException;
+import com.locality.backend.payload.UserDto;
 import com.locality.backend.repository.RoleRepository;
 import com.locality.backend.repository.UserRepository;
 import com.locality.backend.service.UserService;
@@ -25,13 +27,18 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
-	public User saveUser(User user) throws DataExistsException{
+	public UserDto saveUser(UserDto userDto) throws ResourceExistsException{
 		
 		if(this.userRepository.findAll().isEmpty()) {
 			this.userRepository.resetAutoIncrement();
 		}
+		
+		User user = this.dtoToUser(userDto);
 		
 		if (user.getPassword().contains(" ")) {
 			throw new IllegalArgumentException("Password cannot have space");
@@ -41,12 +48,12 @@ public class UserServiceImpl implements UserService {
 		boolean doesUserEmailExist = this.doesUserExistByEmail(user.getEmail()) != null;
 
 		if (doesUserNameExist) {
-			log.error("User with above username of ", user.getUsername(), " exists");
-			throw new DataExistsException("Username already in use");
+			log.error("User with above username of "+ user.getUsername()+ " exists");
+			throw new ResourceExistsException("User with above username of "+ user.getUsername()+ " exists");
 
 		} else if (doesUserEmailExist) {
 			log.error("User with above email of " + user.getEmail() + " exists");
-			throw new DataExistsException("Email needs to be unique");
+			throw new ResourceExistsException("User with above email of " + user.getEmail() + " exists");
 		} else {
 
 			log.info("Saving new user with username and email : ", user.getUsername()
@@ -56,101 +63,118 @@ public class UserServiceImpl implements UserService {
 			
 			user.setRole(role);
 			
-			return this.userRepository.save(user);
+			User savedUser = this.userRepository.save(user);
+			System.out.println(savedUser.getPassword());
+			return this.userToDto(savedUser);
 		}
 
 	}
 
 	@Override
-	public User getUser(User user) throws DataNotFoundException{
-
-		User searchedUser = user.getUsername() != null ?
-				this.userRepository.findByUsername(user.getUsername())
-				: this.userRepository.findByEmail(user.getEmail());
-
-		if (searchedUser == null) {
-			log.error("User not found");
-			throw new DataNotFoundException("User not found");
-		} 
-		else if (!searchedUser.getPassword().equals(user.getPassword())) {
-			log.error("Incorrect password");
+	public UserDto getUser(UserDto user) throws IllegalArgumentException {
+		
+		if(user.getEmail() == null && user.getUsername() == null) {
+			throw new IllegalArgumentException("Both username and email cannot be null");
+		}
+		
+		if(this.doesUserExistByName(user.getUsername()) == null ||
+				this.doesUserExistByEmail(user.getEmail()) == null){
+			throw new IllegalArgumentException("Username or email is incorrect");
+		}
+		
+		User searchedUser = user.getUsername() == null ?
+				this.userRepository.findByEmail(user.getEmail()) :
+					this.userRepository.findByUsername(user.getUsername());
+		
+		if(!searchedUser.getPassword().equals(user.getPassword())){
 			throw new IllegalArgumentException("Incorrect password");
 		}
 		
-		return searchedUser;
-
+		return this.userToDto(searchedUser);
+		
 	}
 
 	@Override
-	public User getUserById(Long id) throws DataNotFoundException{
+	public User getUserById(Long userId) throws ResourceNotFoundException{
 
-		Optional<User> searchedUser = userRepository.findById(id);
+		Optional<User> searchedUser = userRepository.findById(userId);
 
 		if (searchedUser.isEmpty()) {
-			log.error("User not found");
-			throw new DataNotFoundException("User not found");
+			log.error("User with id "+userId+" not found");
+			throw new ResourceNotFoundException("User with id "+userId+" not found");
 		}
 		
 		return searchedUser.get();
 	}
 	
 	@Override
-	public User updateUser(User user, Long id) throws DataNotFoundException{
+	public UserDto updateUser(UserDto user, Long userId) throws ResourceNotFoundException,
+	IllegalArgumentException{
 		
-		Optional<User> doesUserExist = this.userRepository.findById(id);
+		Optional<User> doesUserExist = this.userRepository.findById(userId);
 
 		if (doesUserExist.isEmpty()) {
-			log.error("User not found");
-			throw new DataNotFoundException("User not found");
+			log.error("User with id "+userId+" not found");
+			throw new ResourceNotFoundException("User with id "+userId+" not found");
 		}
 
-		User updatedUser = doesUserExist.get();
+		User toUpdateUser = doesUserExist.get();
 		
-		if(updatedUser != null && (updatedUser.getUsername().startsWith(" ") 
-				|| updatedUser.getUsername().endsWith(" ")))
-			throw new IllegalArgumentException("Username cannot start or end with space");
+		
+		if(user.getUsername() != null && user.getUsername().trim().isEmpty())
+			throw new IllegalArgumentException("Username cannot be blank");
 			
-		updatedUser.setUsername(user.getUsername() == null ?
-				updatedUser.getUsername() : user.getUsername());
+		toUpdateUser.setUsername(user.getUsername() == null ?
+				toUpdateUser.getUsername() : user.getUsername().trim());
 		
-		if(updatedUser != null && updatedUser.getEmail().contains(" "))
-			throw new IllegalArgumentException("Email cannot contain space");
+		if(user.getEmail() != null && user.getEmail().isEmpty()) {
+			throw new IllegalArgumentException("Email cannot be blank");
+		}
 
-		updatedUser.setEmail(user.getEmail() == null ? updatedUser.getEmail() : user.getEmail());
+		toUpdateUser.setEmail(user.getEmail() == null ? toUpdateUser.getEmail() : user.getEmail());
 
 		if (user.getPassword() != null && user.getPassword().contains(" "))
 			throw new IllegalArgumentException("Password cannot contain space");
 		
-		updatedUser.setPassword(user.getPassword() == null ?
-				updatedUser.getPassword() : user.getPassword());
+		toUpdateUser.setPassword(user.getPassword() == null ?
+				toUpdateUser.getPassword() : user.getPassword());
 		
-		return this.userRepository.save(updatedUser);
+		User updatedUser =  this.userRepository.save(toUpdateUser);
+		return this.userToDto(updatedUser);
 	}
 
 	@Override
-	public Boolean deleteUser(Long id) throws DataNotFoundException{
+	public Boolean deleteUser(Long userId) throws ResourceNotFoundException{
 
-		Optional<User> doesUserExist = this.userRepository.findById(id);
+		Optional<User> doesUserExist = this.userRepository.findById(userId);
 
 		if (doesUserExist.isEmpty()) {
-			log.error("User not found");
-			throw new DataNotFoundException("User not found");
+			log.error("User with id "+userId+" not found");
+			throw new ResourceNotFoundException("User with id "+userId+" not found");
 		}
 
-		this.userRepository.deleteById(id);
+		this.userRepository.deleteById(userId);
 		return true;
 	}
 
 	@Override
 	public User doesUserExistByName(String username) {
+		
 		return this.userRepository.findByUsername(username);
 	}
 
 	@Override
 	public User doesUserExistByEmail(String email) {
+		
 		return this.userRepository.findByEmail(email);
 	}
-
-
+	
+	public UserDto userToDto(User user) {
+		return this.modelMapper.map(user, UserDto.class);
+	}
+	
+	public User dtoToUser(UserDto userDto) {
+		return this.modelMapper.map(userDto, User.class);
+	}
 	
 }

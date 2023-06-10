@@ -1,5 +1,5 @@
 import React from "react";
-import DetailsCard from "../../components/DetailsCard";
+import ReviewCard from "../../components/Cards/ReviewCard";
 
 function Reviewscontainer({reviews}) {
 
@@ -8,9 +8,9 @@ function Reviewscontainer({reviews}) {
     <div className="reviews-container">
       {reviews.map((review) => {
         return (
-          <div key={review.id} className="my-4">
+          <div key={review.reviewId} className="my-4">
             <div className="d-flex justify-content-center">
-              <DetailsCard item={review} />
+              <ReviewCard item={review} />
             </div>
           </div>
         );
