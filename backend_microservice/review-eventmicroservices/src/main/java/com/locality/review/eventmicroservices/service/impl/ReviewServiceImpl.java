@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.locality.review.eventmicroservices.entity.Review;
@@ -36,7 +37,9 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Autowired
 	private ReviewMapper reviewMapper;
-
+	
+	Sort sortByDateDesc = Sort.by(Sort.Direction.DESC, "date");
+	
 	@Override
 	public ReviewDto saveReview(ReviewDto reviewDto, String token, Long localityId) 
 			throws ResourceNotFoundException, ResourceExistsException{
@@ -45,7 +48,7 @@ public class ReviewServiceImpl implements ReviewService {
 		LocalityAndEventTypeDto locality = this.fetchService.getLocality(localityId);
 		
 
-		if (!this.reviewRepository.findByUserIdAndLocalityIdOrderByDate(user.getUserId(), localityId).isEmpty()) {
+		if (!this.reviewRepository.findByUserIdAndLocalityId(user.getUserId(), localityId,sortByDateDesc).isEmpty()) {
 			throw new ResourceExistsException("Duplicate review");
 		}
 		
@@ -64,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<ReviewDto> getAllReview() throws ResourceNotFoundException{
 
-		List<Review> reviews = this.reviewRepository.findByOrderByDate();
+		List<Review> reviews = this.reviewRepository.findAllByOrderByDateDesc();
 
 		if (reviews.isEmpty()) {
 			throw new ResourceNotFoundException("Reviews not found");
@@ -79,7 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<ReviewDto> getRecentReview() throws ResourceNotFoundException{
 
-		List<Review> reviews = this.reviewRepository.findTop10ByOrderByDate();
+		List<Review> reviews = this.reviewRepository.findTop10ByOrderByDateDesc();
 
 		if (reviews.isEmpty()) {
 			throw new ResourceNotFoundException("Reviews not found");
@@ -95,7 +98,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<ReviewDto> getAllReviewByLocality(Long localityId) throws ResourceNotFoundException,
 			IllegalArgumentException{
 
-		List<Review> reviews = reviewRepository.findByLocalityIdOrderByDate(localityId);
+		List<Review> reviews = reviewRepository.findByLocalityId(localityId,sortByDateDesc);
 
 		if (reviews.isEmpty()) {
 			throw new ResourceNotFoundException("Reviews not found for selected locality");
@@ -112,7 +115,8 @@ public class ReviewServiceImpl implements ReviewService {
 		IllegalArgumentException{
 		
 		UserDto user = this.fetchService.validateUser(token);
-		List<Review> reviews = reviewRepository.findByUserIdOrderByDate(user.getUserId());
+		
+		List<Review> reviews = reviewRepository.findByUserId(user.getUserId(), sortByDateDesc);
 
 		if (reviews.isEmpty()) {
 			throw new ResourceNotFoundException("Reviews not found");
@@ -131,7 +135,7 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		UserDto user = this.fetchService.validateUser(token);
 		List<Review> reviews = this.reviewRepository
-				.findByUserIdAndLocalityIdOrderByDate(user.getUserId(), localityId);
+				.findByUserIdAndLocalityId(user.getUserId(), localityId,sortByDateDesc);
 		
 		if (reviews.isEmpty()) {
 			throw new ResourceNotFoundException("Reviews not found");
@@ -170,6 +174,8 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		updatedReview.setContent(reviewDto.getContent() == null ?
 				updatedReview.getContent() : reviewDto.getContent());
+		
+		updatedReview.setDate(LocalDate.now());
 
 		return reviewMapper.reviewToDto(this.reviewRepository.save(updatedReview));
 	}

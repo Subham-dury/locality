@@ -6,18 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.locality.review.eventmicroservices.entity.Review;
+import org.springframework.data.domain.Sort;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 	
-	List<Review> findTop10ByOrderByDate();
+	List<Review> findTop10ByOrderByDateDesc();
 	
-	List<Review> findByOrderByDate();
+	List<Review> findAllByOrderByDateDesc();
 	
-	List<Review> findByUserIdOrderByDate(Long userId);
+	List<Review> findByUserId(Long userId, Sort sortByDateDesc);
 	
-	List<Review> findByLocalityIdOrderByDate(Long localityId);
+	List<Review> findByLocalityId(Long localityId, Sort sortByDateDesc);
 	
-	List<Review> findByUserIdAndLocalityIdOrderByDate(Long userId, Long localityId);
-	
+	List<Review> findByUserIdAndLocalityId(Long userId, Long localityId, Sort sortByDateDesc);
+
+
 }

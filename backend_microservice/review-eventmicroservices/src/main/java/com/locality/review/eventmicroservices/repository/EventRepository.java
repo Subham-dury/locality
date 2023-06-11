@@ -2,6 +2,7 @@ package com.locality.review.eventmicroservices.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,19 +13,19 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	List<Event> findTop10ByOrderByPostDate();
 
-	List<Event> findByOrderByPostDate();
+	List<Event> findAllByOrderByPostDate();
 
-	List<Event> findByUserIdOrderByPostDate(Long userId);
+	List<Event> findByUserId(Long userId, Sort sortByDateDesc);
 
-	List<Event> findByLocalityIdOrderByPostDate(Long localityId);
+	List<Event> findByLocalityId(Long localityId, Sort sortByDateDesc);
 
-	List<Event> findByEventTypeIdOrderByPostDate(Long eventTypeId);
+	List<Event> findByEventTypeId(Long eventTypeId, Sort sortByDateDesc);
 	
-	List<Event> findByLocalityIdAndEventTypeIdOrderByPostDate(Long localityId, Long eventTypeId);
+	List<Event> findByLocalityIdAndEventTypeId(Long localityId, Long eventTypeId, Sort sortByDateDesc);
 	
-	List<Event> findByUserIdAndLocalityIdOrderByPostDate(Long userId, Long localityId);
+	List<Event> findByUserIdAndLocalityId(Long userId, Long localityId, Sort sortByDateDesc);
 
-	List<Event> findByUserIdAndLocalityIdAndEventTypeIdOrderByPostDate(Long userId, Long localityId,
-			Long eventTypeId);
+	List<Event> findByUserIdAndLocalityIdAndEventTypeId(Long userId, Long localityId,
+			Long eventTypeId, Sort sortByDateDesc);
 
 }
