@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,10 +31,10 @@ public class LocalityController {
 	private LocalityService localityService;
 
 	@PostMapping("/")
-	public ResponseEntity<LocalityDto> saveLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<LocalityDto> saveLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@Valid @RequestBody LocalityDto localityDto) {
-
-		return new ResponseEntity<LocalityDto>(this.localityService.saveLocality(localityDto, Long.parseLong(userId)),
+				
+		return new ResponseEntity<LocalityDto>(this.localityService.saveLocality(localityDto, token),
 				HttpStatus.CREATED);
 
 	}
@@ -45,25 +46,25 @@ public class LocalityController {
 	}
 	
 	@GetMapping("/{localityId}")
-	public ResponseEntity<LocalityAndEventTypeDto> getLocalityById(@PathVariable(name = "localityId") String localityId){
-		return ResponseEntity.ok(this.localityService.getLocalityById(Long.parseLong(localityId)));
+	public ResponseEntity<LocalityAndEventTypeDto> getLocality(@PathVariable(name = "localityId") String localityId){
+		return ResponseEntity.ok(this.localityService.getLocality(Long.parseLong(localityId)));
 	}
 
 	@PutMapping("/{localityId}")
-	public ResponseEntity<LocalityDto> updateLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<LocalityDto> updateLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@RequestBody LocalityDto localityDto, @PathVariable String localityId) {
 
 		return ResponseEntity.ok(
-				this.localityService.updateLocality(localityDto, Long.parseLong(localityId), Long.parseLong(userId)));
+				this.localityService.updateLocality(localityDto, Long.parseLong(localityId), token));
 	}
 
 	@DeleteMapping("/{localityId}")
-	public ResponseEntity<?> deleteLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<?> deleteLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@PathVariable(name = "localityId") String localityId) {
 		
 		
 		boolean deleteLocality = this.localityService.deleteLocality(Long.parseLong(localityId),
-				Long.parseLong(userId));
+				token);
 
 		if (deleteLocality)
 			return ResponseEntity.ok(Map.of("message", "Locality deleted successfully"));

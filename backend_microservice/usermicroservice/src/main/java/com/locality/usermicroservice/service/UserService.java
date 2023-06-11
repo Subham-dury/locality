@@ -9,10 +9,6 @@ public interface UserService {
 
 	public UserDto loginUser(UserDto userDto);
 	
-	public Boolean isUserAdmin(Long userId);
-	
-	public UserDto getUserById(Long userId);
-	
 	public User doesUserExistByName(String username);
 
 	public User doesUserExistByEmail(String email);

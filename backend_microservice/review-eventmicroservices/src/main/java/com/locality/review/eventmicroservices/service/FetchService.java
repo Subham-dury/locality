@@ -6,7 +6,7 @@ import com.locality.review.eventmicroservices.payload.UserDto;
 
 public interface FetchService {
 	
-	public UserDto getUser(Long userId);
+	public UserDto validateUser(String token);
 	
 	public LocalityAndEventTypeDto getLocality(Long localityId);
 	

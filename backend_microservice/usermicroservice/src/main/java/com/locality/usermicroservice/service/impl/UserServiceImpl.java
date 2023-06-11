@@ -1,14 +1,11 @@
 package com.locality.usermicroservice.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.locality.usermicroservice.entity.User;
 import com.locality.usermicroservice.enums.Role;
 import com.locality.usermicroservice.exception.ResourceExistsException;
-import com.locality.usermicroservice.exception.ResourceNotFoundException;
 import com.locality.usermicroservice.mapper.UserMapper;
 import com.locality.usermicroservice.payload.UserDto;
 import com.locality.usermicroservice.repository.UserRepository;
@@ -75,29 +72,6 @@ public class UserServiceImpl implements UserService {
 
 		return userMapper.userToDto(searchedUser);
 	}
-	
-	
-	@Override
-	public Boolean isUserAdmin(Long userId)throws ResourceNotFoundException {
-		Optional<User> findUserById = this.userRepository.findById(userId);
-		
-		if(findUserById.isEmpty()) {
-			throw new ResourceNotFoundException("User with user id of "+userId+" not found");
-		}
-		
-		return (findUserById.get().getRole() == Role.ADMIN);
-	}
-	
-	@Override
-	public UserDto getUserById(Long userId) throws ResourceNotFoundException{
-		
-		Optional<User> findById = this.userRepository.findById(userId);
-		if(findById.isEmpty()) {
-			throw new ResourceNotFoundException("User not found");
-		}
-		
-		return userMapper.userToDtoWithoutPassswordAndEmail(findById.get());
-	}
 
 	@Override
 	public User doesUserExistByName(String username) {
@@ -109,6 +83,8 @@ public class UserServiceImpl implements UserService {
 
 		return this.userRepository.findByEmail(email);
 	}
+
+
 
 
 }

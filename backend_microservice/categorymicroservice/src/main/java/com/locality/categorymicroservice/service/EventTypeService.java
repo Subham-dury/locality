@@ -8,15 +8,15 @@ import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 
 public interface EventTypeService {
 
-	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, Long userId) ;
+	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token) ;
 
 	public List<EventTypeDto> getAllEventType();
 	
 	public LocalityAndEventTypeDto getEventTypeAndLocalityById(Long eventTypeId, Long localityId);
 
-	public EventTypeDto updateEventType(EventTypeDto eventTypeDto, Long eventTypeId, Long userId);
+	public EventTypeDto updateEventType(EventTypeDto eventTypeDto, Long eventTypeId, String token);
 
-	public Boolean deleteEventType(Long eventTypeId, Long userId);
+	public Boolean deleteEventType(Long eventTypeId, String token);
 
 	public EventType doesEventTypeExist(String eventTypeName);
 

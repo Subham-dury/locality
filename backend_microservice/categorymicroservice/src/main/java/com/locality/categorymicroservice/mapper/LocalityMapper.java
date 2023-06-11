@@ -24,7 +24,11 @@ public class LocalityMapper {
 
 	public LocalityAndEventTypeDto localityToDtoUsingIdAndName(Locality locality) {
 
-		return LocalityAndEventTypeDto.builder().localityId(locality.getLocalityId()).name(locality.getName()).build();
+		return LocalityAndEventTypeDto.builder()
+				.eventTypeId(null)
+				.typeOfEvent(null)
+				.localityId(locality.getLocalityId())
+				.name(locality.getName()).build();
 	}
 
 }

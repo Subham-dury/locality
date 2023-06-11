@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.WebRequest;
 
 import jakarta.validation.ConstraintViolation;
@@ -95,10 +96,20 @@ public class GlobalExceptionHandler {
 					.timeStamp(LocalDateTime.now())
 					.message(ex.getMessage()).path(webRequest.getDescription(false).substring(4))
 					.build(),
-					HttpStatus.UNAUTHORIZED);
-			
+					HttpStatus.UNAUTHORIZED);		
+	}
+	
+	@ExceptionHandler(RestClientException.class)
+	public ResponseEntity<ExceptionResponse> handleUnauthorizedException(RestClientException ex,
+			WebRequest webRequest){
 		
+		log.error(ex.getMessage());
 		
+			return new ResponseEntity<ExceptionResponse>(ExceptionResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(ex.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
+					HttpStatus.INTERNAL_SERVER_ERROR);		
 	}
 	
 }

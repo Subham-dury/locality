@@ -98,5 +98,20 @@ public class GlobalExceptionHandler {
 
 		
 	}
+	
+	@ExceptionHandler(ExpiredTokenException.class)
+	public ResponseEntity<ExceptionResponse> handleExpiredTokenException(ExpiredTokenException ex,
+			WebRequest webRequest){
+		
+		log.error(ex.getMessage());
+		
+			return new ResponseEntity<ExceptionResponse>(ExceptionResponse.builder()
+					.timeStamp(LocalDateTime.now())
+					.message(ex.getMessage()).path(webRequest.getDescription(false).substring(4))
+					.build(),
+					HttpStatus.UNAUTHORIZED);
+
+		
+	}
 
 }

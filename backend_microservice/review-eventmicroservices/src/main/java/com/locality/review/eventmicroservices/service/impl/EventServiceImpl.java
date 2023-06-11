@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.locality.review.eventmicroservices.entity.Event;
 import com.locality.review.eventmicroservices.exception.ResourceExistsException;
 import com.locality.review.eventmicroservices.exception.ResourceNotFoundException;
+import com.locality.review.eventmicroservices.mapper.EventMapper;
 import com.locality.review.eventmicroservices.payload.EventDto;
 import com.locality.review.eventmicroservices.payload.LocalityAndEventTypeDto;
 import com.locality.review.eventmicroservices.payload.UserDto;
@@ -34,36 +34,34 @@ public class EventServiceImpl implements EventService {
 	private FetchService fetchService;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	private EventMapper eventMapper;
 
 	@Override
-	public EventDto saveEvent(EventDto EventDto, Long userId, Long localityId, Long eventTypeId)
+	public EventDto saveEvent(EventDto EventDto, String token, Long localityId, Long eventTypeId)
 			throws ResourceExistsException, ResourceNotFoundException {
 
-		UserDto user = this.fetchService.getUser(userId);
+		UserDto user = this.fetchService.validateUser(token);
 
-		LocalityAndEventTypeDto eventTypeAndLocality = this.fetchService.getEventTypeAndLocality(eventTypeId, localityId);
+		LocalityAndEventTypeDto eventTypeAndLocality = this.fetchService.getEventTypeAndLocality(eventTypeId,
+				localityId);
 
 		if (!this.eventRepository
-				.findByUserIdAndLocalityIdAndEventTypeIdOrderByPostDate(userId, localityId, eventTypeId)
-				.isEmpty()) {
-			log.error("Duplicate data");
-			throw new ResourceExistsException("You have already reported an event for the locality and type.");
+				.findByUserIdAndLocalityIdAndEventTypeIdOrderByPostDate(user.getUserId(), localityId, eventTypeId).isEmpty()) {
+			throw new ResourceExistsException("Duplicate data");
 		}
-		
-		
-		Event event = this.dtoToEvent(EventDto);
+
+		Event event = eventMapper.dtoToEvent(EventDto);
 		log.info("Saving new event");
 		event.setImg((int) (Math.random() * 4) + 1);
 		event.setPostDate(LocalDate.now());
-		event.setUserId(userId);
+		event.setUserId(user.getUserId());
 		event.setUsername(user.getUsername());
 		event.setLocalityId(localityId);
 		event.setLocalityname(eventTypeAndLocality.getName());
 		event.setEventTypeId(eventTypeId);
 		event.setEventType(eventTypeAndLocality.getTypeOfEvent());
 
-		return this.eventToDto(this.eventRepository.save(event));
+		return eventMapper.eventToDto(this.eventRepository.save(event));
 
 	}
 
@@ -73,11 +71,11 @@ public class EventServiceImpl implements EventService {
 		List<Event> events = this.eventRepository.findAll();
 
 		if (events.isEmpty()) {
-			log.info("Events not found");
 			throw new ResourceNotFoundException("Events not found");
 		}
 
-		List<EventDto> eventDtos = events.stream().map(event -> this.eventToDto(event)).collect(Collectors.toList());
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
 		return eventDtos;
 	}
 
@@ -87,42 +85,44 @@ public class EventServiceImpl implements EventService {
 		List<Event> events = this.eventRepository.findByOrderByPostDate();
 
 		if (events.isEmpty()) {
-			log.info("Events not found");
+
 			throw new ResourceNotFoundException("Events not found");
 		}
 
-		List<EventDto> eventDtos = events.stream().map(event -> this.eventToDto(event)).collect(Collectors.toList());
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
 		return eventDtos;
 	}
 
 	@Override
 	public List<EventDto> getAllEventByLocality(Long localityId) throws ResourceNotFoundException {
 
-
 		List<Event> events = this.eventRepository.findByLocalityIdOrderByPostDate(localityId);
 
 		events.forEach(event -> System.out.println(event.getContent()));
 
 		if (events.isEmpty()) {
-			log.info("Events not found for locality with id "+localityId);
-			throw new ResourceNotFoundException("Events not found for locality with id "+localityId);
+			throw new ResourceNotFoundException("Events not found for selected locality");
 		}
 
-		List<EventDto> eventDtos = events.stream().map(event -> this.eventToDto(event)).collect(Collectors.toList());
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
 		return eventDtos;
 	}
 
 	@Override
-	public List<EventDto> getAllEventByUser(Long userId) throws ResourceNotFoundException {
+	public List<EventDto> getAllEventByUser(String token) throws ResourceNotFoundException {
+		
+		UserDto user = this.fetchService.validateUser(token);
 
-		List<Event> events = this.eventRepository.findByUserIdOrderByPostDate(userId);
+		List<Event> events = this.eventRepository.findByUserIdOrderByPostDate(user.getUserId());
 
 		if (events.isEmpty()) {
-			log.info("Events not found for user with id "+userId);
-			throw new ResourceNotFoundException("Events not found for user with id "+userId);
+			throw new ResourceNotFoundException("Events not found");
 		}
 
-		List<EventDto> eventDtos = events.stream().map(event -> this.eventToDto(event)).collect(Collectors.toList());
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
 		return eventDtos;
 	}
 
@@ -132,23 +132,71 @@ public class EventServiceImpl implements EventService {
 		List<Event> events = this.eventRepository.findByEventTypeIdOrderByPostDate(eventTypeId);
 
 		if (events.isEmpty()) {
-			log.info("Events not found for event type with id "+eventTypeId);
-			throw new ResourceNotFoundException("Events not found for event type with id "+eventTypeId);
+			throw new ResourceNotFoundException("Events not found for selected event type");
 		}
 
-		List<EventDto> eventDtos = events.stream().map(event -> this.eventToDto(event)).collect(Collectors.toList());
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
 		return eventDtos;
 
 	}
 
 	@Override
-	public EventDto updateEvent(EventDto eventDto, Long eventId)
+	public List<EventDto> getAllEventByUserAndLocality(String token, Long localityId) {
+		
+		UserDto user = this.fetchService.validateUser(token);
+		List<Event> events = this.eventRepository
+				.findByUserIdAndLocalityIdOrderByPostDate(user.getUserId(), localityId);
+		
+		if (events.isEmpty()) {
+			throw new ResourceNotFoundException("Events not found");
+		}
+
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
+		return eventDtos;
+	}
+
+	@Override
+	public List<EventDto> getAllEventByLocalityAndType(Long localityId, Long eventTypeId) {
+		List<Event> events = this.eventRepository
+				.findByLocalityIdAndEventTypeIdOrderByPostDate(localityId, eventTypeId);
+		
+		if (events.isEmpty()) {
+			throw new ResourceNotFoundException("Events not found");
+		}
+
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
+		return eventDtos;
+	}
+
+	@Override
+	public List<EventDto> getAllEventByUserAndLocalityAndType(String token, Long localityId, Long eventTypeId) {
+		
+		UserDto user = this.fetchService.validateUser(token);
+		
+		List<Event> events = this.eventRepository
+				.findByUserIdAndLocalityIdAndEventTypeIdOrderByPostDate(user.getUserId(), localityId, eventTypeId);
+		
+		if (events.isEmpty()) {
+			throw new ResourceNotFoundException("Events not found");
+		}
+
+		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
+				.collect(Collectors.toList());
+		return eventDtos;
+	}
+
+	@Override
+	public EventDto updateEvent(EventDto eventDto, Long eventId, String token)
 			throws IllegalArgumentException, ResourceNotFoundException {
+		
+		this.fetchService.validateUser(token);
 
 		Optional<Event> searchedEvent = this.eventRepository.findById(eventId);
 		if (searchedEvent.isEmpty()) {
-			log.info("Events not found for id " + eventId);
-			throw new ResourceNotFoundException("Events not found for id " + eventId);
+			throw new ResourceNotFoundException("Events not found");
 		}
 
 		if (eventDto == null) {
@@ -162,44 +210,22 @@ public class EventServiceImpl implements EventService {
 
 		updatedEvent.setContent(eventDto.getContent() == null ? updatedEvent.getContent() : eventDto.getContent());
 
-		return this.eventToDto(this.eventRepository.save(updatedEvent));
+		return eventMapper.eventToDto(this.eventRepository.save(updatedEvent));
 	}
 
 	@Override
-	public boolean deleteEvent(Long eventId) throws ResourceNotFoundException {
+	public boolean deleteEvent(Long eventId, String token) throws ResourceNotFoundException {
+		
+		this.fetchService.validateUser(token);
 
 		Optional<Event> doesEventExist = eventRepository.findById(eventId);
 
 		if (doesEventExist.isEmpty()) {
-			log.info("Events not found for id " + eventId);
-			throw new ResourceNotFoundException("Events not found for id " + eventId);
+			throw new ResourceNotFoundException("Events not found");
 		}
 
 		eventRepository.deleteById(eventId);
 		return true;
 	}
-
-	@Override
-	public EventDto eventToDto(Event event) {
-
-		return EventDto.eventDtoBuilder(event.getEventId(),
-				event.getPostDate(), 
-				event.getEventDate(), 
-				event.getImg(),
-				event.getContent(), 
-				null,
-				event.getUsername(),
-				null,
-				event.getLocalityname(),
-				null,
-				event.getEventType());
-	}
-
-	@Override
-	public Event dtoToEvent(EventDto eventDto) {
-		return this.modelMapper.map(eventDto, Event.class);
-	}
-	
-
 
 }

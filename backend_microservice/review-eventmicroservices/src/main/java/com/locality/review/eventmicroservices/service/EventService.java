@@ -2,12 +2,11 @@ package com.locality.review.eventmicroservices.service;
 
 import java.util.List;
 
-import com.locality.review.eventmicroservices.entity.Event;
 import com.locality.review.eventmicroservices.payload.EventDto;
 
 public interface EventService {
 
-	public EventDto saveEvent(EventDto EventDto, Long userId, Long localityId, Long eventTypeId);
+	public EventDto saveEvent(EventDto EventDto, String token, Long localityId, Long eventTypeId);
 
 	public List<EventDto> getAllEvent();
 
@@ -15,16 +14,18 @@ public interface EventService {
 
 	public List<EventDto> getAllEventByLocality(Long localityId);
 
-	public List<EventDto> getAllEventByUser(Long userId);
+	public List<EventDto> getAllEventByUser(String token);
 
 	public List<EventDto> getAllEventByType(Long eventTypeId);
+	
+	public List<EventDto> getAllEventByUserAndLocality(String token, Long localityId);
+	
+	public List<EventDto> getAllEventByLocalityAndType(Long localityId, Long eventTypeId);
+	
+	public List<EventDto> getAllEventByUserAndLocalityAndType(String token, Long localityId, Long eventTypeId);
 
-	public EventDto updateEvent(EventDto EventDto, Long eventId);
+	public EventDto updateEvent(EventDto EventDto, Long eventId, String token);
 
-	public boolean deleteEvent(Long eventId);
-
-	public EventDto eventToDto(Event event);
-
-	public Event dtoToEvent(EventDto eventDto);
+	public boolean deleteEvent(Long eventId, String token);
 
 }

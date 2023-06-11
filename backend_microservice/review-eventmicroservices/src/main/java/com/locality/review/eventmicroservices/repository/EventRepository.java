@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.locality.review.eventmicroservices.entity.Event;
-import com.locality.review.eventmicroservices.entity.Review;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -20,6 +19,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	List<Event> findByLocalityIdOrderByPostDate(Long localityId);
 
 	List<Event> findByEventTypeIdOrderByPostDate(Long eventTypeId);
+	
+	List<Event> findByLocalityIdAndEventTypeIdOrderByPostDate(Long localityId, Long eventTypeId);
+	
+	List<Event> findByUserIdAndLocalityIdOrderByPostDate(Long userId, Long localityId);
 
 	List<Event> findByUserIdAndLocalityIdAndEventTypeIdOrderByPostDate(Long userId, Long localityId,
 			Long eventTypeId);

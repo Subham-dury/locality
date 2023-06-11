@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,10 +31,10 @@ public class EventTypeController {
 	private EventTypeService eventTypeService;
 
 	@PostMapping("/")
-	public ResponseEntity<EventTypeDto> saveLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<EventTypeDto> saveEventType(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@Valid @RequestBody EventTypeDto eventType) {
 
-		return new ResponseEntity<EventTypeDto>(this.eventTypeService.saveEventType(eventType, Long.parseLong(userId)),
+		return new ResponseEntity<EventTypeDto>(this.eventTypeService.saveEventType(eventType, token),
 				HttpStatus.CREATED);
 
 	}
@@ -45,7 +46,7 @@ public class EventTypeController {
 	}
 
 	@GetMapping("/eventType/{eventTypeId}/locality/{localityId}")
-	public ResponseEntity<LocalityAndEventTypeDto> getEventTypeAndLocalityById(@PathVariable(name = "eventTypeId") String eventTypeId,
+	public ResponseEntity<LocalityAndEventTypeDto> getEventTypeAndLocality(@PathVariable(name = "eventTypeId") String eventTypeId,
 			@PathVariable(name = "localityId") String localityId) {
 		
 		
@@ -55,19 +56,19 @@ public class EventTypeController {
 	}
 
 	@PutMapping("/{eventTypeId}")
-	public ResponseEntity<EventTypeDto> updateLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<EventTypeDto> updateEventType(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@RequestBody EventTypeDto eventType, @PathVariable(name = "eventTypeId") String eventTypeId) {
 
 		return ResponseEntity.ok(
-				this.eventTypeService.updateEventType(eventType, Long.parseLong(eventTypeId), Long.parseLong(userId)));
+				this.eventTypeService.updateEventType(eventType, Long.parseLong(eventTypeId), token));
 	}
 
 	@DeleteMapping("/{eventTypeId}")
-	public ResponseEntity<?> deleteLocality(@RequestHeader(name = "userId") String userId,
+	public ResponseEntity<?> deleteEventType(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@PathVariable(name = "eventTypeId") String eventTypeId) {
 
 		boolean deleteEventType = this.eventTypeService.deleteEventType(Long.parseLong(eventTypeId),
-				Long.parseLong(userId));
+				token);
 
 		if (deleteEventType)
 			return ResponseEntity.ok(Map.of("message", "Event type deleted successfully"));

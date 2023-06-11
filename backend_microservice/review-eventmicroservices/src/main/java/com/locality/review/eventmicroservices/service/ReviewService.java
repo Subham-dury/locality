@@ -7,7 +7,7 @@ import com.locality.review.eventmicroservices.payload.ReviewDto;
 
 public interface ReviewService {
 
-	public ReviewDto saveReview(ReviewDto reviewDto, Long userId, Long localityId);
+	public ReviewDto saveReview(ReviewDto reviewDto, String token, Long localityId);
 
 	public List<ReviewDto> getAllReview();
 
@@ -15,13 +15,11 @@ public interface ReviewService {
 
 	public List<ReviewDto> getAllReviewByLocality(Long localityId);
 
-	public List<ReviewDto> getAllReviewByUser(Long userId);
+	public List<ReviewDto> getAllReviewByUser(String token);
+	
+	public List<ReviewDto> getAllReviewByUserAndLocality(String token, Long localityId);
 
-	public ReviewDto updateReview(ReviewDto reviewDto, Long reviewId);
+	public ReviewDto updateReview(ReviewDto reviewDto, Long reviewId, String token);
 
-	public boolean deleteReview(Long reviewId);
-
-	public Review dtoToReview(ReviewDto reviewDto);
-
-	public ReviewDto reviewToDto(Review review);
+	public Boolean deleteReview(Long reviewId, String token);
 }

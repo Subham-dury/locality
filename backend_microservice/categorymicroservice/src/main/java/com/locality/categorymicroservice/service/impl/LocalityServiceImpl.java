@@ -36,10 +36,10 @@ public class LocalityServiceImpl implements LocalityService {
 	private LocalityMapper localityMapper;
 
 	@Override
-	public LocalityDto saveLocality(LocalityDto localityDto, Long userId)
+	public LocalityDto saveLocality(LocalityDto localityDto, String token)
 			throws ResourceExistsException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if (!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -74,12 +74,12 @@ public class LocalityServiceImpl implements LocalityService {
 	}
 
 	@Override
-	public LocalityAndEventTypeDto getLocalityById(Long localityId) {
+	public LocalityAndEventTypeDto getLocality(Long localityId) {
 		Optional<Locality> findById = this.localityRepository.findById(localityId);
 
 		if (findById.isEmpty()) {
 
-			throw new ResourceNotFoundException("Locality not found for id " + localityId);
+			throw new ResourceNotFoundException("Locality not found");
 		}
 
 		return localityMapper.localityToDtoUsingIdAndName(findById.get());
@@ -87,10 +87,10 @@ public class LocalityServiceImpl implements LocalityService {
 	}
 
 	@Override
-	public LocalityDto updateLocality(LocalityDto localityDto, Long localityId, Long userId)
+	public LocalityDto updateLocality(LocalityDto localityDto, Long localityId, String token)
 			throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if (!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -102,7 +102,7 @@ public class LocalityServiceImpl implements LocalityService {
 
 		if (doesLocalityExist.isEmpty()) {
 
-			throw new ResourceNotFoundException("Locality not found for id " + localityId);
+			throw new ResourceNotFoundException("Locality not found");
 		}
 
 		Locality toUpdatedLocality = doesLocalityExist.get();
@@ -129,10 +129,10 @@ public class LocalityServiceImpl implements LocalityService {
 	}
 
 	@Override
-	public Boolean deleteLocality(Long localityId, Long userId)
+	public Boolean deleteLocality(Long localityId, String token)
 			throws ResourceNotFoundException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if (!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 

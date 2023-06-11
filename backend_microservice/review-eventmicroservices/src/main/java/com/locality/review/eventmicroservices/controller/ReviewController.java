@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,10 +32,10 @@ public class ReviewController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<ReviewDto> saveReview(@Valid @RequestBody ReviewDto review, @RequestParam Long userId,
+	public ResponseEntity<ReviewDto> saveReview(@Valid @RequestBody ReviewDto review, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 				@RequestParam Long localityId){
 		
-		return new ResponseEntity<ReviewDto>(this.reviewService.saveReview(review, userId, localityId)
+		return new ResponseEntity<ReviewDto>(this.reviewService.saveReview(review, token, localityId)
 				,HttpStatus.CREATED);
 			
 	}
@@ -50,10 +52,10 @@ public class ReviewController {
 		return ResponseEntity.ok(this.reviewService.getRecentReview());
 	}
 	
-	@GetMapping("/byuser/{userId}")
-	public ResponseEntity<List<ReviewDto>> findReviewByUser(@PathVariable(name = "userId") String userId){
+	@GetMapping("/byuser")
+	public ResponseEntity<List<ReviewDto>> findReviewByUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
 		
-		return ResponseEntity.ok(this.reviewService.getAllReviewByUser(Long.parseLong(userId)));
+		return ResponseEntity.ok(this.reviewService.getAllReviewByUser(token));
 	}
 	
 	@GetMapping("/bylocality/{localityId}")
@@ -65,17 +67,28 @@ public class ReviewController {
 	}
 	
 	
+	@GetMapping("/byall/{localityId}")
+	public ResponseEntity<List<ReviewDto>> findReviewByUserAndLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
+			@PathVariable(name="localityId") String localityId){
+		
+		
+		System.out.println("inside locality");
+		return ResponseEntity.ok(this.reviewService.getAllReviewByUserAndLocality(token, Long.parseLong(localityId)));
+	}
+	
+	
 	@PutMapping("/{reviewId}")
 	public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto review, 
-				@PathVariable(name="reviewId") String reviewId){
+				@PathVariable(name="reviewId") String reviewId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){
 		
-		return ResponseEntity.ok(this.reviewService.updateReview(review, Long.parseLong(reviewId)));
+		return ResponseEntity.ok(this.reviewService.updateReview(review, Long.parseLong(reviewId), token));
 	}
 	
 	@DeleteMapping("/{reviewId}")
-	public ResponseEntity<?> deleteReview(@PathVariable String reviewId){
+	public ResponseEntity<?> deleteReview(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
+			@PathVariable(name="reviewId") String reviewId){
 		
-		boolean deleteReview = this.reviewService.deleteReview(Long.parseLong(reviewId));
+		boolean deleteReview = this.reviewService.deleteReview(Long.parseLong(reviewId), token);
 		if(deleteReview) {
 			return ResponseEntity.ok(Map.of("message", "Review deleted successfully"));
 		}

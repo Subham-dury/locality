@@ -41,10 +41,10 @@ public class EventTypeServiceImpl implements EventTypeService {
 
 
 	@Override
-	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, Long userId) 
+	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token) 
 			throws ResourceExistsException,NotAuthorizedException {
 
-		if(!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if(!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -82,21 +82,21 @@ public class EventTypeServiceImpl implements EventTypeService {
 		Optional<EventType> findById = this.eventTypeRepository.findById(eventTypeId);
 		
 		if(findById.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found for id "+eventTypeId);
+			throw new ResourceNotFoundException("Event type not found");
 		}
 		
 		EventType eventType = findById.get();
-		LocalityAndEventTypeDto localityById = this.localityService.getLocalityById(localityId);
+		LocalityAndEventTypeDto localityById = this.localityService.getLocality(localityId);
 		
 		return eventTypeMapper.localityAndEventTypeToDto(eventType, localityById);
 		
 	}
 
 	@Override
-	public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, Long userId)
+	public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, String token)
 			throws ResourceNotFoundException, IllegalArgumentException,NotAuthorizedException {
 		
-		if(!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if(!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 		
@@ -107,7 +107,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 		Optional<EventType> findEventTypeById = this.eventTypeRepository.findById(eventTypeId);
 
 		if (findEventTypeById.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found for id " + eventTypeId);
+			throw new ResourceNotFoundException("Event type not found");
 		}
 		
 		EventType toBeUpdatedType = findEventTypeById.get();
@@ -120,10 +120,10 @@ public class EventTypeServiceImpl implements EventTypeService {
 	}
 
 	@Override
-	public Boolean deleteEventType(Long eventTypeId, Long userId) 
+	public Boolean deleteEventType(Long eventTypeId, String token) 
 			throws ResourceNotFoundException,NotAuthorizedException {
 		
-		if(!this.fetchUserService.chechIsUserAdmin(userId)) {
+		if(!this.fetchUserService.chechIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 		
