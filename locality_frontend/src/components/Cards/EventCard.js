@@ -1,8 +1,9 @@
 import React from "react";
+import "./DetailsCard.css";
 
-function EventCard({ item }) {
+const EventCard = ({ item }) => {
   return (
-    <div className="card my-3 featurecard">
+      <div className="card my-3 featurecard">
       <div className="row g-0">
         <div className="col-lg-5">
           <div className="card-img">
@@ -26,7 +27,6 @@ function EventCard({ item }) {
             <span className="card-text ms-2 text-muted">
               About : {item.eventType}
             </span>
-
             <p className="card-text mb-4">{item.content}</p>
             <small className="text-muted">Posted on {item.postDate}</small>
           </div>
@@ -34,6 +34,6 @@ function EventCard({ item }) {
       </div>
     </div>
   );
-}
+};
 
 export default EventCard;

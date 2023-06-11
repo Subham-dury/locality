@@ -30,11 +30,15 @@ export const getReviewByLocality = async (localityId) => {
   }
 };
 
-export const getReviewByUser = async (userId) => {
+export const getReviewByUser = async () => {
   try {
-    const response = await fetch(
-      `${REVIEWS_EVENTS_URL}/review/byuser/${userId}`
-    );
+    const response = await fetch(`${REVIEWS_EVENTS_URL}/review/byuser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    });
     if (!response.ok) {
       const data = await response.json();
       throw new Error(data.message);
@@ -46,13 +50,16 @@ export const getReviewByUser = async (userId) => {
   }
 };
 
-export const saveReview = async (review, userId, localityId) => {
+export const saveReview = async (review, localityId) => {
   try {
     const response = await fetch(
-      `${REVIEWS_EVENTS_URL}review/?userId=${userId}&localityId=${localityId}`,
+      `${REVIEWS_EVENTS_URL}review/?localityId=${localityId}`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
         body: JSON.stringify(review),
       }
     );
@@ -67,13 +74,19 @@ export const saveReview = async (review, userId, localityId) => {
   }
 };
 
-
-
-export const deleteReview = async (reviewId) => {
+export const updateReview = async (review, localityId) => {
   try {
-    const response = await fetch(`${REVIEWS_EVENTS_URL}/review/${reviewId}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `${REVIEWS_EVENTS_URL}review/review/${localityId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(review),
+      }
+    );
     if (!response.ok) {
       const data = await response.json();
       throw new Error(data.message);
@@ -85,3 +98,21 @@ export const deleteReview = async (reviewId) => {
   }
 };
 
+export const deleteReview = async (reviewId) => {
+  try {
+    const response = await fetch(`${REVIEWS_EVENTS_URL}/review/${reviewId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

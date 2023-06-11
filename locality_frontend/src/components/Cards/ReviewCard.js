@@ -3,6 +3,8 @@ import "./DetailsCard.css";
 
 const ReviewCard = ({ item }) => {
 
+  console.log(item)
+
   return (
     <div className="card my-3 featurecard">
       <div className="row g-0">

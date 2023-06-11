@@ -1,25 +1,37 @@
-import React from 'react'
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import ReviewCard from '../../components/Cards/ReviewCard';
-import EventCard from '../../components/Cards/EventCard';
+import ReviewCard from "../../components/Cards/ReviewCard";
+import EventCard from "../../components/Cards/EventCard";
 
-function RecentData({data, isReview, title, buttonVal, redirect, dataTarget}) {
-
-    const navigate = useNavigate();
-
+function RecentData({
+  data,
+  isReview,
+  title,
+  buttonVal,
+  redirect,
+  dataTarget,
+}) {
+  const navigate = useNavigate();
   const direct = () => {
     navigate(redirect);
-  }
+  };
 
   return (
-    <section className="featured-data featuredreviews py-5" id="featuredreviews">
+    <section
+      className="featured-data featuredreviews py-5"
+      id="featuredreviews"
+    >
       <div className="container-xl">
         <div className="row heading align-items-center justify-content-evenly">
           <div className="col-6 col-md-8">
             <h3>{title}</h3>
           </div>
           <div className="col-4 d-flex justify-content-end justify-content-xs-left">
-            <button className="button button-primary" type="button" onClick={direct}>
+            <button
+              className="button button-primary"
+              type="button"
+              onClick={direct}
+            >
               {buttonVal}
             </button>
           </div>
@@ -30,35 +42,41 @@ function RecentData({data, isReview, title, buttonVal, redirect, dataTarget}) {
           data-bs-ride="carousel"
         >
           <div className="carousel-inner justify-content-center p-4">
-            {isReview && data.map((d) => {
-              return (
-                <div
-                  className={`carousel-item ${d.reviewId === 1 ? "active" : ""}`}
-                  key={d.reviewId}
-                >
-                  <div className="d-flex justify-content-center">
-                    <ReviewCard item={d} />
+            {isReview &&
+              data.map((d) => {
+                return (
+                  <div
+                    className={`carousel-item ${
+                      d.reviewId === 1 ? "active" : ""
+                    }`}
+                    key={d.reviewId}
+                  >
+                    <div className="d-flex justify-content-center">
+                      <ReviewCard item={d} />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-            {!isReview && data.map((d) => {
-              return (
-                <div
-                  className={`carousel-item ${d.eventId === 1 ? "active" : ""}`}
-                  key={d.reviewId}
-                >
-                  <div className="d-flex justify-content-center">
-                    <EventCard item={d} />
+                );
+              })}
+            {!isReview &&
+              data.map((d) => {
+                return (
+                  <div
+                    className={`carousel-item ${
+                      d.eventId === 1 ? "active" : ""
+                    }`}
+                    key={d.eventId}
+                  >
+                    <div className="d-flex justify-content-center">
+                      <ReviewCard item={d} />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
           <button
             className="carousel-control-prev "
             type="button"
-            data-bs-target = {`#${dataTarget}`}
+            data-bs-target={`#${dataTarget}`}
             data-bs-slide="prev"
           >
             <span
@@ -82,7 +100,7 @@ function RecentData({data, isReview, title, buttonVal, redirect, dataTarget}) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default RecentData;
