@@ -42,36 +42,8 @@ function RecentData({
           data-bs-ride="carousel"
         >
           <div className="carousel-inner justify-content-center p-4">
-            {isReview &&
-              data.map((d) => {
-                return (
-                  <div
-                    className={`carousel-item ${
-                      d.reviewId === 1 ? "active" : ""
-                    }`}
-                    key={d.reviewId}
-                  >
-                    <div className="d-flex justify-content-center">
-                      <ReviewCard item={d} />
-                    </div>
-                  </div>
-                );
-              })}
-            {!isReview &&
-              data.map((d) => {
-                return (
-                  <div
-                    className={`carousel-item ${
-                      d.eventId === 1 ? "active" : ""
-                    }`}
-                    key={d.eventId}
-                  >
-                    <div className="d-flex justify-content-center">
-                      <ReviewCard item={d} />
-                    </div>
-                  </div>
-                );
-              })}
+            {isReview && <ReviewsViewer data={data} />}
+            {!isReview && <EventsViewer data={data} />}
           </div>
           <button
             className="carousel-control-prev "
@@ -104,3 +76,45 @@ function RecentData({
 }
 
 export default RecentData;
+
+const ReviewsViewer = ({ data }) => {
+  return (
+    <>
+      {data.map((d) => {
+        return (
+          <div
+            className={`carousel-item ${
+              d.reviewId === data[0].reviewId ? "active" : ""
+            }`}
+            key={d.reviewId}
+          >
+            <div className="d-flex justify-content-center">
+              <ReviewCard item={d} />
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+const EventsViewer = ({ data }) => {
+  return (
+    <>
+      {data.map((d) => {
+        return (
+          <div
+            className={`carousel-item ${
+              d.eventId === data[0].eventId ? "active" : ""
+            }`}
+            key={d.eventId}
+          >
+            <div className="d-flex justify-content-center">
+              <EventCard item={d} />
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};

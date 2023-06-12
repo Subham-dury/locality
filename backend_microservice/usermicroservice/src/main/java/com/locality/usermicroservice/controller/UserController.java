@@ -56,8 +56,8 @@ public class UserController {
 	}
 
 	
-	@GetMapping("/getUser")
-	public ResponseEntity<UserAuthDto> validateUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
+	@GetMapping("/authorize")
+	public ResponseEntity<UserAuthDto> authorizeUser(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
 		
 		return ResponseEntity.ok(this.tokenService.validateUser(token.substring(7)));
 	}

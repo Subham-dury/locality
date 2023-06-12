@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-function SelectLocality({ localitylist, setlocality }) {
+function SelectLocality({ localitylist, setLocality }) {
   const [selectedOption, setSelectedOption] = useState(0);
 
   const setOption = (e) => {
     setSelectedOption(e.target.value);
-    setlocality(e.target.value);
+    setLocality(e.target.value);
   };
 
   return (

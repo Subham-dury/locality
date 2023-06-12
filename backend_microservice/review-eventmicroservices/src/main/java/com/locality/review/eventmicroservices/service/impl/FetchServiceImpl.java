@@ -43,7 +43,7 @@ public class FetchServiceImpl implements FetchService {
 			headers.set("Authorization", token);
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-	        ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/getUser",
+	        ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/authorize",
 	        		HttpMethod.GET, requestEntity, UserDto.class);
 	        
 	        if(!response.getStatusCode().is2xxSuccessful()) {
@@ -75,7 +75,7 @@ public class FetchServiceImpl implements FetchService {
 
 	@Override
 	public LocalityAndEventTypeDto getEventTypeAndLocality(Long eventTypeId, Long localityId)  throws ResourceNotFoundException{
-		ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(categoryMicroserviceUrl + "type/eventType/" +eventTypeId + "/locality/" + localityId
+		ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(categoryMicroserviceUrl + "type/" +eventTypeId + "/locality/" + localityId
 				,HttpMethod.GET, null, LocalityAndEventTypeDto.class);
 
 		if (!response.getStatusCode().is2xxSuccessful()) {

@@ -45,7 +45,7 @@ public class EventTypeController {
 		return ResponseEntity.ok(this.eventTypeService.getAllEventType());
 	}
 
-	@GetMapping("/eventType/{eventTypeId}/locality/{localityId}")
+	@GetMapping("/{eventTypeId}/locality/{localityId}")
 	public ResponseEntity<LocalityAndEventTypeDto> getEventTypeAndLocality(@PathVariable(name = "eventTypeId") String eventTypeId,
 			@PathVariable(name = "localityId") String localityId) {
 		

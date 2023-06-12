@@ -103,8 +103,6 @@ public class EventServiceImpl implements EventService {
 
 		List<Event> events = this.eventRepository.findByLocalityId(localityId,sortByDateDesc);
 
-		events.forEach(event -> System.out.println(event.getContent()));
-
 		if (events.isEmpty()) {
 			throw new ResourceNotFoundException("Events not found for selected locality");
 		}

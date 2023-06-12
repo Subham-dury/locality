@@ -36,7 +36,7 @@ public class FetchUserServiceImpl implements FetchUserService {
 			headers.set("Authorization", token);
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-	        ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/getUser",
+	        ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/authorize",
 	        		HttpMethod.GET, requestEntity, UserDto.class);
 	        
 	        if(!response.getStatusCode().is2xxSuccessful()) {

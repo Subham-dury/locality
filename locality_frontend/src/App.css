@@ -141,11 +141,30 @@
   text-align: center;
 }
 
+.selectlocality div:first-child {
+  margin-top: 9px;
+}
+
 @media (max-width: 768px) {
   .selectlocality {
     height: fit-content;
     width: 80vw !important;
     padding: 10px 15px;
+  }
+}
+
+@media only screen and (max-width: 474px){
+  .selectlocality {
+    height: fit-content;
+    flex-wrap: wrap;
+  }
+
+  .selectlocality div:first-child {
+    width: 100%;
+  }
+
+  .selectlocality div:nth-child(2){
+    width: 80%;
   }
 }
 

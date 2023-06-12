@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-function Filterbar({ name }) {
+function ReviewsFilterbar({ name }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const location = useLocation();
 
@@ -23,4 +23,4 @@ function Filterbar({ name }) {
   );
 }
 
-export default Filterbar;
+export default ReviewsFilterbar;

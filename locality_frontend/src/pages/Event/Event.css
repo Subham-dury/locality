@@ -1,0 +1,166 @@
+.localitydesc {
+  overflow: hidden;
+  padding: 2.5rem 0;
+}
+
+.localitydesc .imgholder img {
+  display: block;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+  aspect-ratio: 16 / 9;
+}
+
+@media only screen and (max-width: 992px) {
+  .localitydesc {
+    text-align: center;
+    height: 80vh;
+    padding: auto;
+  }
+}
+
+.filterbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border-radius: 9px;
+  background: var(--secondary5);
+  color: var(--text1);
+  height: 80px;
+  width: 80dvw !important;
+}
+
+.filterbuttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 60%;
+}
+
+.filterbuttons button {
+  width: 40%;
+  margin: 0 10px;
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+
+  .filterbar {
+    justify-content: center;
+  }
+
+  .filterbar div:first-child {
+    width: 40%;
+  }
+
+  .filterbar h3 {
+    font-size: 1.3rem;
+  }
+
+  .filterbar .filterbuttons {
+    justify-content: center;
+    width: 60%;
+  }
+
+  .filterbuttons div:first-child{
+    width: 60%;
+  }
+  .filterbuttons button {
+    width: 40% !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+
+  .filterbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+    height: fit-content;
+  }
+
+  .filterbar div:first-child {
+    width: 100%;
+    
+  }
+
+  .filterbar h3 {
+    text-align: center;
+    font-size: 1.3rem;
+  }
+
+  .filterbuttons {
+    width: 100%;
+    justify-content: space-evenly;
+    margin: 10px;
+  }
+
+  .filterbuttons div:first-child {
+    width: 60% !important;
+    margin: 0 5px;
+  }
+
+  .filterbuttons button {
+    width: 40%;
+    margin: 0;
+    height: 35px !important;
+  }
+}
+
+@media only screen and (max-width: 576px){
+
+  .filterbuttons {
+    width: 100% !important;
+    justify-content: space-evenly;
+    flex-wrap: wrap !important;
+    margin: 10px;
+  }
+
+  .filterbuttons div:first-child {
+    width: 80% !important;
+    margin: 10px 0;
+  }
+
+  .filterbuttons button {
+    width: 100%;
+    margin: 10px 0;
+    height: 35px !important;
+    width: 80% !important;
+  }
+}
+
+.events-container {
+  height: 75dvh;
+  overflow-y: scroll;
+  scrollbar-width: auto;
+  scrollbar-color: #02071c #ffffff;
+  scrollbar-gutter: 40px;
+}
+
+/* Chrome, Edge, and Safari */
+.events-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.events-container::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.events-container::-webkit-scrollbar-thumb {
+  background-color: #02071c;
+  border-radius: 5px;
+  border: 3px solid #ffffff;
+}
+
+@media only screen and (max-width: 768px) {
+  .events-container::-webkit-scrollbar {
+    width: 16px;
+  }
+}

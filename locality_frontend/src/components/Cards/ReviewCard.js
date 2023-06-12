@@ -1,9 +1,7 @@
 import React from "react";
-import "./DetailsCard.css";
+import "./Card.css";
 
 const ReviewCard = ({ item }) => {
-
-  console.log(item)
 
   return (
     <div className="card my-3 featurecard">

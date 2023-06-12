@@ -1,5 +1,5 @@
 import React from 'react'
-import './DetailsCard.css'
+import './Card.css'
 
 function DataNotFoundCard({message}) {
   return (

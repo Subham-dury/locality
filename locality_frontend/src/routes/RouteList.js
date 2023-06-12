@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
-import Event from "../Pages/Event/Event";
-import Home from "../Pages/Home/Home";
-import Login from "../Pages/Login/Login";
-import Signup from "../Pages/Login/Signup";
-import Review from "../Pages/Review/Review";
-import UserReport from "../Pages/User/UserReports/UserReport";
-import UserReview from "../Pages/User/UserReviews/UserReview";
+import Event from "../pages/Event/Event";
+import Home from "../pages/Home/Home";
+import Login from "../pages/Login/Login";
+import Signup from "../pages/Login/Signup";
+import Review from "../pages/Review/Review";
+import UserReport from "../pages/User/UserReports/UserReport";
+import UserReview from "../pages/User/UserReviews/UserReview";
 import Protected from "./Protected";
 
 const RouteList = () => {

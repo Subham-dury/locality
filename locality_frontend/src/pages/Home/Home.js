@@ -7,7 +7,7 @@ import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
 import {
   getRecentReview,
   getRecentEvent,
-} from "../../Service/RecentReviewEventsService";
+} from "../../service/RecentReviewEventsService";
 import "./Home.css";
 
 const Home = () => {
@@ -34,7 +34,7 @@ const Home = () => {
       {!recentReview && !recentEvent && <div>Loading...</div>}
 
 
-     {errorInReview && <DataNotFoundCard message={errorInReview.message}/>}
+     {errorInReview && <DataNotFoundCard message={"Failed to load recent reviews"}/>}
 
       {!errorInReview && recentReview && (
         <RecentData
@@ -46,7 +46,7 @@ const Home = () => {
           dataTarget={"review"}
         />
       )}
-      {errorInEvent && <DataNotFoundCard message={errorInEvent.message}/>}      
+      {errorInEvent && <DataNotFoundCard message={"Failed to load recent events"}/>}      
       {!errorInEvent && recentEvent && (
         <RecentData
           data={recentEvent}

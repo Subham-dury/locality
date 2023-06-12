@@ -1,8 +1,9 @@
 import React from "react";
-import "./DetailsCard.css";
+import "./Card.css";
 
 const EventCard = ({ item }) => {
-  return (
+
+ return (
       <div className="card my-3 featurecard">
       <div className="row g-0">
         <div className="col-lg-5">
@@ -21,10 +22,8 @@ const EventCard = ({ item }) => {
             <span className="card-text me-2 text-muted">
               Date : {item.eventDate}
             </span>
-
             <br />
-
-            <span className="card-text ms-2 text-muted">
+            <span className="card-text text-muted">
               About : {item.eventType}
             </span>
             <p className="card-text mb-4">{item.content}</p>

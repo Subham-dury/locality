@@ -2,7 +2,6 @@ package com.locality.review.eventmicroservices.service;
 
 import java.util.List;
 
-import com.locality.review.eventmicroservices.entity.Review;
 import com.locality.review.eventmicroservices.payload.ReviewDto;
 
 public interface ReviewService {
