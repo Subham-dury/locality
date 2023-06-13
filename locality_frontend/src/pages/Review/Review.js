@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import SelectLocality from "../../components/LocalitySelector";
-import Localityinfo from "../../components/Cards/LocalityInfoCard";
+import SelectLocality from "../../components/selectors/LocalitySelector";
+import Localityinfo from "../../components/cards/LocalityInfoCard";
 import ReviewsFilterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
-import LocalityNotFound from "../../components/Cards/LocalityNotFoundCard";
+import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
 import { localitylist } from "../../Data/LocalityList";
 import { getAllReview, getReviewByLocality } from "../../service/ReviewService";
 import "./Review.css";
-import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
+import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
+import AddReviewModal from "../../components/modals/AddReviewModal";
 
 const Review = () => {
   const [localityitem, setLocalityitem] = useState({});
@@ -80,6 +81,7 @@ const Review = () => {
             }
           />
         </div>
+        
         <div className="row my-3">
           {!errorInReview && <Reviewscontainer reviews={reviews} />}
           {errorInReview && <DataNotFoundCard message={errorInReview} />}

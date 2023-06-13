@@ -65,19 +65,27 @@
   background-color: var(--text3);
 }
 
+
 @media (min-width: 768px) {
+  .loginbtn {
+    margin-right: 2.3rem !important;
+  }
+
+  .dropdown .dropdown-toggle {
+    margin-right: 1.5rem;
+  }
   .dropdown .dropdown-menu {
     display: block;
     visibility: hidden;
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(50px) translateX(-10px);
     transition: 0.5s ease all;
   }
   .dropdown:hover .dropdown-menu {
     display: block;
     visibility: visible;
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0px) translateX(-10px);
     transition: 0.5s ease all;
     box-shadow: 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
   }
@@ -104,8 +112,9 @@
     visibility: hidden;
     opacity: 0;
     height: 0;
-    transform: translateY(-30px);
+    transform: translateY(-30px) translateX(-10px);
     transition: 0.5s ease all;
+    
   }
 
   .dropdown:hover .dropdown-menu,
@@ -113,8 +122,8 @@
     display: block;
     visibility: visible;
     opacity: 1;
-    height: 100px;
-    transform: translateY(0px);
+    height: max-content;
+    transform: translateY(0px) translateX(-10px);
     transition: 0.5s ease all;
   }
 

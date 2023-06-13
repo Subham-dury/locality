@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ReviewCard from "../../components/Cards/ReviewCard";
-import EventCard from "../../components/Cards/EventCard";
+import ReviewCard from "../../components/cards/ReviewCard";
+import EventCard from "../../components/cards/EventCard";
 
 function RecentData({
   data,

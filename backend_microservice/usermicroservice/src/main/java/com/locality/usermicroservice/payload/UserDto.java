@@ -27,16 +27,20 @@ public class UserDto {
 	private Long userId;
 
 	@NotBlank(message = "Username cannot be empty", groups = { Register.class })
-	@Length(min = 5, max = 20, message = "Username must have between 5 and 20 characters.", groups = { Register.class })
+	@Length(min = 5, max = 20, message = "Username must have between 5 and 20 characters.",
+		groups = { Register.class })
+	@Pattern(regexp = "^[a-zA-Z0-9_]{5,20}$", message = "Invalid username", groups = { Register.class })
 	private String username;
 
 	@Email(message = "Invalid email", groups = { Register.class })
 	@NotBlank(message = "Email cannot be empty")
+	@Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+		message = "Invalid email", groups = {Register.class })
 	private String email;
 
 	@NotBlank(message = "Password cannot be empty", groups = { Login.class, Register.class })
-	@Pattern(regexp = "^[^\s]+$", message = "Username contains invalid characters", groups = { Login.class,
-			Register.class })
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+		message = "Username contains invalid characters", groups = {Login.class, Register.class })
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 

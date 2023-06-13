@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import AddReviewModal from "../../components/modals/AddReviewModal";
 
 function ReviewsFilterbar({ name }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -16,9 +17,10 @@ function ReviewsFilterbar({ name }) {
       </div>
       <div className="filterbuttons">
         {isSignedIn && (
-          <button className="button button-dark">Add new review</button>
+          <button className="button button-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add new review</button>
         )}
       </div>
+      <AddReviewModal/>
     </div>
   );
 }

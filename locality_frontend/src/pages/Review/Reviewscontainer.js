@@ -1,5 +1,5 @@
 import React from "react";
-import ReviewCard from "../../components/Cards/ReviewCard";
+import ReviewCard from "../../components/cards/ReviewCard";
 
 function Reviewscontainer({ reviews }) {
   return (

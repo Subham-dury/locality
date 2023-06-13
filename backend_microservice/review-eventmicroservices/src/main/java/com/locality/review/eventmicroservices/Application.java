@@ -41,14 +41,5 @@ public class Application {
 		};
 	}
 	
-	@Bean
-    public DataSource getDataSource() {
-        return DataSourceBuilder.create()
-          .driverClassName("com.mysql.cj.jdbc.Driver")
-          .url("jdbc:mysql://localhost:3306/locality_db")
-          .username("root")
-          .password("password")
-          .build();	
-    }
 
 }

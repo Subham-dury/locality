@@ -1,6 +1,6 @@
 .half,
 .half .container > .row {
-  max-height: 100svh;
+  max-height: 200svh;
   min-height: 500px;
 }
 

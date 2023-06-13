@@ -3,7 +3,7 @@ import AboutUs from "./AboutUs";
 import Hero from "./Hero";
 import Newsletter from "./Newsletter";
 import RecentData from "./RecentData";
-import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
+import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import {
   getRecentReview,
   getRecentEvent,

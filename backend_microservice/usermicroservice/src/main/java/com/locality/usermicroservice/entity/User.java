@@ -32,16 +32,18 @@ public class User {
 
 	@NotBlank(message = "Username cannot be empty")
 	@Length(min = 5, max = 20, message = "Username must have between 5 and 20 characters.")
+	@Pattern(regexp = "^[a-zA-Z0-9_]{5,20}$", message = "Invalid username")
 	@Column(unique = true)
 	private String username;
 
 	@Email(message = "Invalid email")
 	@NotBlank(message = "Email cnnot be empty")
+	@Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Invalid email")
 	@Column(unique = true)
 	private String email;
 
 	@NotBlank(message = "Password cannot be empty")
-	@Pattern(regexp = "^[^\s]+$", message = "Username contains invalid characters")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password is invalid")
 	@Column(unique = true)
 	private String password;
 

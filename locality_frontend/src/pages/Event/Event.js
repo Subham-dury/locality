@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import SelectLocality from "../../components/LocalitySelector";
-import Localityinfo from "../../components/Cards/LocalityInfoCard";
-import LocalityNotFound from "../../components/Cards/LocalityNotFoundCard";
-import DataNotFoundCard from "../../components/Cards/DataNotFoundCard";
+import SelectLocality from "../../components/selectors/LocalitySelector";
+import Localityinfo from "../../components/cards/LocalityInfoCard";
+import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
+import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import EventFilterbar from "./EventFilterbar";
 import EventContainer from "./EventContainer";
 import { localitylist } from "../../Data/LocalityList";

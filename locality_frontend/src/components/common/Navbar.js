@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import logo from "../assests/logo.png";
+import logo from "../../assests/logo.png";
 
 const Navbar = () => {
+  const isAdmin = false;
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('')
 
   useEffect(() => {
-    //console.log(location)
-    setIsLoggedIn(sessionStorage.getItem("isLoggedIn") ? true : false);
+    if(localStorage.getItem("token")){
+      setIsLoggedIn(true)
+      setUsername(JSON.parse(localStorage.user).username)
+    }
+    else{
+      setIsLoggedIn(false)
+    }
   }, [location]);
 
   const handleLogin = () => {
     navigate("/login", {
-      state : {
+      state: {
         previousUrl: location.pathname,
-      }
+      },
     });
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate(location.pathname);
   };
 
@@ -73,55 +80,65 @@ const Navbar = () => {
                 Events
               </NavLink>
             </li>
-
-            {isLoggedIn && (
-              <li className="nav-item dropdown mx-lg-3">
-                <Link
-                  className="nav-link"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  User
-                </Link>
-                <ul
-                  className="dropdown-menu text-center shadow"
-                  aria-labelledby="navbarDropdown"
-                >
-                  <li className="nav-item mx-3">
-                    <Link className="nav-link" to="/user-reviews">
-                      Reviews
-                    </Link>
-                  </li>
-                  <li className="nav-item mx-3">
-                    <Link className="nav-link" to="/user-reports">
-                      Reports
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            )}
           </ul>
           <div className="btn-container">
             {!isLoggedIn && (
               <button
-                className="button button-primary"
+                className="button button-primary loginbtn"
                 type="button"
                 onClick={handleLogin}
               >
                 login
               </button>
             )}
+
             {isLoggedIn && (
-              <button
-                className="button button-primary"
-                type="button"
-                onClick={handleLogout}
-              >
-                logout
-              </button>
+              <li className="nav-item dropdown mx-lg-3">
+                <button
+                  className="button button-primary dropstart dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {username}
+                </button>
+                <ul
+                  className="dropdown-menu text-center shadow"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <li className="nav-item mx-3 my-3">
+                    <Link className="nav-link" to="/user-reviews">
+                      Manage Reviews
+                    </Link>
+                  </li>
+                  <li className="nav-item mx-3 my-3">
+                    <Link className="nav-link" to="/user-reports">
+                      Manage Events
+                    </Link>
+                  </li>
+                  {isAdmin && (
+                    <li className="nav-item mx-3 my-3">
+                      <Link className="nav-link" to="/user-reports">
+                        Manage Localities
+                      </Link>
+                    </li>
+                  )}
+                  {isAdmin && (
+                    <li className="nav-item mx-3 my-3">
+                      <Link className="nav-link" to="/user-reports">
+                        Manage Events
+                      </Link>
+                    </li>
+                  )}
+                  <button
+                    className="button button-primary mx-2"
+                    type="button"
+                    onClick={handleLogout}
+                  >
+                    logout
+                  </button>
+                </ul>
+              </li>
             )}
           </div>
         </div>
@@ -131,3 +148,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

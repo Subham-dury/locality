@@ -36,8 +36,12 @@ public class UserController {
 		UserDto registerUser = this.userService.registerUser(userDto);
 		String token = this.tokenService.generateToken(registerUser);
 		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Access-Control-Expose-Headers", "Authorization");
+        headers.add("Authorization", "Bearer:" + token);
+		
 		 return ResponseEntity.status(HttpStatus.CREATED)
-	                .header("Authorization", "Bearer:" + token)
+	                .headers(headers)
 	                .body(registerUser);
 
 	}
@@ -48,9 +52,13 @@ public class UserController {
 
 		UserDto loginUser = this.userService.loginUser(user);
 		String token = this.tokenService.generateToken(loginUser);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Access-Control-Expose-Headers", "Authorization");
+        headers.add("Authorization", "Bearer:" + token);
 
 		return ResponseEntity.status(HttpStatus.OK)
-				.header("Authorization", "Bearer:" + token)
+				.headers(headers)
 				.body(loginUser);
 
 	}

@@ -21,6 +21,10 @@ body, html {
   outline: none;
   overflow-x: hidden;
   text-decoration: none;
+
 }
 
+li, ul {
+  list-style: none !important;
+}
 

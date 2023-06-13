@@ -1,5 +1,5 @@
 import React from 'react'
-import EventCard from '../../components/Cards/EventCard';
+import EventCard from '../../components/cards/EventCard';
 
 const EventContainer = ({events}) => {
   return (

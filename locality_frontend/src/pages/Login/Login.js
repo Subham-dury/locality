@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import "./loginsignup.css";
+import "./Loginsignup.css";
+import LoginForm from "../../components/forms/LoginForm";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [previousUrl, setPreviousUrl] = useState(''); 
+  const [previousUrl, setPreviousUrl] = useState("");
 
   useEffect(() => {
-    setPreviousUrl(location?.state?.previousUrl ? location.state.previousUrl : '/')
-  },[])
+    setPreviousUrl(
+      location?.state?.previousUrl ? location.state.previousUrl : "/"
+    );
+  }, []);
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    sessionStorage.setItem("isLoggedIn", "true");
+  const handleLogin = (data) => {
+    localStorage.setItem("user", JSON.stringify(data));
     navigate(previousUrl);
   };
 
@@ -28,42 +30,11 @@ const Login = () => {
                 <h3>
                   Login to <strong>locality</strong>
                 </h3>
-
-                <form onSubmit={handleLogin}>
-                  <div class="form-group my-4">
-                    <label htmlFor="username">Email</label>
-                    <input
-                      type="text"
-                      class="form-control mt-2"
-                      placeholder="your-email@gmail.com"
-                      id="username"
-                    />
-                  </div>
-                  <div class="form-group my-4">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      type="password"
-                      class="form-control mt-2"
-                      placeholder="Your Password"
-                      id="password"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="submit"
-                      value="Log In"
-                      class="button button-primary"
-                    />
-                  </div>
-                </form>
+                <LoginForm handleLogin={handleLogin}/>
                 <hr />
-
                 <h6 className="text-center">
                   Become a member ,{" "}
-                  <Link
-                    to="/signup"
-                    state={{ previousPath: previousUrl}}
-                  >
+                  <Link to="/signup" state={{ previousPath: previousUrl }}>
                     Sign up
                   </Link>
                 </h6>
