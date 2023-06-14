@@ -35,7 +35,7 @@ public class FetchServiceImpl implements FetchService {
 	private String categoryMicroserviceUrl;
 
 	@Override
-	public UserDto validateUser(String token) throws NotAuthorizedException, RestClientException{
+	public UserDto validateUser(String token) throws NotAuthorizedException, RestClientException {
 
 		try {
 			HttpHeaders headers = new HttpHeaders();
@@ -43,47 +43,57 @@ public class FetchServiceImpl implements FetchService {
 			headers.set("Authorization", token);
 			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-	        ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/authorize",
-	        		HttpMethod.GET, requestEntity, UserDto.class);
-	        
-	        if(!response.getStatusCode().is2xxSuccessful()) {
-	        	throw new NotAuthorizedException("Invalid token");
-	        }
-	        
-	        return response.getBody();
-	       
-		}
-		catch(RestClientException e) {
+			ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/authorize",
+					HttpMethod.GET, requestEntity, UserDto.class);
+
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				throw new NotAuthorizedException("Invalid token");
+			}
+
+			return response.getBody();
+
+		} catch (RestClientException e) {
 			throw new RestClientException("Invalid token");
 		}
-		
 
 	}
 
 	@Override
 	public LocalityAndEventTypeDto getLocality(Long localityId) throws ResourceNotFoundException {
-		ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(categoryMicroserviceUrl + "locality/" + localityId,
-				HttpMethod.GET, null, LocalityAndEventTypeDto.class);
+		try {
+			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
+					categoryMicroserviceUrl + "locality/" + localityId, HttpMethod.GET, null,
+					LocalityAndEventTypeDto.class);
 
-		if (!response.getStatusCode().is2xxSuccessful()) {
-			log.error("Locality with id " + localityId + " not found");
-			throw new ResourceNotFoundException("Locality with id " + localityId + " not found");
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				throw new ResourceNotFoundException("Locality not found");
+			}
+			System.out.println(response.getBody());
+			return response.getBody();
+		} catch (RestClientException e) {
+			throw new RestClientException("Locality not found");
 		}
-		System.out.println(response.getBody());
-		return response.getBody();
+
 	}
 
 	@Override
-	public LocalityAndEventTypeDto getEventTypeAndLocality(Long eventTypeId, Long localityId)  throws ResourceNotFoundException{
-		ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(categoryMicroserviceUrl + "type/" +eventTypeId + "/locality/" + localityId
-				,HttpMethod.GET, null, LocalityAndEventTypeDto.class);
+	public LocalityAndEventTypeDto getEventTypeAndLocality(Long eventTypeId, Long localityId)
+			throws ResourceNotFoundException {
 
-		if (!response.getStatusCode().is2xxSuccessful()) {
-			log.error("Locality with id " + localityId + " not found");
-			throw new ResourceNotFoundException("Locality with id " + localityId + " not found");
+		try {
+			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
+					categoryMicroserviceUrl + "type/" + eventTypeId + "/locality/" + localityId, HttpMethod.GET, null,
+					LocalityAndEventTypeDto.class);
+
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				throw new ResourceNotFoundException("Locality and event type not found");
+			}
+
+			return response.getBody();
+		} catch (RestClientException e) {
+			throw new RestClientException("Locality and event type not found");
 		}
 
-		return response.getBody();
 	}
 
 }

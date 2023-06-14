@@ -4,18 +4,22 @@ import Localityinfo from "../../components/cards/LocalityInfoCard";
 import ReviewsFilterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
 import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
+import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import { localitylist } from "../../Data/LocalityList";
 import { getAllReview, getReviewByLocality } from "../../service/ReviewService";
 import "./Review.css";
-import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
-import AddReviewModal from "../../components/modals/AddReviewModal";
+
 
 const Review = () => {
-  const [localityitem, setLocalityitem] = useState({});
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
+  const [localityitem, setLocalityitem] = useState({});
 
   const [reviews, setReviews] = useState([]);
   const [errorInReview, setErrorInReview] = useState(null);
+
+  const refresh = () => {
+    updateReviewsToAll()
+  }
 
 
   useEffect(() => {
@@ -35,8 +39,9 @@ const Review = () => {
     }
   };
 
-
+  
   const updateReviewsToAll = () => {
+    console.log("iside update all")
     getAllReview()
     .then((data) => {
       setReviews(data);
@@ -78,12 +83,14 @@ const Review = () => {
               isLocalityListLoaded
                 ? `reviews for ${localityitem.name}`
                 : `All reviews`
+              
             }
+            refresh={refresh}
           />
         </div>
         
         <div className="row my-3">
-          {!errorInReview && <Reviewscontainer reviews={reviews} />}
+          {!errorInReview && <Reviewscontainer reviews={reviews}/>}
           {errorInReview && <DataNotFoundCard message={errorInReview} />}
         </div>
       </div>

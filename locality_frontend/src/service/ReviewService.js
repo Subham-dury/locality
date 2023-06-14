@@ -50,17 +50,16 @@ export const getReviewByUser = async () => {
   }
 };
 
-export const saveReview = async (review, localityId) => {
+export const getReviewByUserAndLocality = async (localityId) => {
   try {
     const response = await fetch(
-      `${REVIEWS_EVENTS_URL}review/?localityId=${localityId}`,
+      `${REVIEWS_EVENTS_URL}/review/byuser/bylocality/${localityId}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         },
-        body: JSON.stringify(review),
       }
     );
     if (!response.ok) {
@@ -74,10 +73,35 @@ export const saveReview = async (review, localityId) => {
   }
 };
 
+export const saveReview = async (localityId, review) => {
+  try {
+    const response = await fetch(
+      `${REVIEWS_EVENTS_URL}/review/?localityId=${localityId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ content: review }),
+      }
+    );
+    if (!response.ok) {
+      const data = await response.json();
+      console.log(data.message);
+      throw new Error(data.message);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const updateReview = async (review, localityId) => {
   try {
     const response = await fetch(
-      `${REVIEWS_EVENTS_URL}review/review/${localityId}`,
+      `${REVIEWS_EVENTS_URL}/review/review/${localityId}`,
       {
         method: "PUT",
         headers: {
@@ -106,8 +130,10 @@ export const deleteReview = async (reviewId) => {
         Authorization: localStorage.getItem("token"),
       },
     });
+
     if (!response.ok) {
       const data = await response.json();
+
       throw new Error(data.message);
     }
     const data = await response.json();

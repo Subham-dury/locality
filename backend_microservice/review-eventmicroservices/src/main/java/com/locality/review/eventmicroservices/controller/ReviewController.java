@@ -67,7 +67,7 @@ public class ReviewController {
 	}
 	
 	
-	@GetMapping("/byall/{localityId}")
+	@GetMapping("/byuser/bylocality/{localityId}")
 	public ResponseEntity<List<ReviewDto>> findReviewByUserAndLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 			@PathVariable(name="localityId") String localityId){
 		

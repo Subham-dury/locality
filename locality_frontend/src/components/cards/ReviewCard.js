@@ -18,7 +18,7 @@ const ReviewCard = ({ item }) => {
         <div className="col-lg-7">
           <div className="card-body">
             <h6>Posted by {item.username} </h6>
-            <p>{item.localityname}</p>
+            <h9>{item.localityname}</h9>
             <br/>
             <p className="card-text mb-4">{item.content}</p>
             <small className="text-muted">Posted on {item.date}</small>
