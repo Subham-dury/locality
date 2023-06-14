@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReviewForm from "../forms/ReviewForm";
 import { saveReview } from "../../service/ReviewService";
 
-const AddReviewModal = ({toggleShow}) => {
+const AddReviewModal = ({handleCloseModal}) => {
 
   const [review, setReview] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -36,8 +36,8 @@ const AddReviewModal = ({toggleShow}) => {
     saveReview(selectedOption, review)
     .then((data) => {
       console.log(data)
+      closeModal()
       handleCloseModal()
-      toggleShow()
     })
     .catch((error) => {
       console.log(error);
@@ -45,7 +45,7 @@ const AddReviewModal = ({toggleShow}) => {
     });
   }
 
-  function handleCloseModal(){            
+  function closeModal(){            
     document.getElementById("staticBackdrop").classList.remove("show");
     document.querySelectorAll(".modal-backdrop")
             .forEach(el => el.classList.remove("modal-backdrop"));    
@@ -53,8 +53,7 @@ const AddReviewModal = ({toggleShow}) => {
 
   return (
     <div
-      className="modal fade modal-fullscreen-sm-down"
-      
+      className="modal fade"
       id="staticBackdrop"
       data-bs-backdrop="static"
       data-bs-keyboard="false"

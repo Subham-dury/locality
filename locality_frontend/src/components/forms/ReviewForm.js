@@ -34,7 +34,7 @@ const ReviewForm = ({updateSelectedOption ,selectedOption, errMsg, updateReview}
          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
          onChange={(e) => updateReview(e.target.value)}
          ></textarea>
-s
+        <small style={{ color: "red", fontSize: "0.8rem" }}>{errMsg}</small>
       </div>
     </form>
   );

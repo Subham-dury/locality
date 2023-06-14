@@ -7,10 +7,12 @@ import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
 import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import { localitylist } from "../../Data/LocalityList";
 import { getAllReview, getReviewByLocality } from "../../service/ReviewService";
+import AddReviewModal from "../../components/modals/AddReviewModal";
 import "./Review.css";
 
 
 const Review = () => {
+
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
   const [localityitem, setLocalityitem] = useState({});
 
@@ -64,6 +66,7 @@ const Review = () => {
         setErrorInReview(error.message);
       });
   };
+
 
   return (
     <section className="reviev">

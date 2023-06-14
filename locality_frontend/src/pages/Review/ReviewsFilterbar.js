@@ -4,7 +4,7 @@ import AddReviewModal from "../../components/modals/AddReviewModal";
 
 function ReviewsFilterbar({ name, refresh }) {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(false)
 
   const location = useLocation();
 
@@ -12,30 +12,34 @@ function ReviewsFilterbar({ name, refresh }) {
     setIsSignedIn(localStorage.getItem("token") ? true : false);
   }, [location]);
 
-  const toggleShow = () =>{
-    setShow((prevValue) => !prevValue)
-    refresh()
-  }
+  useEffect(() => {
+    handleOpenModal();
+  }, [show])
+
+  const handleOpenModal = () => {
+    console.log(true)
+    setShow(true);
+  };
+
+  const handleCloseModal = () => {
+    setShow(false);
+  };
 
   return (
-    <div className="filterbar text-center mx-auto">
+    <>
+     <div className="filterbar text-center mx-auto">
       <div>
         <h3 className="ms-md-4">{name}</h3>
       </div>
       <div className="filterbuttons">
         {isSignedIn && (
-          <button
-            className="button button-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop"
-            onCick={toggleShow}
-          >
-            Add new review
-          </button>
+          <button className="button button-dark" onClick={handleOpenModal} data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add new review</button>
         )}
       </div>
-      {show && <AddReviewModal toggleShow={toggleShow}/>}
     </div>
+    {show && <AddReviewModal handleCloseModal={handleCloseModal}/>}
+    </>
+   
   );
 }
 
