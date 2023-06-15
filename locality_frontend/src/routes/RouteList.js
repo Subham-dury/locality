@@ -5,7 +5,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Login/Signup";
 import Review from "../pages/Review/Review";
-import UserReport from "../pages/User/UserReports/UserReport";
+import UserEvent from "../pages/User/UserReports/UserEvent";
 import UserReview from "../pages/User/UserReviews/UserReview";
 import Protected from "./Protected";
 
@@ -36,7 +36,7 @@ const RouteList = () => {
           path="user-reports"
           element={
             <Protected isSignedIn={isSignedIn}>
-              <UserReport />
+              <UserEvent />
             </Protected>
           }
         />

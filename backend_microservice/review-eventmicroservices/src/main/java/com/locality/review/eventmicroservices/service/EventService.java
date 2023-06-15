@@ -18,11 +18,7 @@ public interface EventService {
 
 	public List<EventDto> getAllEventByType(Long eventTypeId);
 	
-	public List<EventDto> getAllEventByUserAndLocality(String token, Long localityId);
-	
 	public List<EventDto> getAllEventByLocalityAndType(Long localityId, Long eventTypeId);
-	
-	public List<EventDto> getAllEventByUserAndLocalityAndType(String token, Long localityId, Long eventTypeId);
 
 	public EventDto updateEvent(EventDto EventDto, Long eventId, String token);
 

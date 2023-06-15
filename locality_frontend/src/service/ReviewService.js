@@ -50,29 +50,6 @@ export const getReviewByUser = async () => {
   }
 };
 
-export const getReviewByUserAndLocality = async (localityId) => {
-  try {
-    const response = await fetch(
-      `${REVIEWS_EVENTS_URL}/review/byuser/bylocality/${localityId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      }
-    );
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 export const saveReview = async (localityId, review) => {
   try {
     const response = await fetch(
@@ -98,17 +75,17 @@ export const saveReview = async (localityId, review) => {
   }
 };
 
-export const updateReview = async (review, localityId) => {
+export const updateReview = async (reviewId, review) => {
   try {
     const response = await fetch(
-      `${REVIEWS_EVENTS_URL}/review/review/${localityId}`,
+      `${REVIEWS_EVENTS_URL}/review/${reviewId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         },
-        body: JSON.stringify(review),
+        body: JSON.stringify({content : review}),
       }
     );
     if (!response.ok) {

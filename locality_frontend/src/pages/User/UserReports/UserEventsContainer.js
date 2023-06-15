@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from "react";
-import ReviewCard from "../../../components/cards/ReviewCard";
-import EditReviewModal from "../../../components/modals/EditReviewModal";
-import { updateReview } from "../../../service/ReviewService";
+import React from "react";
 
-const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
+const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
   const [show, setShow] = useState(false);
-  const [rid, setRid] = useState("")
+  const [rid, setRid] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [review, setReview] = useState("");
+  const [event, setEvent] = useState("");
 
-
-  const handleDeleteReview = (reviewId) => {
-    deleteAReview(reviewId);
+  const handleDeleteReview = (eventId) => {
+    deleteAEvent(eventId);
   };
 
   useEffect(() => {
     setErrMsg("");
-  }, [review]);
+  }, [event]);
 
   const handle = () => {
     setErrMsg(
-      !(review.length > 9 && review.length < 256)
+      !(event.length > 9 && event.length < 256)
         ? "Review must have 10 to 255 characters"
         : ""
     );
 
-    if (review.length > 9 && review.length < 256) {
+    if (event.length > 9 && event.length < 256) {
       update();
     }
   };
 
   const update = () => {
-
     updateReview(rid, review)
       .then((data) => {
         closeModal();
@@ -62,9 +57,8 @@ const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
       .querySelectorAll(".modal-backdrop")
       .forEach((el) => el.classList.remove("modal-backdrop"));
   }
-
   return (
-    <div class="user-reviews-container">
+    <div class="user-events-container">
       <div class="row row-cols-xxl-2">
         {reviews.map((review) => {
           return (
@@ -79,7 +73,10 @@ const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
                   <button
                     type="button"
                     className="button button-dark my-2"
-                    onClick={() => {handleOpenModal(); setRid(review.reviewId)}}
+                    onClick={() => {
+                      handleOpenModal();
+                      setRid(review.reviewId);
+                    }}
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop"
                   >
@@ -98,9 +95,15 @@ const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
           );
         })}
       </div>
-      {show && <EditReviewModal handle={handle} errMsg={errMsg} setReview={setReview}/>}
+      {show && (
+        <EditReviewModal
+          handle={handle}
+          errMsg={errMsg}
+          setReview={setReview}
+        />
+      )}
     </div>
   );
 };
 
-export default UserReviewsContainer;
+export default UserEventsContainer;

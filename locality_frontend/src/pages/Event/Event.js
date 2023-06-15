@@ -23,6 +23,10 @@ const Event = () => {
   const [events, setEvents] = useState([]);
   const [errorInEvents, setErrorInEvents] = useState(null);
 
+  const refresh = () => {
+    setEventsToAll()
+  }
+
   useEffect(() => {
     setEventsToAll();
   }, []);
@@ -34,14 +38,14 @@ const Event = () => {
       );
       setIsLocalityListLoaded(true);
 
-      if (typeOfEvent) {
+      if (typeOfEvent!=null) {
         setEventsByLocalityAndType(option, typeOfEvent.eventTypeId);
       } else {
         setEventsByLocality(option);
       }
     } else {
       setIsLocalityListLoaded(false);
-      if (typeOfEvent) {
+      if (typeOfEvent != null) {
         setEventsByType(typeOfEvent);
       } else {
         setEventsToAll();
@@ -54,13 +58,13 @@ const Event = () => {
       setTypeOfEvent(
         eventTypes.filter((type) => type.eventTypeId == option)[0]
       );
-      if (localityitem && localityitem.localityId != 0) {
+      if (localityitem!=null && localityitem.localityId != 0) {
         setEventsByLocalityAndType(localityitem.localityId, option);
       } else {
         setEventsByType(option);
       }
     } else {
-      if (localityitem.localityId != 0) {
+      if (localityitem!=null && localityitem.localityId != 0) {
         setEventsByLocality(localityitem.localityId);
       } else {
         setEventsToAll();
@@ -141,6 +145,7 @@ const Event = () => {
             }
             setEventType={setEventType}
             eventTypes={eventTypes}
+            refresh={refresh}
           />
         </div>
         <div className="row my-3">

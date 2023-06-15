@@ -144,42 +144,9 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public List<EventDto> getAllEventByUserAndLocality(String token, Long localityId) {
-		
-		UserDto user = this.fetchService.validateUser(token);
-		List<Event> events = this.eventRepository
-				.findByUserIdAndLocalityId(user.getUserId(), localityId,sortByDateDesc);
-		
-		if (events.isEmpty()) {
-			throw new ResourceNotFoundException("Events not found");
-		}
-
-		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
-				.collect(Collectors.toList());
-		return eventDtos;
-	}
-
-	@Override
 	public List<EventDto> getAllEventByLocalityAndType(Long localityId, Long eventTypeId) {
 		List<Event> events = this.eventRepository
 				.findByLocalityIdAndEventTypeId(localityId, eventTypeId,sortByDateDesc);
-		
-		if (events.isEmpty()) {
-			throw new ResourceNotFoundException("Events not found");
-		}
-
-		List<EventDto> eventDtos = events.stream().map(event -> eventMapper.eventToDto(event))
-				.collect(Collectors.toList());
-		return eventDtos;
-	}
-
-	@Override
-	public List<EventDto> getAllEventByUserAndLocalityAndType(String token, Long localityId, Long eventTypeId) {
-		
-		UserDto user = this.fetchService.validateUser(token);
-		
-		List<Event> events = this.eventRepository
-				.findByUserIdAndLocalityIdAndEventTypeId(user.getUserId(), localityId, eventTypeId,sortByDateDesc);
 		
 		if (events.isEmpty()) {
 			throw new ResourceNotFoundException("Events not found");

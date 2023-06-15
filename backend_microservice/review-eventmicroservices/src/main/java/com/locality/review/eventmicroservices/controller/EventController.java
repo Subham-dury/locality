@@ -71,13 +71,6 @@ public class EventController {
 		return ResponseEntity.ok(this.eventService.getAllEventByType(Long.parseLong(typeId)));
 	}
 
-	@GetMapping("/byuserbylocality/{localityId}")
-	public ResponseEntity<List<EventDto>> findReviewByUserByLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
-			@PathVariable(name = "localityId") String localityId) {
-
-		return ResponseEntity
-				.ok(this.eventService.getAllEventByUserAndLocality(token, Long.parseLong(localityId)));
-	}
 
 	@GetMapping("/bylocality/{localityId}/bytype/{typeId}")
 	public ResponseEntity<List<EventDto>> findReviewByLocalityByType(
@@ -87,13 +80,6 @@ public class EventController {
 				.ok(this.eventService.getAllEventByLocalityAndType(Long.parseLong(localityId), Long.parseLong(typeId)));
 	}
 
-	@GetMapping("/byuserbylocality/{localityId}/bytype/{typeId}")
-	public ResponseEntity<List<EventDto>> findReviewByUserByLocalityByType(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
-			@PathVariable(name = "localityId") String localityId, @PathVariable(name = "typeId") String typeId) {
-
-		return ResponseEntity.ok(this.eventService.getAllEventByUserAndLocalityAndType(token,
-				Long.parseLong(localityId), Long.parseLong(typeId)));
-	}
 
 	@PutMapping("/{eventId}")
 	public ResponseEntity<EventDto> updateReview(@RequestBody EventDto event,

@@ -3,54 +3,28 @@ import SelectLocality from "../../../components/selectors/LocalitySelector";
 import { localitylist } from "../../../Data/LocalityList";
 import {
   getReviewByUser,
-  getReviewByUserAndLocality,
+  deleteReview,
+  updateReview,
 } from "../../../service/ReviewService";
 import UserReviewsContainer from "./UserReviewsContainer";
-// import './UserReview.css'
+import DataNotFoundCard from "../../../components/cards/DataNotFoundCard";
+import "./UserReview.css";
 
 const UserReview = () => {
-  const [localityitem, setLocalityitem] = useState({});
-  const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
 
   const [reviews, setReviews] = useState([]);
   const [errorInReview, setErrorInReview] = useState(null);
-
-  const refresh = () => {
-    updateReviewsToAll()
-  }
 
   useEffect(() => {
     updateReviewsToAll();
   }, []);
 
-  const setOption = (option) => {
-    if (option != 0) {
-      setLocalityitem(
-        localitylist.filter((locality) => locality.localityId == option)[0]
-      );
-      setIsLocalityListLoaded(true);
-      updateReviewsByOption(option);
-    } else {
-      setIsLocalityListLoaded(false);
-      updateReviewsToAll();
-    }
-  };
+  const refresh = () => {
+    updateReviewsToAll();
+  }
 
   const updateReviewsToAll = () => {
-
     getReviewByUser()
-    .then((data) => {
-      setReviews(data);
-      setErrorInReview(null);
-    })
-    .catch((error) => {
-      setReviews([]);
-      setErrorInReview(error.message);
-    });
-  };
-
-  const updateReviewsByOption = (option) => {
-    getReviewByUserAndLocality(option)
       .then((data) => {
         setReviews(data);
         setErrorInReview(null);
@@ -61,15 +35,40 @@ const UserReview = () => {
       });
   };
 
+  const deleteAReview = (id) => {
+    deleteReview(id)
+      .then((data) => {
+        updateReviewsToAll();
+        console.log(data);
+        setErrorInReview(null);
+      })
+      .catch((error) => {
+        setReviews([]);
+        setErrorInReview(error.message);
+      });
+  };
+
   return (
     <section className="user-reviev">
-    <div className="container">
-      <div className="row my-4 justify-content-center">
-        <SelectLocality localitylist={localitylist} setLocality={setOption} />
-      </div>
-      <UserReviewsContainer reviews={reviews} />
-    </div>
-  </section>
+      
+        <div className="container">
+        {reviews.length != 0 && (
+          <>
+          <UserReviewsContainer
+            reviews={reviews}
+            deleteAReview={deleteAReview}
+            refresh={refresh}
+          />
+          </>)
+          }
+        </div>
+      
+        {reviews.length == 0 && (
+        <div className="row my-4 justify-content-center" style={{height: "70vh"}}>
+          <DataNotFoundCard message={"Reviews not found"} />
+        </div>
+      )}
+    </section>
   );
 };
 

@@ -15,8 +15,6 @@ public interface ReviewService {
 	public List<ReviewDto> getAllReviewByLocality(Long localityId);
 
 	public List<ReviewDto> getAllReviewByUser(String token);
-	
-	public List<ReviewDto> getAllReviewByUserAndLocality(String token, Long localityId);
 
 	public ReviewDto updateReview(ReviewDto reviewDto, Long reviewId, String token);
 

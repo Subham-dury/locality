@@ -67,16 +67,6 @@ public class ReviewController {
 	}
 	
 	
-	@GetMapping("/byuser/bylocality/{localityId}")
-	public ResponseEntity<List<ReviewDto>> findReviewByUserAndLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
-			@PathVariable(name="localityId") String localityId){
-		
-		
-		System.out.println("inside locality");
-		return ResponseEntity.ok(this.reviewService.getAllReviewByUserAndLocality(token, Long.parseLong(localityId)));
-	}
-	
-	
 	@PutMapping("/{reviewId}")
 	public ResponseEntity<ReviewDto> updateReview(@RequestBody ReviewDto review, 
 				@PathVariable(name="reviewId") String reviewId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token){

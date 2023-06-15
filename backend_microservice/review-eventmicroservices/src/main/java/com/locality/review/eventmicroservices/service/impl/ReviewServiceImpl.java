@@ -128,26 +128,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDtos;
 	}
 	
-	
-	@Override
-	public List<ReviewDto> getAllReviewByUserAndLocality(String token, Long localityId) 
-			throws ResourceNotFoundException{
-		
-		UserDto user = this.fetchService.validateUser(token);
-		List<Review> reviews = this.reviewRepository
-				.findByUserIdAndLocalityId(user.getUserId(), localityId,sortByDateDesc);
-		
-		if (reviews.isEmpty()) {
-			throw new ResourceNotFoundException("Reviews not found");
-		}
-		
-		List<ReviewDto> reviewDtos = reviews.stream()
-				.map(review -> reviewMapper.reviewToDto(review)).collect(Collectors.toList());
-		
-		return reviewDtos;
-	}
-
-	
 	@Override
 	public ReviewDto updateReview(ReviewDto reviewDto, Long reviewId, String token) 
 	throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException{

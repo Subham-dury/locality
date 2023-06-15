@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const EventTypeSelector = ({ eventTypes, setEventType }) => {
+  
   const [selectedOption, setSelectedOption] = useState(0);
 
   const setOption = (e) => {

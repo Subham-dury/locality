@@ -22,8 +22,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	List<Event> findByEventTypeId(Long eventTypeId, Sort sortByDateDesc);
 	
 	List<Event> findByLocalityIdAndEventTypeId(Long localityId, Long eventTypeId, Sort sortByDateDesc);
-	
-	List<Event> findByUserIdAndLocalityId(Long userId, Long localityId, Sort sortByDateDesc);
 
 	List<Event> findByUserIdAndLocalityIdAndEventTypeId(Long userId, Long localityId,
 			Long eventTypeId, Sort sortByDateDesc);

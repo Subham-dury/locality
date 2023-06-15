@@ -17,12 +17,12 @@ function ReviewsFilterbar({ name, refresh }) {
   }, [show])
 
   const handleOpenModal = () => {
-    console.log(true)
     setShow(true);
   };
 
   const handleCloseModal = () => {
     setShow(false);
+    refresh()
   };
 
   return (
