@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReviewCard from "../../../components/cards/ReviewCard";
 import EditReviewModal from "../../../components/modals/EditReviewModal";
-import { updateReview } from "../../../service/ReviewService";
+import { updateReview} from "../../../service/ReviewService";
+
+import "./UserReview.css"
 
 const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
   const [show, setShow] = useState(false);

@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import EventCard from "../../../components/cards/EventCard";
+import EditEventModal from "../../../components/modals/EditEventModal";
+import { updateEvent } from "../../../service/EventService";
+
 
 const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
+
   const [show, setShow] = useState(false);
-  const [rid, setRid] = useState("");
+  const [eid, setEid] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [event, setEvent] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
   const handleDeleteReview = (eventId) => {
     deleteAEvent(eventId);
@@ -12,22 +18,36 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [event]);
+  }, [event, eventDate]);
 
   const handle = () => {
-    setErrMsg(
-      !(event.length > 9 && event.length < 256)
-        ? "Review must have 10 to 255 characters"
-        : ""
-    );
-
-    if (event.length > 9 && event.length < 256) {
+    if (validateEvent() && validateDate()) {
       update();
+      console.log("no error");
     }
   };
 
+  const validateEvent = () => {
+    if (!(event.length > 9 && event.length < 256)) {
+      setErrMsg("Review must have 10 to 255 characters");
+      return false;
+    }
+    return true;
+  };
+
+  const validateDate = () => {
+    const selectedDate = new Date(eventDate);
+    const currentDate = new Date();
+
+    if (!(selectedDate < currentDate)) {
+      setErrMsg("Event date needs to be older than today");
+      return false;
+    }
+    return true;
+  };
+
   const update = () => {
-    updateReview(rid, review)
+    updateEvent(eid, eventDate, event)
       .then((data) => {
         closeModal();
         handleCloseModal();
@@ -60,11 +80,11 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
   return (
     <div class="user-events-container">
       <div class="row row-cols-xxl-2">
-        {reviews.map((review) => {
+        {events.map((event) => {
           return (
-            <div key={review.reviewId} className="my-4">
+            <div key={event.eventId} className="my-4">
               <div className="details-container">
-                <ReviewCard item={review} />
+                <EventCard item={event} />
                 <div
                   className="btn-group"
                   role="group"
@@ -75,7 +95,7 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
                     className="button button-dark my-2"
                     onClick={() => {
                       handleOpenModal();
-                      setRid(review.reviewId);
+                      setEid(event.eventId);
                     }}
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop"
@@ -85,7 +105,7 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
                   <button
                     type="button"
                     className="button button-primary my-2"
-                    onClick={() => handleDeleteReview(review.reviewId)}
+                    onClick={() => handleDeleteReview(event.eventId)}
                   >
                     Delete
                   </button>
@@ -96,10 +116,12 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
         })}
       </div>
       {show && (
-        <EditReviewModal
+        <EditEventModal
           handle={handle}
           errMsg={errMsg}
-          setReview={setReview}
+          eventDate={eventDate}
+          setEvent={setEvent}
+          setEventDate={setEventDate}
         />
       )}
     </div>

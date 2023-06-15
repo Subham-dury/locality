@@ -102,7 +102,7 @@ export const saveEvent = async (localityId,eventTypeId, eventDate, event) => {
   }
 };
 
-export const updateEvent = async (eventId, event) => {
+export const updateEvent = async (eventId, eventDate, event) => {
   try {
     const response = await fetch(
       `${REVIEWS_EVENTS_URL}/event/${eventId}`,
@@ -112,7 +112,7 @@ export const updateEvent = async (eventId, event) => {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         },
-        body: JSON.stringify({content : event}),
+        body: JSON.stringify({eventDate:eventDate, content : event}),
       }
     );
     if (!response.ok) {

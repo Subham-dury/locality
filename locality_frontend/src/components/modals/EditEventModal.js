@@ -1,6 +1,6 @@
 import React from "react";
 
-const EditEventModal = () => {
+const EditEventModal = ({handle, setEvent, setEventDate,eventDate, errMsg}) => {
   return (
     <div
       className="modal fade"
@@ -43,7 +43,7 @@ const EditEventModal = () => {
                   class="form-control"
                   id="exampleFormControlTextarea1"
                   rows="3"
-                  onChange={(e) => setReview(e.target.value)}
+                  onChange={(e) => setEvent(e.target.value)}
                 ></textarea>
                 <small style={{ color: "red", fontSize: "0.8rem" }}>
                   {errMsg}

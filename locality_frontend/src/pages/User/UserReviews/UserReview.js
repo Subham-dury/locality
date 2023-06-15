@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import SelectLocality from "../../../components/selectors/LocalitySelector";
-import { localitylist } from "../../../Data/LocalityList";
 import {
   getReviewByUser,
   deleteReview,
-  updateReview,
 } from "../../../service/ReviewService";
 import UserReviewsContainer from "./UserReviewsContainer";
 import DataNotFoundCard from "../../../components/cards/DataNotFoundCard";

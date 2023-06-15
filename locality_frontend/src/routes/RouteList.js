@@ -5,7 +5,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Login/Signup";
 import Review from "../pages/Review/Review";
-import UserEvent from "../pages/User/UserReports/UserEvent";
+import UserEvent from "../pages/User/UserEvents/UserEvent";
 import UserReview from "../pages/User/UserReviews/UserReview";
 import Protected from "./Protected";
 
