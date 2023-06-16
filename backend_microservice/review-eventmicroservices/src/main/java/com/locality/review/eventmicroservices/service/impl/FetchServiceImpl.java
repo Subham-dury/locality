@@ -45,6 +45,9 @@ public class FetchServiceImpl implements FetchService {
 
 			ResponseEntity<UserDto> response = restTemplate.exchange(userMicroserviceUrl + "user/authorize",
 					HttpMethod.GET, requestEntity, UserDto.class);
+			
+//			ResponseEntity<UserDto> response = restTemplate.exchange("http://USER-SERVICE/user/authorize",
+//					HttpMethod.GET, requestEntity, UserDto.class);
 
 			if (!response.getStatusCode().is2xxSuccessful()) {
 				throw new NotAuthorizedException("Invalid token");
@@ -64,6 +67,10 @@ public class FetchServiceImpl implements FetchService {
 			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
 					categoryMicroserviceUrl + "locality/" + localityId, HttpMethod.GET, null,
 					LocalityAndEventTypeDto.class);
+			
+//			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
+//					"http://CATEGORY-SERVICE/locality/" + localityId, HttpMethod.GET, null,
+//					LocalityAndEventTypeDto.class);
 
 			if (!response.getStatusCode().is2xxSuccessful()) {
 				throw new ResourceNotFoundException("Locality not found");
@@ -84,6 +91,10 @@ public class FetchServiceImpl implements FetchService {
 			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
 					categoryMicroserviceUrl + "type/" + eventTypeId + "/locality/" + localityId, HttpMethod.GET, null,
 					LocalityAndEventTypeDto.class);
+			
+//			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
+//					"http://CATEGORY-SERVICE/type/" + eventTypeId + "/locality/" + localityId, HttpMethod.GET, null,
+//					LocalityAndEventTypeDto.class);
 
 			if (!response.getStatusCode().is2xxSuccessful()) {
 				throw new ResourceNotFoundException("Locality and event type not found");

@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+      routes:
+      - id: USER-SERVICE
+        uri: lb://USER-SERVICE
+        predicates:
+        - Path=/user/**
+        
+      - id: CATEGORY-SERVICE
+        uri: lb://CATEGORY-SERVICE
+        predicates:
+        - Path=/locality/**
+        
+      - id: CATEGORY-SERVICE
+        uri: lb://CATEGORY-SERVICE
+        predicates:
+        - Path=/type/**
+        
+      - id: REVIEW-EVENT-SERVICE
+        uri: lb://REVIEW-EVENT-SERVICE
+        predicates:
+        - Path=/review/**
+        
+      - id: REVIEW-EVENT-SERVICE
+        uri: lb://REVIEW-EVENT-SERVICE
+        predicates:
+        - Path=/event/**
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
