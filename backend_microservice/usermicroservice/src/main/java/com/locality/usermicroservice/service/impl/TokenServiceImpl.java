@@ -60,14 +60,6 @@ public class TokenServiceImpl implements TokenService {
 	}
 	
 	@Override
-	public Boolean isTokenExpired(Date expirationDate) {
-		
-		Date now = new Date();
-
-        return now.after(expirationDate);
-	}
-
-	@Override
 	public UserAuthDto validateUser(String token) {
 		
 		this.validateToken(token);
@@ -77,12 +69,6 @@ public class TokenServiceImpl implements TokenService {
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
-		
-		Date expirationDate = claims.getExpiration();
-		
-		if(this.isTokenExpired(expirationDate)) {
-			throw new ExpiredTokenException("Token has expired");
-		}
 		
 		log.info("Token validated. Generating user");
 		return UserAuthDto.builder()

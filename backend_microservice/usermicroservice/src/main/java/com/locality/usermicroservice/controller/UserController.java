@@ -17,8 +17,6 @@ import com.locality.usermicroservice.payload.UserDto;
 import com.locality.usermicroservice.service.TokenService;
 import com.locality.usermicroservice.service.UserService;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -30,8 +28,7 @@ public class UserController {
 	private TokenService tokenService;
 
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@RequestBody @Validated(UserDto.Register.class) UserDto userDto,
-			HttpServletResponse response) {
+	public ResponseEntity<UserDto> registerUser(@RequestBody @Validated(UserDto.Register.class) UserDto userDto) {
 		
 		UserDto registerUser = this.userService.registerUser(userDto);
 		String token = this.tokenService.generateToken(registerUser);
@@ -47,8 +44,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserDto> loginUser(@RequestBody @Validated(UserDto.Login.class) UserDto user,
-			HttpServletResponse response) {
+	public ResponseEntity<UserDto> loginUser(@RequestBody @Validated(UserDto.Login.class) UserDto user) {
 
 		UserDto loginUser = this.userService.loginUser(user);
 		String token = this.tokenService.generateToken(loginUser);
