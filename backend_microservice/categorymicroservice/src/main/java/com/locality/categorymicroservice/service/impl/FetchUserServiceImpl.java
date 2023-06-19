@@ -42,7 +42,6 @@ public class FetchUserServiceImpl implements FetchUserService {
 			if (serviceInstance == null) {
 			    throw new InternalServerErrorException("Failed to connect to server");
 			}
-
 			String userServiceUrl = serviceInstance.getUri().toString();
 			
 			
