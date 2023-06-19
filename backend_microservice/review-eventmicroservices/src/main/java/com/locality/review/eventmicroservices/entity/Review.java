@@ -2,6 +2,7 @@ package com.locality.review.eventmicroservices.entity;
 
 import java.time.LocalDate;
 
+import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "buildReview")
+@Builder
 @Entity
 @Table(name = "reviews")
 public class Review {

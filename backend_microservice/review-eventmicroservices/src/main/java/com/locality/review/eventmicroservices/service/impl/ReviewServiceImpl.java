@@ -155,7 +155,7 @@ public class ReviewServiceImpl implements ReviewService {
 		updatedReview.setContent(reviewDto.getContent() == null ?
 				updatedReview.getContent() : reviewDto.getContent());
 		
-		updatedReview.setDate(LocalDate.now());
+		//updatedReview.setDate(LocalDate.now());
 
 		return reviewMapper.reviewToDto(this.reviewRepository.save(updatedReview));
 	}

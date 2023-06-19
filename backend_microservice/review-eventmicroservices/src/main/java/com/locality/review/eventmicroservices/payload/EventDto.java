@@ -2,6 +2,7 @@ package com.locality.review.eventmicroservices.payload;
 
 import java.time.LocalDate;
 
+import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "eventDtoBuilder")
+@Builder
 public class EventDto {
 
 	private Long eventId;
