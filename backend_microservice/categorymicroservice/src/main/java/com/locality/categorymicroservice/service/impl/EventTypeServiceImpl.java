@@ -44,7 +44,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token) 
 			throws ResourceExistsException,NotAuthorizedException {
 
-		if(!this.fetchUserService.chechIsUserAdmin(token)) {
+		if(!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -96,7 +96,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 	public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, String token)
 			throws ResourceNotFoundException, IllegalArgumentException,NotAuthorizedException {
 		
-		if(!this.fetchUserService.chechIsUserAdmin(token)) {
+		if(!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 		
@@ -123,7 +123,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 	public Boolean deleteEventType(Long eventTypeId, String token) 
 			throws ResourceNotFoundException,NotAuthorizedException {
 		
-		if(!this.fetchUserService.chechIsUserAdmin(token)) {
+		if(!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 		

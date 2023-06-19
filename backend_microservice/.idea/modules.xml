@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/apigateway/apigateway.iml" filepath="$PROJECT_DIR$/apigateway/apigateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/backend_microservice.iml" filepath="$PROJECT_DIR$/.idea/backend_microservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/categorymicroservice/categorymicroservice.iml" filepath="$PROJECT_DIR$/categorymicroservice/categorymicroservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/review-eventmicroservices/review-eventmicroservices.iml" filepath="$PROJECT_DIR$/review-eventmicroservices/review-eventmicroservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/serviceRegistry/serviceRegistry.iml" filepath="$PROJECT_DIR$/serviceRegistry/serviceRegistry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/usermicroservice/usermicroservice.iml" filepath="$PROJECT_DIR$/usermicroservice/usermicroservice.iml" />
+    </modules>
+  </component>
+</project>

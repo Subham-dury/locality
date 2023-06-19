@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class UsermicroserviceApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(UsermicroserviceApplication.class, args);
 	}
 

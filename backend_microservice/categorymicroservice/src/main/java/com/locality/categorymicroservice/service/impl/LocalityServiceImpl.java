@@ -39,7 +39,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public LocalityDto saveLocality(LocalityDto localityDto, String token)
 			throws ResourceExistsException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(token)) {
+		if (!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -53,7 +53,8 @@ public class LocalityServiceImpl implements LocalityService {
 		log.info("Saving new locality");
 		localityDto.setImg((int) (Math.random() * 4) + 1);
 		Locality savedLocality = this.localityRepository.save(localityMapper.dtoToLocality(localityDto));
-		return localityMapper.localityToDto(savedLocality);
+		LocalityDto savedLocalityDto = localityMapper.localityToDto(savedLocality);
+		return savedLocalityDto;
 
 	}
 
@@ -90,7 +91,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public LocalityDto updateLocality(LocalityDto localityDto, Long localityId, String token)
 			throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(token)) {
+		if (!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -132,7 +133,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public Boolean deleteLocality(Long localityId, String token)
 			throws ResourceNotFoundException, NotAuthorizedException {
 
-		if (!this.fetchUserService.chechIsUserAdmin(token)) {
+		if (!this.fetchUserService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 

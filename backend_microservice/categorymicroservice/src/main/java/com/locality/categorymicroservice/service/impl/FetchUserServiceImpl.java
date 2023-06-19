@@ -34,7 +34,7 @@ public class FetchUserServiceImpl implements FetchUserService {
 	private LoadBalancerClient loadBalancerClient;
 	
 	@Override
-	public Boolean chechIsUserAdmin(String token)throws NotAuthorizedException, RestClientException {
+	public Boolean checkIsUserAdmin(String token)throws NotAuthorizedException, RestClientException {
 		
 		try {
 			
