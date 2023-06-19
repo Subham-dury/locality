@@ -48,6 +48,7 @@ public class LocalityServiceTest {
     @Test
     public void givenLocalityObject_whenSaveLocality_thenReturnLocalityDto() {
 
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test")
                 .city("test-city")
@@ -55,14 +56,8 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         Locality localityInput = modelMapper.map(inputDto, Locality.class);
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
-        when(localityRepository.findByName(localityInput.getName())).thenReturn(null);
-        when(localityMapper.dtoToLocality(inputDto)).thenReturn(localityInput);
-
         Locality savedLocality = Locality.builder()
                 .localityId(1L)
                 .name(localityInput.getName())
@@ -71,14 +66,17 @@ public class LocalityServiceTest {
                 .img(1)
                 .about(localityInput.getAbout())
                 .build();
-
-        when(localityRepository.save(localityInput)).thenReturn(savedLocality);
-
         LocalityDto expectedLocalityDto = modelMapper.map(savedLocality, LocalityDto.class);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(localityRepository.findByName(localityInput.getName())).thenReturn(null);
+        when(localityMapper.dtoToLocality(inputDto)).thenReturn(localityInput);
+        when(localityRepository.save(localityInput)).thenReturn(savedLocality);
         when(localityMapper.localityToDto(savedLocality)).thenReturn(expectedLocalityDto);
-        LocalityDto actualLocalityDto = serviceUnderTest.saveLocality(inputDto, token);
 
+        //Asserting
+        LocalityDto actualLocalityDto = serviceUnderTest.saveLocality(inputDto, token);
         assertThat(actualLocalityDto).isNotNull();
         assertEquals(expectedLocalityDto, actualLocalityDto);
 
@@ -90,7 +88,7 @@ public class LocalityServiceTest {
 
     @Test
     public void givenLocalityObjectNotAuthorized_whenSaveLocality_throwNotAuthorizedException() {
-
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test")
                 .city("test-city")
@@ -98,15 +96,17 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.saveLocality(inputDto, token));
     }
 
     @Test
     public void givenNullToken_whenSaveLocality_throwNotAuthorizedException() {
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test")
                 .city("test-city")
@@ -115,8 +115,9 @@ public class LocalityServiceTest {
                 .img(1)
                 .build();
 
+        //Stubbing
         when(fetchUserService.checkIsUserAdmin(null)).thenReturn(false);
-
+        //Asserting
         Exception exception = assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.saveLocality(inputDto, null));
         String expectedMessage = "User is not authorised";
         String actualMessage = exception.getMessage();
@@ -124,7 +125,8 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void givenDuplicateLocality_whenSaveLocality_throwResourceExistsException(){
+    public void givenDuplicateLocality_whenSaveLocality_throwResourceExistsException() {
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test")
                 .city("test-city")
@@ -132,7 +134,6 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         Locality existingLocality = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test")
@@ -141,12 +142,13 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findByName(inputDto.getName())).thenReturn(existingLocality);
 
+        //Asserting
         Exception exception = assertThrows(ResourceExistsException.class, () -> serviceUnderTest.saveLocality(inputDto, token));
         String expectedMessage = "Locality with name of " + inputDto.getName() + " exists";
         String actualMessage = exception.getMessage();
@@ -155,6 +157,7 @@ public class LocalityServiceTest {
 
     @Test
     public void whenGetAllLocality_thenReturnAllLocalityList() {
+        //Mock
         Locality locality1 = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test")
@@ -163,10 +166,11 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         List<Locality> localityList = Arrays.asList(locality1);
-        when(localityRepository.findAll()).thenReturn(localityList);
 
+        //Stubbing
+        when(localityRepository.findAll()).thenReturn(localityList);
+        //Asserting
         List<LocalityDto> actualLocalityList = serviceUnderTest.getAllLocality();
         assertThat(actualLocalityList).isNotNull();
         assertEquals(actualLocalityList.size(), 1);
@@ -175,9 +179,10 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void listNotFound_whenGetAllLocality_throwResourceNotFoundException(){
+    public void listNotFound_whenGetAllLocality_throwResourceNotFoundException() {
+        //Stubbing
         when(localityRepository.findAll()).thenReturn(Collections.emptyList());
-
+        //Asserting
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> serviceUnderTest.getAllLocality());
         String expectedMessage = "Locality not found";
         String actualMessage = exception.getMessage();
@@ -185,16 +190,19 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void givenLocalityId_whenGetLocality_thenReturnLocalityDto(){
+    public void givenLocalityId_whenGetLocality_thenReturnLocalityDto() {
+        //Mock
         Locality expectedLocality = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test")
                 .build();
-
         LocalityAndEventTypeDto expectedDto = LocalityAndEventTypeDto.builder().localityId(1L).name("Locality-test").build();
+
+        //Stubbing
         when(localityRepository.findById(1L)).thenReturn(Optional.of(expectedLocality));
         when(localityMapper.localityToDtoUsingIdAndName(expectedLocality)).thenReturn(expectedDto);
 
+        //Asserting
         LocalityAndEventTypeDto actualLocality = serviceUnderTest.getLocality(1L);
         assertThat(actualLocality).isNotNull();
         assertTrue(actualLocality.getName().equalsIgnoreCase("Locality-test"));
@@ -202,9 +210,12 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void givenInvalidLocalityID_whenGetLocality_ThrowResourceNotFoundException(){
+    public void givenInvalidLocalityID_whenGetLocality_ThrowResourceNotFoundException() {
+
+        //Stubbing
         when(localityRepository.findById(2L)).thenReturn(Optional.empty());
 
+        //Asserting
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> serviceUnderTest.getLocality(2L));
         String expectedMessage = "Locality not found";
         String actualMessage = exception.getMessage();
@@ -213,12 +224,11 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void givenLocalityBody_whenUpdateLocality_thenReturnUpdatedLocalityDto(){
-
+    public void givenLocalityBody_whenUpdateLocality_thenReturnUpdatedLocalityDto() {
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test-updated")
                 .build();
-
         Locality existingLocality = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test")
@@ -227,7 +237,6 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         Locality updatedLocality = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test-updated")
@@ -236,16 +245,16 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         LocalityDto expectedLocalityDto = modelMapper.map(updatedLocality, LocalityDto.class);
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.of(existingLocality));
         when(localityRepository.save(updatedLocality)).thenReturn(updatedLocality);
         when(localityMapper.localityToDto(updatedLocality)).thenReturn(expectedLocalityDto);
 
+        //Asserting
         LocalityDto actualLocalityDto = serviceUnderTest.updateLocality(inputDto, 1L, token);
         assertThat(actualLocalityDto).isNotNull();
         assertEquals(actualLocalityDto, expectedLocalityDto);
@@ -253,23 +262,27 @@ public class LocalityServiceTest {
 
     @Test
     public void givenInvalidToken_whenUpdateLocality_throwNotAuthorizedException() {
-
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test-updated")
                 .build();
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.updateLocality(inputDto, 1L, token));
     }
 
     @Test
     public void givenInvalidNullBody_whenUpdateLocality_throwIllegalArgumentException() {
+        //Mock
         LocalityDto inputDto = null;
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        //Asserting
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> serviceUnderTest.updateLocality(inputDto, 1L, token));
         String expectedMessage = "No locality body for update";
         String actualMessage = exception.getMessage();
@@ -277,21 +290,24 @@ public class LocalityServiceTest {
     }
 
     @Test
-    public void givenInvalidLocalityId_whenUpdateLocality_throwResourceNotFoundException(){
+    public void givenInvalidLocalityId_whenUpdateLocality_throwResourceNotFoundException() {
+        //Mock
         LocalityDto inputDto = LocalityDto.builder()
                 .name("Locality-test-updated")
                 .build();
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> serviceUnderTest.updateLocality(inputDto,1L, token));
+
+        //Asserting
+        assertThrows(ResourceNotFoundException.class, () -> serviceUnderTest.updateLocality(inputDto, 1L, token));
     }
 
     @Test
-    public void givenValidId_whenDeleteLocality_thenReturnTrue(){
-
+    public void givenValidId_whenDeleteLocality_thenReturnTrue() {
+        //Mock
         Locality locality = Locality.builder()
                 .localityId(1L)
                 .name("Locality-test")
@@ -300,31 +316,38 @@ public class LocalityServiceTest {
                 .about("This is a test locality")
                 .img(1)
                 .build();
-
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
+
+        //Stubbing
         when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
-
         when(localityRepository.findById(1L)).thenReturn(Optional.of(locality));
-
+        //Asserting
         assertTrue(serviceUnderTest.deleteLocality(1L, token));
     }
 
     @Test
     public void givenInvalidToken_whenDeleteLocality_throwNotAuthorizedException() {
-
+        //Mock
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
 
+        //Stubbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.deleteLocality(1L, token));
     }
 
     @Test
     public void givenInvalidId_whenDeleteLocality_throwResourceNotFoundException() {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
 
+        //Mock
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
+
+        //Stabbing
+        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //Asserting
         assertThrows(ResourceNotFoundException.class, () -> serviceUnderTest.deleteLocality(1L, token));
     }
 }

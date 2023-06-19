@@ -1,5 +1,6 @@
 package com.locality.categorymicroservice.entity;
 
+import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Entity;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "buildEventType")
 @Entity
 @Table(name = "typeofevents")
+@Builder
 public class EventType {
 	
 	@Id

@@ -22,45 +22,45 @@ public class TokenServiceTest {
 	
 	@Test
 	public void givenValidUser_whenGenerateToken_thenReturnToken() {
-		
+		//Mock
 		UserDto user = UserDto.builder()
 				.userId(6L)
 				.username("Subham")
 				.email("Subham@email.com")
 				.role(Role.MEMBER)
 				.build();
-		
+
+		//Asserting
 		String token = serviceUnderTest.generateToken(user);
-		
 		assertNotNull(token);
 		assertEquals(3, token.split("\\.").length);
 	}
 	
 	@Test
 	public void givenInvalidUser_whenGenerateToken_throwException() {
-		
+		//Mock
 		UserDto user = UserDto.builder()
 				.userId(6L)
 				.username("Subham")
 				.email("Subham@email.com")
 				.build();
-				
+		//Asserting
 		assertThrows(NullPointerException.class, () -> serviceUnderTest.generateToken(user));
 	}
 
 	@Test
 	public void givenIncorrectToken_whenValidateToken_throwExpiredTokenException() {
-
+		//Mock
 		String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
-		
+		//Asserting
 		assertThrows(ExpiredTokenException.class, () -> serviceUnderTest.validateToken(token));
 	}
 	
 	@Test
 	public void givenIncorrectToken_whenValidateUser_throwExpiredTokenException() {
-		
+		//Mock
 		String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTkxMTg2LCJleHAiOjE2ODcwNzc1ODZ9.0CaCDQq-lu1p5lbzxTluf-zvpG3hOF_9Fd1z-ug_bic";
-		
+		//Asserting
 		assertThrows(ExpiredTokenException.class, () -> serviceUnderTest.validateToken(token));
 	}
 

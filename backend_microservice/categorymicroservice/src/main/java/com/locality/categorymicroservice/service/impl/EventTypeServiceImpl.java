@@ -27,121 +27,121 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EventTypeServiceImpl implements EventTypeService {
 
-	@Autowired
-	private EventTypeRepository eventTypeRepository;
-	
-	@Autowired
-	private FetchUserService fetchUserService;
-	
-	@Autowired
-	private LocalityService localityService;
-	
-	@Autowired
-	private EventTypeMapper eventTypeMapper;
+    @Autowired
+    private EventTypeRepository eventTypeRepository;
+
+    @Autowired
+    private FetchUserService fetchUserService;
+
+    @Autowired
+    private LocalityService localityService;
+
+    @Autowired
+    private EventTypeMapper eventTypeMapper;
 
 
-	@Override
-	public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token) 
-			throws ResourceExistsException,NotAuthorizedException {
+    @Override
+    public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token)
+            throws ResourceExistsException, NotAuthorizedException {
 
-		if(!this.fetchUserService.checkIsUserAdmin(token)) {
-			throw new NotAuthorizedException("User is not authorised");
-		}
+        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+            throw new NotAuthorizedException("User is not authorised");
+        }
 
-		EventType eventType = eventTypeMapper.dtoToEventType(eventTypeDto);
+        EventType eventType = eventTypeMapper.dtoToEventType(eventTypeDto);
 
-		boolean doesEventTypeExist = this.doesEventTypeExist(eventType.getTypeOfEvent()) != null;
+        boolean doesEventTypeExist = this.doesEventTypeExist(eventType.getTypeOfEvent()) != null;
 
-		if (doesEventTypeExist) {
-			throw new ResourceExistsException("Event type already exists");
+        if (doesEventTypeExist) {
+            throw new ResourceExistsException("Event type already exists");
+        }
 
-		}
+        log.info("Saving new type of event");
+        EventType savedEventType = this.eventTypeRepository.save(eventType);
+        return eventTypeMapper.eventTypeToDto(savedEventType);
+    }
 
-		log.info("Saving new type of event");
-		return eventTypeMapper.eventTypeToDto(this.eventTypeRepository.save(eventType));
-	}
+    @Override
+    public List<EventTypeDto> getAllEventType() throws ResourceNotFoundException {
 
-	@Override
-	public List<EventTypeDto> getAllEventType() throws ResourceNotFoundException {
+        List<EventType> allEventType = this.eventTypeRepository.findAll();
 
-		List<EventType> allEventType = this.eventTypeRepository.findAll();
+        if (allEventType.isEmpty()) {
+            throw new ResourceNotFoundException("Event type not found");
+        }
 
-		if (allEventType.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found");
-		}
+        List<EventTypeDto> allEventTypeDtos = allEventType.stream()
+                .map(type -> eventTypeMapper.eventTypeToDto(type))
+                .collect(Collectors.toList());
 
-		List<EventTypeDto> allEventTypeDtos = allEventType.stream()
-				.map(type -> eventTypeMapper.eventTypeToDto(type))
-				.collect(Collectors.toList());
+        return allEventTypeDtos;
+    }
 
-		return allEventTypeDtos;
-	}
-	
-	@Override
-	public LocalityAndEventTypeDto getEventTypeAndLocalityById(Long eventTypeId, Long localityId) {
-		Optional<EventType> findById = this.eventTypeRepository.findById(eventTypeId);
-		
-		if(findById.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found");
-		}
-		
-		EventType eventType = findById.get();
-		LocalityAndEventTypeDto localityById = this.localityService.getLocality(localityId);
-		
-		return eventTypeMapper.localityAndEventTypeToDto(eventType, localityById);
-		
-	}
+    @Override
+    public LocalityAndEventTypeDto getEventTypeAndLocalityById(Long eventTypeId, Long localityId) {
+        Optional<EventType> findById = this.eventTypeRepository.findById(eventTypeId);
 
-	@Override
-	public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, String token)
-			throws ResourceNotFoundException, IllegalArgumentException,NotAuthorizedException {
-		
-		if(!this.fetchUserService.checkIsUserAdmin(token)) {
-			throw new NotAuthorizedException("User is not authorised");
-		}
-		
-		if(eventType.getTypeOfEvent() == null) {
-			throw new IllegalArgumentException("No event type for update");
-		}
+        if (findById.isEmpty()) {
+            throw new ResourceNotFoundException("Event type not found");
+        }
 
-		Optional<EventType> findEventTypeById = this.eventTypeRepository.findById(eventTypeId);
+        EventType eventType = findById.get();
+        LocalityAndEventTypeDto localityById = this.localityService.getLocality(localityId);
 
-		if (findEventTypeById.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found");
-		}
-		
-		EventType toBeUpdatedType = findEventTypeById.get();
+        return eventTypeMapper.localityAndEventTypeToDto(eventType, localityById);
 
-		toBeUpdatedType.setTypeOfEvent(eventType.getTypeOfEvent() != null
-				&& eventType.getTypeOfEvent().trim().isEmpty()
-				? toBeUpdatedType.getTypeOfEvent() : eventType.getTypeOfEvent());
+    }
 
-		return eventTypeMapper.eventTypeToDto(this.eventTypeRepository.save(toBeUpdatedType));
-	}
+    @Override
+    public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, String token)
+            throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException {
 
-	@Override
-	public Boolean deleteEventType(Long eventTypeId, String token) 
-			throws ResourceNotFoundException,NotAuthorizedException {
-		
-		if(!this.fetchUserService.checkIsUserAdmin(token)) {
-			throw new NotAuthorizedException("User is not authorised");
-		}
-		
-		Optional<EventType> findEventTypeById = this.eventTypeRepository.findById(eventTypeId);
+        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+            throw new NotAuthorizedException("User is not authorised");
+        }
 
-		if (findEventTypeById.isEmpty()) {
-			throw new ResourceNotFoundException("Event type not found");
-		}
+        if ( eventType == null || eventType.getTypeOfEvent() == null) {
+            throw new IllegalArgumentException("No event type for update");
+        }
 
-		this.eventTypeRepository.deleteById(eventTypeId);
-		return true;
-	}
+        Optional<EventType> findEventTypeById = this.eventTypeRepository.findById(eventTypeId);
 
-	@Override
-	public EventType doesEventTypeExist(String eventTypeName) {
+        if (findEventTypeById.isEmpty()) {
+            throw new ResourceNotFoundException("Event type not found");
+        }
 
-		return this.eventTypeRepository.findByTypeOfEvent(eventTypeName);
-	}
+        EventType toBeUpdatedType = findEventTypeById.get();
+
+        toBeUpdatedType.setTypeOfEvent(eventType.getTypeOfEvent() != null
+                && eventType.getTypeOfEvent().trim().isEmpty()
+                ? toBeUpdatedType.getTypeOfEvent() : eventType.getTypeOfEvent());
+
+        return eventTypeMapper.eventTypeToDto(this.eventTypeRepository.save(toBeUpdatedType));
+    }
+
+    @Override
+    public Boolean deleteEventType(Long eventTypeId, String token)
+            throws ResourceNotFoundException, NotAuthorizedException {
+
+        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+            throw new NotAuthorizedException("User is not authorised");
+        }
+
+        Optional<EventType> findEventTypeById = this.eventTypeRepository.findById(eventTypeId);
+
+        if (findEventTypeById.isEmpty()) {
+            throw new ResourceNotFoundException("Event type not found");
+        }
+
+        this.eventTypeRepository.deleteById(eventTypeId);
+        return true;
+    }
+
+    @Override
+    public EventType doesEventTypeExist(String eventTypeName) {
+
+        return this.eventTypeRepository.findByTypeOfEvent(eventTypeName);
+    }
 
 
 }

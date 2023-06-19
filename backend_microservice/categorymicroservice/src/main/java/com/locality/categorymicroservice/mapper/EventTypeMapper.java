@@ -11,22 +11,22 @@ import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 @Component
 public class EventTypeMapper {
 
-	@Autowired
-	private ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
-	public EventType dtoToEventType(EventTypeDto eventTypeDto) {
-		return this.modelMapper.map(eventTypeDto, EventType.class);
-	}
+    public EventType dtoToEventType(EventTypeDto eventTypeDto) {
+        return this.modelMapper.map(eventTypeDto, EventType.class);
+    }
 
-	public EventTypeDto eventTypeToDto(EventType eventType) {
-		return this.modelMapper.map(eventType, EventTypeDto.class);
-	}
+    public EventTypeDto eventTypeToDto(EventType eventType) {
+        return this.modelMapper.map(eventType, EventTypeDto.class);
+    }
 
-	public LocalityAndEventTypeDto localityAndEventTypeToDto(EventType type, LocalityAndEventTypeDto locality) {
+    public LocalityAndEventTypeDto localityAndEventTypeToDto(EventType type, LocalityAndEventTypeDto locality) {
 
-		return LocalityAndEventTypeDto.builder().eventTypeId(type.getEventTypeId()).typeOfEvent(type.getTypeOfEvent())
-				.localityId(locality.getLocalityId()).name(locality.getName()).build();
+        return LocalityAndEventTypeDto.builder().eventTypeId(type.getEventTypeId()).typeOfEvent(type.getTypeOfEvent())
+                .localityId(locality.getLocalityId()).name(locality.getName()).build();
 
-	}
+    }
 
 }
