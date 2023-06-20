@@ -78,6 +78,7 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
       .forEach((el) => el.classList.remove("modal-backdrop"));
   }
   return (
+    <>
     <div class="user-events-container">
       <div class="row row-cols-xxl-2">
         {events.map((event) => {
@@ -115,16 +116,18 @@ const UserEventsContainer = ({ events, deleteAEvent, refresh }) => {
           );
         })}
       </div>
-      {show && (
-        <EditEventModal
-          handle={handle}
-          errMsg={errMsg}
-          eventDate={eventDate}
-          setEvent={setEvent}
-          setEventDate={setEventDate}
-        />
-      )}
+      
     </div>
+    {show && (
+      <EditEventModal
+        handle={handle}
+        errMsg={errMsg}
+        eventDate={eventDate}
+        setEvent={setEvent}
+        setEventDate={setEventDate}
+      />
+    )}
+    </>
   );
 };
 

@@ -14,6 +14,7 @@ import {
   getEventByLocalityAndEventType,
 } from "../../service/EventService";
 import "./Event.css";
+import { eventTypes } from "../../Data/EventTypeList";
 
 const Event = () => {
 
@@ -34,13 +35,14 @@ const Event = () => {
   }, []);
 
   const setLocality = (option) => {
+    
     if (option != 0) {
       setLocalityitem(
         localitylist.filter((locality) => locality.localityId == option)[0]
       );
       setIsLocalityListLoaded(true);
 
-      if (typeOfEvent!=null) {
+      if (typeOfEvent!=null && typeOfEvent.eventTypeId != 0) { 
         setEventsByLocalityAndType(option, typeOfEvent.eventTypeId);
       } else {
         setEventsByLocality(option);
@@ -48,7 +50,7 @@ const Event = () => {
     } else {
       setIsLocalityListLoaded(false);
       if (typeOfEvent != null) {
-        setEventsByType(typeOfEvent);
+        setEventsByType(typeOfEvent.eventTypeId);
       } else {
         setEventsToAll();
       }

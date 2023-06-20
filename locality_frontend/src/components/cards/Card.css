@@ -4,7 +4,7 @@
   box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
   border: none !important;
   overflow: hidden;
-  margin: 0 10px !important;
+  margin: 5px 10px !important;
   background: var(--main2);
   color: var(--secondary5);
   position: relative;
@@ -115,3 +115,14 @@
   padding: 20px;
   border-radius: 5px;
 }
+
+/* .locality-card {
+  box-shadow: 10px 10px 26px -13px rgba(0, 0, 0, 0.75);
+  border: none !important;
+  overflow: hidden;
+  margin: 10px !important;
+  background: var(--main2);
+  color: var(--secondary5);
+  position: relative;
+  height: 200px;
+} */

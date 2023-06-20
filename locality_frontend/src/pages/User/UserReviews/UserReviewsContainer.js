@@ -70,7 +70,7 @@ const UserReviewsContainer = ({ reviews, deleteAReview, refresh }) => {
       <div class="row row-cols-xxl-2">
         {reviews.map((review) => {
           return (
-            <div key={review.reviewId} className="my-4">
+            <div key={review.reviewId}>
               <div className="details-container">
                 <ReviewCard item={review} />
                 <div

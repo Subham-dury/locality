@@ -10,8 +10,8 @@
         <module name="apigateway" />
         <module name="review-eventmicroservices" />
         <module name="serviceRegistry" />
-        <module name="usermicroservice" />
         <module name="categorymicroservice" />
+        <module name="usermicroservice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -6,6 +6,7 @@ function Localityinfo({ localityitem }) {
       <div className="col-lg-7">
         <h3>{localityitem.name}</h3>
         <p className="text-mute">{localityitem.city}</p>
+        <p className="">{localityitem.state}</p>
         <p>{localityitem.about}</p>
       </div>
       <div className=" col-lg-5 text-center imgholder">

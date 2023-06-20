@@ -8,22 +8,27 @@ import Review from "../pages/Review/Review";
 import UserEvent from "../pages/User/UserEvents/UserEvent";
 import UserReview from "../pages/User/UserReviews/UserReview";
 import Protected from "./Protected";
+import Locality from "../pages/Admin/Locality/Locality";
+import EventType from "../pages/Admin/EventType/EventType";
 
 const RouteList = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsSignedIn(localStorage.getItem("token") ? true : false);
+    setIsAdmin(localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).role == "ADMIN" ? true : false);
+    console.log(JSON.parse(localStorage.getItem("user")).role == "ADMIN")
   }, [location]);
 
   return (
     <Routes>
       <Route path="*" element={<Navigate to="/" />} />
-      <Route path="/" >
+      <Route path="/">
         <Route index element={<Home />} />
         <Route path="reviews" element={<Review />} />
-        <Route path="events" element={<Event/>} />
+        <Route path="events" element={<Event />} />
         <Route
           path="user-reviews"
           element={
@@ -41,10 +46,26 @@ const RouteList = () => {
           }
         />
         <Route
+          path="admin-locality"
+          element={
+            <Protected isSignedIn={isSignedIn}>
+              {isAdmin && <Locality />}
+            </Protected>
+          }
+        ></Route>
+        <Route
+          path="admin-eventtype"
+          element={
+            <Protected isSignedIn={isSignedIn}>
+              {isAdmin && <EventType />}
+            </Protected>
+          }
+        ></Route>
+        <Route
           path="login"
           element={
             <Protected isSignedIn={!isSignedIn}>
-              <Login/>
+              <Login />
             </Protected>
           }
         />

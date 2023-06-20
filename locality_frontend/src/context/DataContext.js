@@ -39,7 +39,7 @@ export const DataProvider = ({children}) => {
     }
 
   return (
-    <DataContext.Provider value={{localitylist, getLocalityList, eventTypelist, getEventTypeList}}>
+    <DataContext.Provider value={{localitylist, loadLocalityList, eventTypelist, loadEventTypeList}}>
         {children}
     </DataContext.Provider>
   )

@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assests/logo.png";
 
 const Navbar = () => {
-  const isAdmin = false;
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,6 +17,13 @@ const Navbar = () => {
     }
     else{
       setIsLoggedIn(false)
+    }
+
+    if(localStorage.getItem("user")){
+      setIsAdmin(JSON.parse(localStorage.getItem("user")).role == "ADMIN" ? true : false);
+    }
+    else{
+      setIsAdmin(false)
     }
   }, [location]);
 
@@ -118,14 +125,14 @@ const Navbar = () => {
                   </li>
                   {isAdmin && (
                     <li className="nav-item mx-3 my-3">
-                      <Link className="nav-link" to="/user-reports">
+                      <Link className="nav-link" to="/admin-locality">
                         Manage Localities
                       </Link>
                     </li>
                   )}
                   {isAdmin && (
                     <li className="nav-item mx-3 my-3">
-                      <Link className="nav-link" to="/user-reports">
+                      <Link className="nav-link" to="/admin-eventtype">
                         Manage Events
                       </Link>
                     </li>
