@@ -15,6 +15,7 @@ export const getAllReview = async () => {
 };
 
 export const getReviewByLocality = async (localityId) => {
+  console.log(localityId)
   try {
     const response = await fetch(
       `${REVIEWS_EVENTS_URL}/review/bylocality/${localityId}`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import SelectLocality from "../../components/selectors/LocalitySelector";
 import Localityinfo from "../../components/cards/LocalityInfoCard";
 import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
@@ -6,7 +6,7 @@ import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import EventFilterbar from "./EventFilterbar";
 import EventContainer from "./EventContainer";
 import { localitylist } from "../../Data/LocalityList";
-import { eventTypes } from "../../Data/EventTypeList";
+import DataContext from "../../context/DataContext";
 import {
   getAllEvents,
   getEventByLocality,
@@ -16,6 +16,8 @@ import {
 import "./Event.css";
 
 const Event = () => {
+
+  const {eventTypelist} = useContext(DataContext)
   const [localityitem, setLocalityitem] = useState(null);
   const [typeOfEvent, setTypeOfEvent] = useState(null);
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
@@ -56,7 +58,7 @@ const Event = () => {
   const setEventType = (option) => {
     if (option != 0) {
       setTypeOfEvent(
-        eventTypes.filter((type) => type.eventTypeId == option)[0]
+        eventTypelist.filter((type) => type.eventTypeId == option)[0]
       );
       if (localityitem!=null && localityitem.localityId != 0) {
         setEventsByLocalityAndType(localityitem.localityId, option);
@@ -144,7 +146,7 @@ const Event = () => {
                 : `All events`
             }
             setEventType={setEventType}
-            eventTypes={eventTypes}
+            eventTypes={eventTypelist}
             refresh={refresh}
           />
         </div>

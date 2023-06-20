@@ -6,11 +6,7 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedHeaders: "*"
-            allowedMethods:
-            - GET
-            - POST
-            - PUT
-            - DELETE
+            allowedMethods: "*"
       routes:
       - id: USER-SERVICE
         uri: lb://USER-SERVICE

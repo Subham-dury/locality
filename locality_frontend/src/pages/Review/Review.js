@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SelectLocality from "../../components/selectors/LocalitySelector";
 import Localityinfo from "../../components/cards/LocalityInfoCard";
 import ReviewsFilterbar from "./ReviewsFilterbar";
 import Reviewscontainer from "./Reviewscontainer";
 import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
 import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
-import { localitylist } from "../../Data/LocalityList";
 import { getAllReview, getReviewByLocality } from "../../service/ReviewService";
-import AddReviewModal from "../../components/modals/AddReviewModal";
+import DataContext from "../../context/DataContext";
 import "./Review.css";
 
 
@@ -18,6 +17,7 @@ const Review = () => {
 
   const [reviews, setReviews] = useState([]);
   const [errorInReview, setErrorInReview] = useState(null);
+  const {localitylist} = useContext(DataContext);
 
   const refresh = () => {
     updateReviewsToAll()

@@ -16,17 +16,17 @@ public class ApigatewayApplication {
 		SpringApplication.run(ApigatewayApplication.class, args);
 	}
 	
-//	@Bean
-//	public CorsWebFilter corsWebFilter() {
-//		final CorsConfiguration corsConfig = new CorsConfiguration();
-//		corsConfig.setAllowedOrigins(Collections.singletonList("*"));
-//		corsConfig.setAllowedHeaders(Collections.singletonList("*"));
-//		corsConfig.setAllowedMethods(Collections.singletonList("*"));
-//		
-//		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		source.registerCorsConfiguration("/**", corsConfig);
-//		
-//		return new CorsWebFilter(source);
-//	}
+	@Bean
+	public CorsWebFilter corsWebFilter() {
+		final CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.setAllowedOrigins(Collections.singletonList("*"));
+		corsConfig.setAllowedHeaders(Collections.singletonList("*"));
+		corsConfig.setAllowedMethods(Collections.singletonList("*"));
+
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+
+		return new CorsWebFilter(source);
+	}
 
 }
