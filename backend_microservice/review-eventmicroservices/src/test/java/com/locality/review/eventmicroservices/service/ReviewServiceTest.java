@@ -16,7 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Stubbing;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 
@@ -251,7 +250,7 @@ public class ReviewServiceTest {
     }
 
     @Test
-    public void givenLocalityId_whenGetAllReviewByUser_thenReturnReviews() {
+    public void givenToken_whenGetAllReviewByUser_thenReturnReviews() {
         //Mock
         Review review1 = Review.builder()
                 .reviewId(1L).img(1).content("this is test").date(LocalDate.parse("2023-12-09"))

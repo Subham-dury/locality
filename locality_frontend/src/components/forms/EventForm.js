@@ -1,6 +1,5 @@
-import React from "react";
-import { localitylist } from "../../Data/LocalityList";
-import { eventTypes } from "../../Data/EventTypeList";
+import React, {useContext} from "react";
+import DataContext from "../../context/DataContext";
 
 const EventForm = ({
   setSelectedOption,
@@ -12,6 +11,9 @@ const EventForm = ({
   eventDate,
   setEventDate,
 }) => {
+
+  const {localitylist, eventTypelist} = useContext(DataContext);
+
   return (
     <form>
       <div class="form-group my-4 text-start">
@@ -39,7 +41,7 @@ const EventForm = ({
           value={selectedtType}
           onChange={(e) => setSelectedType(e.target.value)}
         >
-          {eventTypes.map((type) => {
+          {eventTypelist.map((type) => {
             return (
               <option key={type.eventTypeId} value={type.eventTypeId}>
                 {type.typeOfEvent}

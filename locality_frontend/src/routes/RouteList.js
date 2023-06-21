@@ -19,7 +19,6 @@ const RouteList = () => {
   useEffect(() => {
     setIsSignedIn(localStorage.getItem("token") ? true : false);
     setIsAdmin(localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).role == "ADMIN" ? true : false);
-    console.log(JSON.parse(localStorage.getItem("user")).role == "ADMIN")
   }, [location]);
 
   return (

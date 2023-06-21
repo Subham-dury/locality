@@ -64,7 +64,7 @@ const EditLocalityModal = ({lid, handleCloseModal}) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="staticBackdropLabel">
-              Modify the event
+              Modify the locality
             </h5>
             <button
               type="button"

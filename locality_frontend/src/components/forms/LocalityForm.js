@@ -32,10 +32,10 @@ const LocalityForm = () => {
     }
 
     function reset() {
-        setName(null);
-        setCity(null);
-        setAbout(null);
-        setState(null);
+        setName("");
+        setCity("");
+        setAbout("");
+        setState("");
     }
 
 

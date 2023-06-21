@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import DataContext from "../../../context/DataContext";
 import LocalityContainer from "./LocalityContainer";
 import LocalityForm from "../../../components/forms/LocalityForm";

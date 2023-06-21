@@ -13,6 +13,7 @@ const LoginForm = ({ handleLogin }) => {
   const [user, setUser] = useState("");
   const [userErr, setUserErr] = useState("");
 
+
   const [pwd, setpwd] = useState("");
   const [pwdErr, setPwdErr] = useState("");
 
@@ -30,10 +31,12 @@ const LoginForm = ({ handleLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    validate();
-    console.log(errMsg && userErr);
-    loginUser(user, pwd)
+    console.log(pwdErr === "" &&  userErr==="")
+ 
+    if(!validate){
+      loginUser(user, pwd, isEmail)
       .then((data) => {
+        console.log("after api call")
         setUser("");
         setpwd("");
         handleLogin(data);
@@ -42,15 +45,37 @@ const LoginForm = ({ handleLogin }) => {
         console.log(error);
         setErrMsg(error.message);
       });
+    }
+    else{
+      if(errMsg==="" && userErr === ""){
+        setErrMsg("invalid inputs")
+      }
+    }
   };
 
   const validate = () => {
-    if (!EMAIL_REGEX.test(user)) {
-      console.log(!EMAIL_REGEX.test(user));
-      console.log(!USERNAME_REGEX.test(user));
-      setUserErr(!USERNAME_REGEX.test(user) ? "Invalid username" : "");
-    } else setIsEmail(true);
-    setPwdErr(!PWD_REGEX.test(pwd) ? "Invalid password" : "");
+    if(!EMAIL_REGEX.test(user) && !USERNAME_REGEX.test(user)){
+      console.log("al failed")
+      setUserErr("Inavlid username or email");
+      return false;
+    }
+    else if(!EMAIL_REGEX.test(user) && USERNAME_REGEX.test(user)){
+      console.log("username pass")
+      setUserErr("")
+      setIsEmail(false)
+    }
+    else {
+      console.log("email pass")
+      setUserErr("")
+      setIsEmail(true)
+    }
+    if(!PWD_REGEX.test(pwd)){
+      setPwdErr("Invalid password")
+      return false;
+    }else{
+      setPwdErr("");
+    }
+    return true;
   };
 
   return (

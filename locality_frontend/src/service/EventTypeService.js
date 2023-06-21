@@ -14,7 +14,7 @@ export const saveEventTypeItem = async (eventType) => {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token"),
         },
-        body: JSON.stringify(eventType),
+        body: JSON.stringify({typeOfEvent : eventType}),
       });
       if (!response.ok) {
         const data = await response.json();
@@ -35,7 +35,7 @@ export const updateEventTypeItem = async (eventType, typeId) => {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-      body: JSON.stringify(eventType),
+      body: JSON.stringify({typeOfEvent : eventType}),
     });
     if (!response.ok) {
       const data = await response.json();

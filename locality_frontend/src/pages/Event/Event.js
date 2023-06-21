@@ -5,7 +5,6 @@ import LocalityNotFound from "../../components/cards/LocalityNotFoundCard";
 import DataNotFoundCard from "../../components/cards/DataNotFoundCard";
 import EventFilterbar from "./EventFilterbar";
 import EventContainer from "./EventContainer";
-import { localitylist } from "../../Data/LocalityList";
 import DataContext from "../../context/DataContext";
 import {
   getAllEvents,
@@ -14,11 +13,11 @@ import {
   getEventByLocalityAndEventType,
 } from "../../service/EventService";
 import "./Event.css";
-import { eventTypes } from "../../Data/EventTypeList";
+
 
 const Event = () => {
 
-  const {eventTypelist} = useContext(DataContext)
+  const {localitylist, eventTypelist} = useContext(DataContext)
   const [localityitem, setLocalityitem] = useState(null);
   const [typeOfEvent, setTypeOfEvent] = useState(null);
   const [isLocalityListLoaded, setIsLocalityListLoaded] = useState(false);
