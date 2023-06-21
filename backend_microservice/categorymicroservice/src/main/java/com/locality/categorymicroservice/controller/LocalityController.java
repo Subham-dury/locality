@@ -40,7 +40,7 @@ public class LocalityController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<List<LocalityDto>> findAllLocality() {
+	public ResponseEntity<List<LocalityDto>> getAllLocality() {
 
 		return ResponseEntity.ok(this.localityService.getAllLocality());
 	}
