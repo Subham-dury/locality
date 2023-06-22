@@ -52,20 +52,20 @@ public class EventController {
 	}
 
 	@GetMapping("/bylocality/{localityId}")
-	public ResponseEntity<List<EventDto>> findReviewByLocality(@PathVariable(name = "localityId") String localityId) {
+	public ResponseEntity<List<EventDto>> findEventByLocality(@PathVariable(name = "localityId") String localityId) {
 
 		return ResponseEntity.ok(this.eventService.getAllEventByLocality(Long.parseLong(localityId)));
 	}
 
 	@GetMapping("/bytype/{typeId}")
-	public ResponseEntity<List<EventDto>> findReviewByType(@PathVariable(name = "typeId") String typeId) {
+	public ResponseEntity<List<EventDto>> findEventByType(@PathVariable(name = "typeId") String typeId) {
 
 		return ResponseEntity.ok(this.eventService.getAllEventByType(Long.parseLong(typeId)));
 	}
 
 
 	@GetMapping("/bylocality/{localityId}/bytype/{typeId}")
-	public ResponseEntity<List<EventDto>> findReviewByLocalityByType(
+	public ResponseEntity<List<EventDto>> findEventByLocalityByType(
 			@PathVariable(name = "localityId") String localityId, @PathVariable(name = "typeId") String typeId) {
 
 		return ResponseEntity
@@ -74,14 +74,14 @@ public class EventController {
 
 
 	@PutMapping("/{eventId}")
-	public ResponseEntity<EventDto> updateReview(@RequestBody EventDto event,
+	public ResponseEntity<EventDto> updateEvent(@RequestBody EventDto event,
 			@PathVariable(name = "eventId") String eventId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
 		return new ResponseEntity<EventDto>(this.eventService.updateEvent(event, Long.parseLong(eventId), token),
 				HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{eventId}")
-	public ResponseEntity<?> deleteReview(@PathVariable(name = "eventId") String eventId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
+	public ResponseEntity<?> deleteEvent(@PathVariable(name = "eventId") String eventId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
 
 		boolean deleteReview = this.eventService.deleteEvent(Long.parseLong(eventId), token);
 		if (deleteReview) {
