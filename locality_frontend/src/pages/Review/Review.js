@@ -17,7 +17,7 @@ const Review = () => {
 
   const [reviews, setReviews] = useState([]);
   const [errorInReview, setErrorInReview] = useState(null);
-  const {localitylist} = useContext(DataContext);
+  const {localitylist, eventTypelist} = useContext(DataContext)
 
   const refresh = () => {
     updateReviewsToAll()
@@ -43,7 +43,6 @@ const Review = () => {
 
   
   const updateReviewsToAll = () => {
-    console.log("iside update all")
     getAllReview()
     .then((data) => {
       setReviews(data);

@@ -31,9 +31,8 @@ const LoginForm = ({ handleLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(pwdErr === "" &&  userErr==="")
  
-    if(!validate){
+    if(validate){
       loginUser(user, pwd, isEmail)
       .then((data) => {
         console.log("after api call")

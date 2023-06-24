@@ -1,9 +1,9 @@
-import React, {useContextt} from "react";
+import React, {useContext} from "react";
 import DataContext from "../../context/DataContext";
 
 const ReviewForm = ({updateSelectedOption ,selectedOption, errMsg, updateReview}) => {
 
-  const {localitylist} = useContextt(DataContext)
+  const {localitylist} = useContext(DataContext)
 
   const setOption = (e) => {
     updateSelectedOption(e.target.value);

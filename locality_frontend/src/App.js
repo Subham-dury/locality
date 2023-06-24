@@ -7,7 +7,7 @@ import Footer from "./components/common/Footer";
 import {DataProvider} from './context/DataContext';
 
 function App() {
-  useEffect(() => {}, []);
+
 
   return (
     <>

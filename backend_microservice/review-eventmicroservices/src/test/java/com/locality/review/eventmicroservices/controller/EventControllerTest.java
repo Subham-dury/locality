@@ -1,8 +1,14 @@
 package com.locality.review.eventmicroservices.controller;
 
+import com.locality.review.eventmicroservices.exception.NotAuthorizedException;
+import com.locality.review.eventmicroservices.exception.ResourceNotFoundException;
 import com.locality.review.eventmicroservices.payload.EventDto;
 import com.locality.review.eventmicroservices.payload.ReviewDto;
 import com.locality.review.eventmicroservices.service.EventService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,9 +20,11 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +37,12 @@ public class EventControllerTest {
     private EventController controllerUnderTest;
 
     String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
+    private Validator validator;
+
+    @BeforeEach
+    public void setup() {
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     @Test
     public void givenEventBody_whenSaveEvent_returnSavedEvent() {
@@ -46,6 +60,16 @@ public class EventControllerTest {
         ResponseEntity<EventDto> response = controllerUnderTest.saveEvent(input, token, 1L, 1L);
         assertThat(response.getBody()).isNotNull();
         assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+    }
+
+    @Test
+    public void givenInvalidObject_whenSaveEvent_thenFailValidation() {
+        //Mock
+        EventDto input = EventDto.builder().build();
+
+        //Asserting
+        Set<ConstraintViolation<EventDto>> errors = validator.validate(input);
+        assertThat(errors).hasSize(2);
     }
 
     @Test
@@ -100,6 +124,17 @@ public class EventControllerTest {
     }
 
     @Test
+    public void givenInvalidToken_whenGetAllEventByUser_thenThrowException(){
+
+        //Stubbing
+        when(eventService.getAllEventByUser(token)).thenThrow(NotAuthorizedException.class);
+
+        // Asserting
+        assertThrows(NotAuthorizedException.class,
+                () -> controllerUnderTest.findEventByUser(token));
+    }
+
+    @Test
     public void whenGetAllEventByLocality_thenReturnAllEvents() {
         //Mock
         EventDto savedEvent = EventDto.builder().eventId(1L).postDate(LocalDate.parse("2023-01-01"))
@@ -114,6 +149,16 @@ public class EventControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertEquals(response.getBody().size(), 1);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    public void givenInvalidId_whenGetAllEventByLocality_thenThrowException(){
+        //Stubbing
+        when(eventService.getAllEventByLocality(1L)).thenThrow(ResourceNotFoundException.class);
+
+        // Asserting
+        assertThrows(ResourceNotFoundException.class,
+                () -> controllerUnderTest.findEventByLocality(String.valueOf(1L)));
     }
 
     @Test
@@ -132,6 +177,17 @@ public class EventControllerTest {
         assertEquals(response.getBody().size(), 1);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
+
+    @Test
+    public void givenInvalidId_whenGetAllEventByType_thenThrowException(){
+        //Stubbing
+        when(eventService.getAllEventByType(1L)).thenThrow(ResourceNotFoundException.class);
+
+        // Asserting
+        assertThrows(ResourceNotFoundException.class,
+                () -> controllerUnderTest.findEventByType(String.valueOf(1L)));
+    }
+
     @Test
     public void whenGetAllEventByLocalityAndType_thenReturnAllEvents() {
         //Mock
@@ -148,6 +204,15 @@ public class EventControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertEquals(response.getBody().size(), 1);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
+    }
+    @Test
+    public void givenInvalidId_whenGetAllEventByLocalityAndType_thenThrowException(){
+        //Stubbing
+        when(eventService.getAllEventByLocalityAndType(1L, 1L)).thenThrow(ResourceNotFoundException.class);
+
+        // Asserting
+        assertThrows(ResourceNotFoundException.class,
+                () -> controllerUnderTest.findEventByLocalityByType(String.valueOf(1L), String.valueOf(1L)));
     }
 
 
@@ -169,6 +234,18 @@ public class EventControllerTest {
         assertEquals(response.getStatusCode(), HttpStatus.OK);
 
     }
+
+    @Test
+    public void givenInvalidToken_whenUpdateEvent_thenThrowException(){
+
+        //Stubbing
+        when(eventService.updateEvent(null, 1L, token)).thenThrow(NotAuthorizedException.class);
+
+        // Asserting
+        assertThrows(NotAuthorizedException.class,
+                () -> controllerUnderTest.updateEvent(null, String.valueOf(1L), token));
+    }
+
 
     @Test
     public void whenDeleteEvent_thenReturnMessage() {
