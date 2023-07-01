@@ -20,4 +20,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 	List<Review> findByLocalityId(Long localityId, Sort sortByDateDesc);
 
 	List<Review> findByUserIdAndLocalityId(Long userId, Long localityId, Sort sortByDateDesc);
+
+	void deleteByLocalityId(Long localityId);
 }

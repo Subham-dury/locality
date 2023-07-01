@@ -19,4 +19,6 @@ public interface ReviewService {
 	public ReviewDto updateReview(ReviewDto reviewDto, Long reviewId, String token);
 
 	public Boolean deleteReview(Long reviewId, String token);
+
+	public Boolean deleteReviewsByLocality(Long localityId, String token);
 }

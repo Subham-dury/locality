@@ -76,6 +76,18 @@ public class ReviewController {
 		}
 		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
+
+	@DeleteMapping("/byLocality/{localityId}")
+
+	public ResponseEntity<?> deleteReviewByLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
+										  @PathVariable(name="localityId") String localityId){
+		System.out.println("inside delete method");
+		boolean deleteReview = this.reviewService.deleteReviewsByLocality(Long.parseLong(localityId), token);
+		if(deleteReview) {
+			return ResponseEntity.ok(Map.of("message", "Review deleted successfully"));
+		}
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
+	}
 	
 	
 	

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.locality.categorymicroservice.service.FetchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import com.locality.categorymicroservice.mapper.LocalityMapper;
 import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 import com.locality.categorymicroservice.payload.LocalityDto;
 import com.locality.categorymicroservice.repository.LocalityRepository;
-import com.locality.categorymicroservice.service.FetchUserService;
 import com.locality.categorymicroservice.service.LocalityService;
 
 import jakarta.transaction.Transactional;
@@ -30,7 +30,7 @@ public class LocalityServiceImpl implements LocalityService {
 	private LocalityRepository localityRepository;
 
 	@Autowired
-	private FetchUserService fetchUserService;
+	private FetchService fetchService;
 
 	@Autowired
 	private LocalityMapper localityMapper;
@@ -39,7 +39,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public LocalityDto saveLocality(LocalityDto localityDto, String token)
 			throws ResourceExistsException, NotAuthorizedException {
 
-		if (!this.fetchUserService.checkIsUserAdmin(token)) {
+		if (!this.fetchService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -91,7 +91,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public LocalityDto updateLocality(LocalityDto localityDto, Long localityId, String token)
 			throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException {
 
-		if (!this.fetchUserService.checkIsUserAdmin(token)) {
+		if (!this.fetchService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -133,7 +133,7 @@ public class LocalityServiceImpl implements LocalityService {
 	public Boolean deleteLocality(Long localityId, String token)
 			throws ResourceNotFoundException, NotAuthorizedException {
 
-		if (!this.fetchUserService.checkIsUserAdmin(token)) {
+		if (!this.fetchService.checkIsUserAdmin(token)) {
 			throw new NotAuthorizedException("User is not authorised");
 		}
 
@@ -145,11 +145,13 @@ public class LocalityServiceImpl implements LocalityService {
 		}
 
 		this.localityRepository.deleteById(localityId);
+		this.fetchService.deleteReviews(token, String.valueOf(localityId));
 		return true;
 	}
 
 	@Override
 	public Locality doesLocalityExist(String localityName) {
+
 		return this.localityRepository.findByName(localityName);
 	}
 

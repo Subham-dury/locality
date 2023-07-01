@@ -3,7 +3,7 @@ package com.locality.categorymicroservice.service;
 import com.locality.categorymicroservice.exception.NotAuthorizedException;
 import com.locality.categorymicroservice.exception.RestClientException;
 import com.locality.categorymicroservice.payload.UserDto;
-import com.locality.categorymicroservice.service.impl.FetchUserServiceImpl;
+import com.locality.categorymicroservice.service.impl.FetchServiceImpl;
 import org.apache.catalina.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class FetchUserServiceTest {
     private LoadBalancerClient loadBalancerClient;
 
     @InjectMocks
-    private FetchUserServiceImpl serviceUnderTest;
+    private FetchServiceImpl serviceUnderTest;
 
     private ServiceInstance serviceInstance;
     String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";

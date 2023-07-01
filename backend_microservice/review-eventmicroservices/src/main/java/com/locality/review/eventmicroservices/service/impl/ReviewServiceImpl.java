@@ -180,6 +180,21 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Override
+	public Boolean deleteReviewsByLocality(Long localityId, String token)throws ResourceNotFoundException,
+			NotAuthorizedException{
+
+		UserDto validateUser = this.fetchService.validateUser(token);
+
+		List<Review> doesReviewExist = reviewRepository.findByLocalityId(localityId, sortByDateDesc);
+
+		if (doesReviewExist.isEmpty()) {
+			throw new ResourceNotFoundException("Review not found");
+		}
+
+		reviewRepository.deleteByLocalityId(localityId);
+		return true;
+	}
 
 
 }

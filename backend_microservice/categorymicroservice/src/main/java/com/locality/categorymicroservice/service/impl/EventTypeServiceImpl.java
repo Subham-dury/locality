@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.locality.categorymicroservice.service.FetchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import com.locality.categorymicroservice.payload.EventTypeDto;
 import com.locality.categorymicroservice.payload.LocalityAndEventTypeDto;
 import com.locality.categorymicroservice.repository.EventTypeRepository;
 import com.locality.categorymicroservice.service.EventTypeService;
-import com.locality.categorymicroservice.service.FetchUserService;
 import com.locality.categorymicroservice.service.LocalityService;
 
 import jakarta.transaction.Transactional;
@@ -31,7 +31,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     private EventTypeRepository eventTypeRepository;
 
     @Autowired
-    private FetchUserService fetchUserService;
+    private FetchService fetchService;
 
     @Autowired
     private LocalityService localityService;
@@ -44,7 +44,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     public EventTypeDto saveEventType(EventTypeDto eventTypeDto, String token)
             throws ResourceExistsException, NotAuthorizedException {
 
-        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+        if (!this.fetchService.checkIsUserAdmin(token)) {
             throw new NotAuthorizedException("User is not authorised");
         }
 
@@ -96,7 +96,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     public EventTypeDto updateEventType(EventTypeDto eventType, Long eventTypeId, String token)
             throws ResourceNotFoundException, IllegalArgumentException, NotAuthorizedException {
 
-        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+        if (!this.fetchService.checkIsUserAdmin(token)) {
             throw new NotAuthorizedException("User is not authorised");
         }
 
@@ -123,7 +123,7 @@ public class EventTypeServiceImpl implements EventTypeService {
     public Boolean deleteEventType(Long eventTypeId, String token)
             throws ResourceNotFoundException, NotAuthorizedException {
 
-        if (!this.fetchUserService.checkIsUserAdmin(token)) {
+        if (!this.fetchService.checkIsUserAdmin(token)) {
             throw new NotAuthorizedException("User is not authorised");
         }
 

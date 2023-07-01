@@ -35,7 +35,7 @@ public class LocalityServiceTest {
     private LocalityMapper localityMapper;
 
     @Mock
-    private FetchUserService fetchUserService;
+    private FetchService fetchService;
 
     @InjectMocks
     private LocalityServiceImpl serviceUnderTest;
@@ -69,7 +69,7 @@ public class LocalityServiceTest {
         LocalityDto expectedLocalityDto = modelMapper.map(savedLocality, LocalityDto.class);
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findByName(localityInput.getName())).thenReturn(null);
         when(localityMapper.dtoToLocality(inputDto)).thenReturn(localityInput);
         when(localityRepository.save(localityInput)).thenReturn(savedLocality);
@@ -80,7 +80,7 @@ public class LocalityServiceTest {
         assertThat(actualLocalityDto).isNotNull();
         assertEquals(expectedLocalityDto, actualLocalityDto);
 
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
         verify(localityRepository, times(1)).save(localityInput);
         verify(localityRepository, times(1)).findByName(localityInput.getName());
 
@@ -99,7 +99,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
         //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.saveLocality(inputDto, token));
     }
@@ -116,7 +116,7 @@ public class LocalityServiceTest {
                 .build();
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(null)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(null)).thenReturn(false);
         //Asserting
         Exception exception = assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.saveLocality(inputDto, null));
         String expectedMessage = "User is not authorised";
@@ -145,7 +145,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findByName(inputDto.getName())).thenReturn(existingLocality);
 
         //Asserting
@@ -249,7 +249,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.of(existingLocality));
         when(localityRepository.save(updatedLocality)).thenReturn(updatedLocality);
         when(localityMapper.localityToDto(updatedLocality)).thenReturn(expectedLocalityDto);
@@ -269,7 +269,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
         //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.updateLocality(inputDto, 1L, token));
     }
@@ -281,7 +281,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         //Asserting
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> serviceUnderTest.updateLocality(inputDto, 1L, token));
         String expectedMessage = "No locality body for update";
@@ -298,7 +298,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
 
         //Asserting
@@ -319,7 +319,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.of(locality));
         //Asserting
         assertTrue(serviceUnderTest.deleteLocality(1L, token));
@@ -331,7 +331,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
         //Asserting
         assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.deleteLocality(1L, token));
     }
@@ -343,7 +343,7 @@ public class LocalityServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stabbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
         when(localityRepository.findById(1L)).thenReturn(Optional.empty());
 

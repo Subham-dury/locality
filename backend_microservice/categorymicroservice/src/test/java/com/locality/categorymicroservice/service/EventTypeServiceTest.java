@@ -39,7 +39,7 @@ public class EventTypeServiceTest {
     private EventTypeMapper eventTypeMapper;
 
     @Mock
-    private FetchUserService fetchUserService;
+    private FetchService fetchService;
 
     @Mock
     private LocalityService localityService;
@@ -73,7 +73,7 @@ public class EventTypeServiceTest {
                 .typeOfEvent("Dummy-type").build();
 
         // Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeMapper.dtoToEventType(inputEventTypeDto)).thenReturn(eventType);
 
         when(eventTypeRepository.findByTypeOfEvent(eventType.getTypeOfEvent())).thenReturn(null);
@@ -86,7 +86,7 @@ public class EventTypeServiceTest {
         assertThat(actualEventTypeDto).isNotNull();
         assertEquals(actualEventTypeDto, expectedEventTypeDto);
 
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
         verify(eventTypeRepository, times(1)).findByTypeOfEvent(eventType.getTypeOfEvent());
         verify(eventTypeRepository, times(1)).save(eventType);
 
@@ -101,7 +101,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
 
         //Assertion
         NotAuthorizedException exception = assertThrows(NotAuthorizedException.class, () -> serviceUnderTest.saveEventType(inputEventTypeDto, token));
@@ -109,7 +109,7 @@ public class EventTypeServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.equalsIgnoreCase(expectedMessage));
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class EventTypeServiceTest {
                 .eventTypeId(1L).typeOfEvent("Dummy-type").build();
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeMapper.dtoToEventType(inputEventTypeDto)).thenReturn(eventType);
         when(eventTypeRepository.findByTypeOfEvent(eventType.getTypeOfEvent())).thenReturn(existingEventType);
 
@@ -234,7 +234,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeRepository.findById(1L)).thenReturn(Optional.of(existingEventType));
         when(eventTypeRepository.save(updatedEventType)).thenReturn(updatedEventType);
         when(eventTypeMapper.eventTypeToDto(updatedEventType)).thenReturn(expectedEventTypeDto);
@@ -253,7 +253,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
 
         //Asserting
         NotAuthorizedException exception = assertThrows(NotAuthorizedException.class,
@@ -262,7 +262,7 @@ public class EventTypeServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.equalsIgnoreCase(expectedMessage));
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
 
     }
 
@@ -272,7 +272,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
 
         //Asserting
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -289,7 +289,7 @@ public class EventTypeServiceTest {
         EventTypeDto inputEventType = EventTypeDto.builder().typeOfEvent("Dummy-type-1").build();
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeRepository.findById(1L)).thenReturn(Optional.empty());
 
         //Asserting
@@ -306,7 +306,7 @@ public class EventTypeServiceTest {
         EventType exisitngEventType = EventType.builder().eventTypeId(1L).typeOfEvent("Dummy-type-1").build();
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeRepository.findById(1L)).thenReturn(Optional.of(exisitngEventType));
 
         //Asserting
@@ -320,7 +320,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(false);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(false);
 
         //Asserting
         NotAuthorizedException exception = assertThrows(NotAuthorizedException.class,
@@ -329,7 +329,7 @@ public class EventTypeServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.equalsIgnoreCase(expectedMessage));
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
     }
 
     @Test
@@ -338,7 +338,7 @@ public class EventTypeServiceTest {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwidXNlcm5hbWUiOiJTdWJoYW0iLCJyb2xlIjoiTUVNQkVSIiwiaWF0IjoxNjg2OTQxNTQ1LCJleHAiOjE2ODcwMjc5NDV9.C76peR_nITusBsIu778jsDRXrWManBx5UQGrhyOVkH0";
 
         //Stubbing
-        when(fetchUserService.checkIsUserAdmin(token)).thenReturn(true);
+        when(fetchService.checkIsUserAdmin(token)).thenReturn(true);
         when(eventTypeRepository.findById(1L)).thenReturn(Optional.empty());
 
         //Asserting
@@ -348,7 +348,7 @@ public class EventTypeServiceTest {
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.equalsIgnoreCase(expectedMessage));
-        verify(fetchUserService, times(1)).checkIsUserAdmin(token);
+        verify(fetchService, times(1)).checkIsUserAdmin(token);
     }
 
 
