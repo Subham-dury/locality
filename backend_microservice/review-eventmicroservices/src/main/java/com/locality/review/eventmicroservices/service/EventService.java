@@ -22,6 +22,8 @@ public interface EventService {
 
 	public EventDto updateEvent(EventDto EventDto, Long eventId, String token);
 
-	public boolean deleteEvent(Long eventId, String token);
+	public Boolean deleteEvent(Long eventId, String token);
+
+	public Boolean deleteEventByLocality(Long localityId, String token);
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.locality.review.eventmicroservices.entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -189,7 +190,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public boolean deleteEvent(Long eventId, String token) throws ResourceNotFoundException {
+	public Boolean deleteEvent(Long eventId, String token) throws ResourceNotFoundException {
 		
 		UserDto validateUser = this.fetchService.validateUser(token);
 
@@ -206,5 +207,20 @@ public class EventServiceImpl implements EventService {
 		eventRepository.deleteById(eventId);
 		return true;
 	}
+
+	@Override
+	public Boolean deleteEventByLocality(Long localityId, String token) throws ResourceNotFoundException,
+			NotAuthorizedException{
+
+		UserDto validateUser = this.fetchService.validateUser(token);
+
+		List<Event> doesEventExist = eventRepository.findByLocalityId(localityId, sortByDateDesc);
+
+		if (doesEventExist.isEmpty()) {
+			throw new ResourceNotFoundException("Event not found");
+		}
+
+		eventRepository.deleteByLocalityId(localityId);
+		return true;	}
 
 }

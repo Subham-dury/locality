@@ -105,4 +105,36 @@ public class FetchServiceImpl implements FetchService {
 			throw new RestClientException("Reviews not found");
 		}
 	}
+
+	@Override
+	public Boolean deleteEvents(String token, String localityId) {
+		try {
+
+			ServiceInstance serviceInstance = loadBalancerClient.choose("REVIEW-EVENT-SERVICE");
+			if (serviceInstance == null) {
+				throw new InternalServerErrorException("Failed to connect to server");
+			}
+
+			String reviewServiceUrl = serviceInstance.getUri().toString();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.set("Authorization", token);
+			HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+//			ResponseEntity<LocalityAndEventTypeDto> response = restTemplate.exchange(
+//					categoryMicroserviceUrl + "locality/" + localityId, HttpMethod.GET, null,
+//					LocalityAndEventTypeDto.class);
+
+			ResponseEntity<Map> response = restTemplate.exchange(
+					reviewServiceUrl +"/event/byLocality/" + localityId, HttpMethod.DELETE, requestEntity,
+					Map.class);
+
+			if (!response.getStatusCode().is2xxSuccessful()) {
+				throw new ResourceNotFoundException("Events not found");
+			}
+			return true;
+		} catch (RestClientException e) {
+			throw new RestClientException("Events not found");
+		}
+	}
 }

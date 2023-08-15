@@ -146,6 +146,7 @@ public class LocalityServiceImpl implements LocalityService {
 
 		this.localityRepository.deleteById(localityId);
 		this.fetchService.deleteReviews(token, String.valueOf(localityId));
+		this.fetchService.deleteEvents(token, String.valueOf(localityId));
 		return true;
 	}
 

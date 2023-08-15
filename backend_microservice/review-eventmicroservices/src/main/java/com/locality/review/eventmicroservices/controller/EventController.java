@@ -83,11 +83,22 @@ public class EventController {
 	@DeleteMapping("/{eventId}")
 	public ResponseEntity<?> deleteEvent(@PathVariable(name = "eventId") String eventId, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
 
-		boolean deleteReview = this.eventService.deleteEvent(Long.parseLong(eventId), token);
-		if (deleteReview) {
+		boolean deleteEvent = this.eventService.deleteEvent(Long.parseLong(eventId), token);
+		if (deleteEvent) {
 			return ResponseEntity.ok(Map.of("message", "Event deleted successfully"));
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+	@DeleteMapping("/byLocality/{localityId}")
+	public ResponseEntity<?> deleteEventByLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
+													@PathVariable(name="localityId") String localityId){
+
+		boolean deleteEvent = this.eventService.deleteEventByLocality(Long.parseLong(localityId), token);
+		if(deleteEvent) {
+			return ResponseEntity.ok(Map.of("message", "Event deleted successfully"));
+		}
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
 
 }

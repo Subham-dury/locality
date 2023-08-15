@@ -78,7 +78,6 @@ public class ReviewController {
 	}
 
 	@DeleteMapping("/byLocality/{localityId}")
-
 	public ResponseEntity<?> deleteReviewByLocality(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String token,
 										  @PathVariable(name="localityId") String localityId){
 		System.out.println("inside delete method");

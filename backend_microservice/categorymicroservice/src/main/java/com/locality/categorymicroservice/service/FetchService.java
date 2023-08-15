@@ -6,4 +6,6 @@ public interface FetchService {
 
 	public Boolean deleteReviews(String token, String localityId);
 
+	public Boolean deleteEvents(String token, String localityId);
+
 }
